@@ -7,6 +7,7 @@ import com.traverse.appliedthaumics.me.key.EssentiaKey;
 import com.traverse.appliedthaumics.me.key.EssentiaKeyType;
 import appeng.client.InitScreens;
 import appeng.client.gui.implementations.IOBusScreen;
+import appeng.client.gui.implementations.StorageLevelEmitterScreen;
 import com.traverse.appliedthaumics.registry.ATItems;
 import com.traverse.appliedthaumics.registry.ATMenus;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -28,6 +29,7 @@ public class AppliedThaumicsClient {
     private void registerScreens(RegisterMenuScreensEvent event) {
         InitScreens.register(event, ATMenus.ESSENTIA_IMPORT_BUS, IOBusScreen::new, "/screens/import_bus.json");
         InitScreens.register(event, ATMenus.ESSENTIA_EXPORT_BUS, IOBusScreen::new, "/screens/export_bus.json");
+        InitScreens.register(event, ATMenus.ESSENTIA_LEVEL_EMITTER, StorageLevelEmitterScreen::new, "/screens/essentia_level_emitter.json");
         InitScreens.register(event, ATMenus.ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
         InitScreens.register(event, ATMenus.ARCANE_INSCRIBER, ArcaneInscriberScreen::new, "/screens/terminals/arcane_inscriber.json");
         InitScreens.register(event, ATMenus.ARCANE_ASSEMBLER, ArcaneAssemblerScreen::new, "/screens/arcane_assembler.json");

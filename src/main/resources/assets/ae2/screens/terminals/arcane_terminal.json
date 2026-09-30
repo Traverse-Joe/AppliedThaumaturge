@@ -58,6 +58,16 @@
       "scale": 0.5
     }
   },
+  "widgets": {
+    "clearCraftingGrid": {
+      "left": 14,
+      "bottom": 159
+    },
+    "clearToPlayerInv": {
+      "left": 14,
+      "bottom": 149
+    }
+  },
   "terminalStyle": {
     "header": {
       "texture": "guis/arcane_terminal.png",

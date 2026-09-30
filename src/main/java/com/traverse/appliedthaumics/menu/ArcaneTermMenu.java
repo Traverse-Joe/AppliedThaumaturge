@@ -3,19 +3,25 @@ package com.traverse.appliedthaumics.menu;
 import appeng.api.config.Actionable;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.AEKey;
 import appeng.api.storage.MEStorage;
 import appeng.api.storage.StorageHelper;
 import appeng.helpers.ICraftingGridMenu;
 import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.me.common.MEStorageMenu;
 import appeng.util.inv.AppEngInternalInventory;
+import appeng.util.inv.PlayerInternalInventory;
 import com.leclowndu93150.thaumaturge.api.recipe.ArcaneCraftingTransaction;
+import com.leclowndu93150.thaumaturge.api.research.scan.ScanningManager;
+import com.leclowndu93150.thaumaturge.content.item.ThaumometerItem;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.content.workbench.MenuArcaneWorkbench;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotCrystalEssentia;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.network.codec.ByteBufCodecs;
 import com.leclowndu93150.thaumaturge.api.aura.AuraHelper;
 import com.traverse.appliedthaumics.arcane.ArcaneCrafter;
 import com.traverse.appliedthaumics.arcane.ArcaneTerminalAuraSource;
@@ -32,6 +38,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
 public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, ArcaneRecipeTarget {
+    private static final ClientActionKey<Void> ACTION_STORE_GRID = new ClientActionKey<>("storeCraftingGrid");
+    private static final ClientActionKey<Void> ACTION_TAKE_GRID = new ClientActionKey<>("clearToPlayer");
+    private static final ClientActionKey<Long> ACTION_SCAN_ITEM = new ClientActionKey<>("scanStoredItem");
     private final ArcaneTerminalPart part;
     private final AppEngInternalInventory arcaneInventory;
     private final ArcaneResultSlot outputSlot;
@@ -69,11 +78,71 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         this.outputSlot = new ArcaneResultSlot(getPlayerInventory().player, getActionSource(), energySource, host.getInventory(), grid, this);
         addSlot(outputSlot, SlotSemantics.CRAFTING_RESULT);
 
+        registerClientAction(ACTION_STORE_GRID, this::clearCraftingGrid);
+        registerClientAction(ACTION_TAKE_GRID, this::clearToPlayerInventory);
+        registerClientAction(ACTION_SCAN_ITEM, ByteBufCodecs.VAR_LONG, this::scanStoredItem);
+
         updateOutput();
     }
 
     public ArcaneTerminalPart getPart() {
         return part;
+    }
+
+    public void scanStoredItem(long serial) {
+        if (isClientSide()) {
+            sendClientAction(ACTION_SCAN_ITEM, serial);
+            return;
+        }
+        if (!isValidMenu() || !stillValid(getPlayer()) || !canInteractWithGrid()
+                || !(getCarried().getItem() instanceof ThaumometerItem)) {
+            return;
+        }
+        AEKey key = getStackBySerial(serial);
+        if (!(key instanceof AEItemKey item) || !isKeyVisible(item)
+                || part.getInventory().extract(item, 1, Actionable.SIMULATE, getActionSource()) < 1) {
+            return;
+        }
+        ScanningManager.scanTheThing(getPlayer(), item.toStack(1));
+    }
+
+    public void clearCraftingGrid() {
+        if (isClientSide()) {
+            sendClientAction(ACTION_STORE_GRID);
+            return;
+        }
+        InternalInventory grid = getCraftingMatrix();
+        for (int slot = 0; slot < grid.size(); slot++) {
+            ItemStack stack = grid.getStackInSlot(slot);
+            AEItemKey key = AEItemKey.of(stack);
+            if (key != null) {
+                long inserted = StorageHelper.poweredInsert(energySource, part.getInventory(), key, stack.getCount(), getActionSource(), Actionable.MODULATE);
+                grid.setItemDirect(slot, stack.copyWithCount(stack.getCount() - (int) inserted));
+            }
+        }
+        updateOutput();
+        broadcastChanges();
+    }
+
+    public void clearToPlayerInventory() {
+        if (isClientSide()) {
+            sendClientAction(ACTION_TAKE_GRID);
+            return;
+        }
+        InternalInventory grid = getCraftingMatrix();
+        PlayerInternalInventory playerInventory = new PlayerInternalInventory(getPlayerInventory());
+        for (int slot = 0; slot < grid.size(); slot++) {
+            for (int pass = 0; pass < 2; pass++) {
+                for (int destination = 0; destination < 36; destination++) {
+                    int playerSlot = destination < 9 ? 8 - destination : destination;
+                    if (playerInventory.getStackInSlot(playerSlot).isEmpty() == (pass == 1)) {
+                        grid.setItemDirect(slot, playerInventory.getSlotInv(playerSlot).addItems(grid.getStackInSlot(slot)));
+                    }
+                }
+            }
+        }
+        updateOutput();
+        broadcastChanges();
     }
 
     public AppEngInternalInventory getArcaneInventory() {

@@ -1,0 +1,16 @@
+{
+  "includes": [
+    "level_emitter.json"
+  ],
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "item.appliedthaumics.essentia_level_emitter"
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    }
+  }
+}

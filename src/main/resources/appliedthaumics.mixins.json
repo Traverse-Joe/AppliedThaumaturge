@@ -5,7 +5,14 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "CraftConfirmMenuMixin",
-    "CraftingPlanSummaryMixin"
+    "CraftingPlanSummaryMixin",
+    "StorageLevelEmitterPartMixin",
+    "AbstractTerminalPartMixin",
+    "WirelessTerminalMenuHostMixin",
+    "MEStorageMenuMixin"
+  ],
+  "client": [
+    "InventoryScanHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,13 +2,35 @@ package com.traverse.appliedthaumics.client;
 
 import appeng.client.gui.me.common.MEStorageScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.api.config.ActionItems;
+import appeng.client.gui.widgets.ActionButton;
+import appeng.menu.me.common.GridInventoryEntry;
+import com.leclowndu93150.thaumaturge.content.item.ThaumometerItem;
 import com.traverse.appliedthaumics.menu.ArcaneTermMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerInput;
 
 public class ArcaneTermScreen extends MEStorageScreen<ArcaneTermMenu> {
     public ArcaneTermScreen(ArcaneTermMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
+        ActionButton storeButton = new ActionButton(ActionItems.S_STASH, action -> menu.clearCraftingGrid());
+        storeButton.setHalfSize(true);
+        storeButton.setDisableBackground(true);
+        widgets.add("clearCraftingGrid", storeButton);
+
+        ActionButton takeButton = new ActionButton(ActionItems.S_STASH_TO_PLAYER_INV, action -> menu.clearToPlayerInventory());
+        takeButton.setHalfSize(true);
+        takeButton.setDisableBackground(true);
+        widgets.add("clearToPlayerInv", takeButton);
+    }
+
+    @Override
+    protected void handleGridInventoryEntryMouseClick(GridInventoryEntry entry, int mouseButton, ContainerInput input) {
+        if (getMenu().getCarried().getItem() instanceof ThaumometerItem) {
+            return;
+        }
+        super.handleGridInventoryEntryMouseClick(entry, mouseButton, input);
     }
 
     @Override
