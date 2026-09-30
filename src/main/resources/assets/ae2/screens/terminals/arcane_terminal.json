@@ -43,16 +43,16 @@
     },
     "vis_required": {
       "position": {
-        "left": 154,
-        "bottom": 133
+        "left": 140,
+        "bottom": 175
       },
       "align": "CENTER",
       "scale": 0.5
     },
     "vis_available": {
       "position": {
-        "right": 8,
-        "bottom": 177
+        "left": 140,
+        "bottom": 170
       },
       "align": "RIGHT",
       "scale": 0.5
