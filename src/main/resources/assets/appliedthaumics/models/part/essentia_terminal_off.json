@@ -1,0 +1,8 @@
+{
+  "parent": "ae2:part/display_off",
+  "textures": {
+    "lightsBright": "appliedthaumics:part/essentia_terminal_bright",
+    "lightsMedium": "appliedthaumics:part/essentia_terminal_medium",
+    "lightsDark": "appliedthaumics:part/essentia_terminal_dark"
+  }
+}

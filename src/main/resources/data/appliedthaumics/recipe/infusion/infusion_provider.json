@@ -1,0 +1,31 @@
+{
+  "type": "thaumaturge:infusion",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 25
+    },
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 25
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 20
+    }
+  ],
+  "catalyst": "ae2:interface",
+  "components": [
+    "appliedthaumics:coalescence_core",
+    "thaumaturge:salis_mundus",
+    "appliedthaumics:coalescence_core",
+    "thaumaturge:salis_mundus"
+  ],
+  "instability": 2,
+  "research": {
+    "entry": "appliedthaumics:infusion_provider"
+  },
+  "result": {
+    "id": "appliedthaumics:infusion_provider"
+  }
+}

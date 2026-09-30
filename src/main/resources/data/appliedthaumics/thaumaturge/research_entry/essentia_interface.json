@@ -1,0 +1,54 @@
+{
+  "category": "appliedthaumics:energistics",
+  "name": "research.appliedthaumics.essentia_interface.title",
+  "parents": [
+    "appliedthaumics:infusion_provider",
+    "appliedthaumics:essentia_buses"
+  ],
+  "column": 4,
+  "row": -4,
+  "icons": [
+    "appliedthaumics:essentia_interface"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.essentia_interface.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumics:energistics",
+          "amount": 1
+        }
+      ],
+      "required_research": [
+        "appliedthaumics:infusion_provider",
+        "appliedthaumics:essentia_buses"
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.essentia_interface.stage_1",
+      "recipes": [
+        "appliedthaumics:infusion/essentia_interface"
+      ],
+      "warp": 3
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:motus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    }
+  ],
+  "complexity": 3,
+  "meta": [
+    "round"
+  ]
+}

@@ -1,0 +1,51 @@
+package com.traverse.appliedthaumics.client;
+
+import appeng.api.client.StorageCellModels;
+import appeng.client.api.AEKeyRendering;
+import com.traverse.appliedthaumics.AppliedThaumics;
+import com.traverse.appliedthaumics.me.key.EssentiaKey;
+import com.traverse.appliedthaumics.me.key.EssentiaKeyType;
+import appeng.client.InitScreens;
+import appeng.client.gui.implementations.IOBusScreen;
+import com.traverse.appliedthaumics.registry.ATItems;
+import com.traverse.appliedthaumics.registry.ATMenus;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterBlockStateModels;
+
+@Mod(value = AppliedThaumics.MODID, dist = Dist.CLIENT)
+public class AppliedThaumicsClient {
+    public AppliedThaumicsClient(IEventBus modBus, ModContainer container) {
+        modBus.addListener(this::clientSetup);
+        modBus.addListener(this::registerModels);
+        modBus.addListener(this::registerScreens);
+    }
+
+    private void registerScreens(RegisterMenuScreensEvent event) {
+        InitScreens.register(event, ATMenus.ESSENTIA_IMPORT_BUS, IOBusScreen::new, "/screens/import_bus.json");
+        InitScreens.register(event, ATMenus.ESSENTIA_EXPORT_BUS, IOBusScreen::new, "/screens/export_bus.json");
+        InitScreens.register(event, ATMenus.ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
+        InitScreens.register(event, ATMenus.ARCANE_INSCRIBER, ArcaneInscriberScreen::new, "/screens/terminals/arcane_inscriber.json");
+        InitScreens.register(event, ATMenus.ARCANE_ASSEMBLER, ArcaneAssemblerScreen::new, "/screens/arcane_assembler.json");
+    }
+
+    private void clientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            AEKeyRendering.register(EssentiaKeyType.TYPE, EssentiaKey.class, EssentiaKeyRenderer.INSTANCE);
+            AEKeyRendering.register(com.traverse.appliedthaumics.me.key.VisKeyType.TYPE,
+                    com.traverse.appliedthaumics.me.key.VisKey.class, VisKeyRenderer.INSTANCE);
+        });
+    }
+
+    private void registerModels(RegisterBlockStateModels event) {
+        StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_1K.get(), AppliedThaumics.id("block/drive/essentia_cell_1k"));
+        StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_4K.get(), AppliedThaumics.id("block/drive/essentia_cell_4k"));
+        StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_16K.get(), AppliedThaumics.id("block/drive/essentia_cell_16k"));
+        StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_64K.get(), AppliedThaumics.id("block/drive/essentia_cell_64k"));
+        StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_CREATIVE.get(), AppliedThaumics.id("block/drive/essentia_cell_creative"));
+    }
+}

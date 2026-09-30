@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "G": "ae2:quartz_glass",
+    "S": "thaumaturge:salis_mundus",
+    "T": "#c:ingots/thaumium"
+  },
+  "pattern": [
+    "GSG",
+    "S S",
+    "TTT"
+  ],
+  "research": {
+    "entry": "appliedthaumics:essentia_storage_1k"
+  },
+  "result": {
+    "id": "appliedthaumics:essentia_cell_housing"
+  },
+  "vis": 15
+}

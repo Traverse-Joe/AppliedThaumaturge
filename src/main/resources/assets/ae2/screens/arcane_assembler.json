@@ -1,0 +1,85 @@
+{
+  "$schema": "schema.json",
+  "includes": [
+    "common/common.json",
+    "common/player_inventory.json",
+    "common/toolbox.json"
+  ],
+  "background": {
+    "texture": "guis/molecular_assembler.png",
+    "srcRect": [
+      0,
+      0,
+      176,
+      199
+    ]
+  },
+  "slots": {
+    "MACHINE_CRAFTING_GRID": {
+      "left": 29,
+      "top": 31,
+      "grid": "BREAK_AFTER_3COLS"
+    },
+    "ENCODED_PATTERN": {
+      "left": 126,
+      "top": 16
+    },
+    "MACHINE_OUTPUT": {
+      "left": 126,
+      "top": 49
+    },
+    "APPLIEDTHAUMICS_ARCANE_WAND": {
+      "left": 126,
+      "top": 79
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "block.appliedthaumics.arcane_assembler"
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    },
+    "vis_available": {
+      "position": {
+        "left": 134,
+        "top": 38
+      },
+      "align": "CENTER",
+      "scale": 0.5
+    }
+  },
+  "images": {
+    "progressBar": {
+      "texture": "guis/molecular_assembler.png",
+      "srcRect": [
+        176,
+        0,
+        6,
+        18
+      ]
+    },
+    "wandSlot": {
+      "texture": "guis/arcane_terminal.png",
+      "srcRect": [
+        145,
+        128,
+        18,
+        18
+      ]
+    }
+  },
+  "widgets": {
+    "progressBar": {
+      "left": 148,
+      "top": 48
+    },
+    "wandSlot": {
+      "left": 125,
+      "top": 78
+    }
+  }
+}

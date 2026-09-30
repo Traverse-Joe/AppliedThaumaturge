@@ -1,0 +1,49 @@
+{
+  "category": "thaumaturge:artifice",
+  "name": "research.appliedthaumics.unlock_energistics.title",
+  "parents": [
+    "thaumaturge:base_artifice"
+  ],
+  "column": 0,
+  "row": 3,
+  "icons": [
+    "appliedthaumics:textures/research/tab_icon.png"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.unlock_energistics.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "thaumaturge:artifice",
+          "amount": 1
+        }
+      ],
+      "required_research": [
+        "appliedthaumics:f_aecore"
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.unlock_energistics.stage_1"
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:potentia",
+      "amount": 2
+    }
+  ],
+  "complexity": 1,
+  "meta": [
+    "round",
+    "spiky"
+  ]
+}

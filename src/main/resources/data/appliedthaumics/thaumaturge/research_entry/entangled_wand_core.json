@@ -1,0 +1,57 @@
+{
+  "category": "appliedthaumics:energistics",
+  "name": "research.appliedthaumics.entangled_wand_core.title",
+  "parents": [
+    "appliedthaumics:base_energistics",
+    "thaumaturge:rod_silverwood"
+  ],
+  "column": -2,
+  "row": 2,
+  "icons": [
+    "appliedthaumics:entangled_wand_core"
+  ],
+  "meta": [
+    "round"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.entangled_wand_core.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumics:energistics",
+          "amount": 1
+        }
+      ],
+      "craft": [
+        {
+          "items": [
+            "ae2:singularity"
+          ],
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.entangled_wand_core.stage_1",
+      "recipes": [
+        "appliedthaumics:infusion/entangled_wand_core"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:vacuos",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 3
+    }
+  ],
+  "complexity": 3
+}

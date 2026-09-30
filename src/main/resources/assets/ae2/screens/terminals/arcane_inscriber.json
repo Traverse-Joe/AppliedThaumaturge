@@ -1,0 +1,105 @@
+{
+  "includes": [
+    "terminal.json"
+  ],
+  "slots": {
+    "CRAFTING_GRID": {
+      "left": 15,
+      "bottom": 158,
+      "grid": "BREAK_AFTER_3COLS"
+    },
+    "CRAFTING_RESULT": {
+      "left": 106,
+      "bottom": 140
+    },
+    "APPLIEDTHAUMICS_KNOWLEDGE_CORE": {
+      "left": 147,
+      "bottom": 118
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "text": ""
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    },
+    "crafting_grid_title": {
+      "text": {
+        "translate": "gui.appliedthaumics.arcane_inscribing"
+      },
+      "position": {
+        "left": 8,
+        "bottom": 177
+      }
+    }
+  },
+  "terminalStyle": {
+    "header": {
+      "texture": "guis/arcane_inscriber.png",
+      "srcRect": [
+        0,
+        0,
+        195,
+        17
+      ]
+    },
+    "firstRow": {
+      "texture": "guis/arcane_inscriber.png",
+      "srcRect": [
+        0,
+        17,
+        195,
+        18
+      ]
+    },
+    "row": {
+      "texture": "guis/arcane_inscriber.png",
+      "srcRect": [
+        0,
+        35,
+        195,
+        18
+      ]
+    },
+    "lastRow": {
+      "texture": "guis/arcane_inscriber.png",
+      "srcRect": [
+        0,
+        53,
+        195,
+        18
+      ]
+    },
+    "bottom": {
+      "texture": "guis/arcane_inscriber.png",
+      "srcRect": [
+        0,
+        71,
+        195,
+        180
+      ]
+    }
+  },
+  "widgets": {
+    "encode": {
+      "left": 147,
+      "bottom": 145
+    },
+    "erase": {
+      "left": 147,
+      "bottom": 145
+    },
+    "clearPattern": {
+      "left": 70,
+      "bottom": 159
+    },
+    "substitutions": {
+      "left": 80,
+      "bottom": 159
+    }
+  }
+}

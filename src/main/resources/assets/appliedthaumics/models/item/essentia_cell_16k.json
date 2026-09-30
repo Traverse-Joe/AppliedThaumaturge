@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "appliedthaumics:item/essentia_cell_16k",
+    "layer1": "appliedthaumics:item/essentia_cell_led"
+  }
+}

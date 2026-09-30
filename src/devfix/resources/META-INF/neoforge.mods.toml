@@ -1,0 +1,11 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "appliedthaumics_devfix"
+version = "1.0.0"
+displayName = "Applied Thaumics Dev Fixes"
+
+[[mixins]]
+config = "appliedthaumics_devfix.mixins.json"

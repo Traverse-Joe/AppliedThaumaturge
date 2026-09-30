@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "I": "#c:ingots/iron",
+    "C": "appliedthaumics:coalescence_core",
+    "S": "thaumaturge:salis_mundus",
+    "T": "thaumaturge:tube"
+  },
+  "pattern": [
+    "ICI",
+    "STS"
+  ],
+  "research": {
+    "entry": "appliedthaumics:essentia_buses"
+  },
+  "result": {
+    "id": "appliedthaumics:essentia_export_bus"
+  },
+  "vis": 20
+}

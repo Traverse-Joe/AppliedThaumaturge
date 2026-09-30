@@ -1,0 +1,52 @@
+{
+  "category": "appliedthaumics:energistics",
+  "name": "research.appliedthaumics.essentia_buses.title",
+  "parents": [
+    "appliedthaumics:digisentia"
+  ],
+  "column": 2,
+  "row": -2,
+  "icons": [
+    "appliedthaumics:essentia_import_bus",
+    "appliedthaumics:essentia_export_bus",
+    "appliedthaumics:essentia_storage_bus"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.essentia_buses.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumics:energistics",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.essentia_buses.stage_1",
+      "recipes": [
+        "appliedthaumics:arcane_workbench/essentia_import_bus",
+        "appliedthaumics:arcane_workbench/essentia_export_bus",
+        "appliedthaumics:arcane_workbench/essentia_storage_bus"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:motus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

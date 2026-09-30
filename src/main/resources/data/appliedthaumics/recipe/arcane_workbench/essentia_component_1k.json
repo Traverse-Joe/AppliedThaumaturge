@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "S": "thaumaturge:salis_mundus",
+    "Q": "#c:gems/certus_quartz",
+    "P": "ae2:logic_processor"
+  },
+  "pattern": [
+    "SQS",
+    "QPQ",
+    "SQS"
+  ],
+  "research": {
+    "entry": "appliedthaumics:essentia_storage_1k"
+  },
+  "result": {
+    "id": "appliedthaumics:essentia_component_1k"
+  },
+  "vis": 10
+}

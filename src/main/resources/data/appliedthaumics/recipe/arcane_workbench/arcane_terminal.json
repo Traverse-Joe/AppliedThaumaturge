@@ -1,0 +1,16 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "ae2:terminal",
+    "thaumaturge:arcane_workbench",
+    "ae2:calculation_processor"
+  ],
+  "research": {
+    "entry": "appliedthaumics:arcane_terminal"
+  },
+  "result": {
+    "id": "appliedthaumics:arcane_terminal"
+  },
+  "vis": 50
+}

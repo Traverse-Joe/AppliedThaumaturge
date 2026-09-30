@@ -1,0 +1,16 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "appliedthaumics:essentia_terminal",
+    "ae2:wireless_terminal",
+    "thaumaturge:salis_mundus"
+  ],
+  "research": {
+    "entry": "appliedthaumics:wireless_essentia_terminal"
+  },
+  "result": {
+    "id": "appliedthaumics:wireless_essentia_terminal"
+  },
+  "vis": 40
+}

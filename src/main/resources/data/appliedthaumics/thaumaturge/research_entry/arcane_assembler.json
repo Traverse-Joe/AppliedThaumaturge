@@ -1,0 +1,57 @@
+{
+  "category": "appliedthaumics:energistics",
+  "name": "research.appliedthaumics.arcane_assembler.title",
+  "parents": [
+    "appliedthaumics:arcane_terminal",
+    "appliedthaumics:digisentia"
+  ],
+  "column": 2,
+  "row": 0,
+  "icons": [
+    "appliedthaumics:arcane_assembler"
+  ],
+  "meta": [
+    "round"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.arcane_assembler.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumics:energistics",
+          "amount": 2
+        }
+      ],
+      "craft": [
+        {
+          "items": [
+            "appliedthaumics:arcane_terminal"
+          ],
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.arcane_assembler.stage_1",
+      "recipes": [
+        "appliedthaumics:infusion/arcane_assembler"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    }
+  ],
+  "complexity": 3
+}

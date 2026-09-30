@@ -1,0 +1,32 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [
+    {
+      "aspect": "thaumaturge:terra"
+    },
+    {
+      "aspect": "thaumaturge:ordo"
+    },
+    {
+      "aspect": "thaumaturge:aqua"
+    }
+  ],
+  "key": {
+    "G": "ae2:quartz_vibrant_glass",
+    "L": "#c:dyes/blue",
+    "B": "thaumaturge:brain",
+    "P": "ae2:calculation_processor"
+  },
+  "pattern": [
+    "GLG",
+    "LBL",
+    "GPG"
+  ],
+  "research": {
+    "entry": "appliedthaumics:knowledge_core"
+  },
+  "result": {
+    "id": "appliedthaumics:blank_knowledge_core"
+  },
+  "vis": 100
+}

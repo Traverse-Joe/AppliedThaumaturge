@@ -1,0 +1,108 @@
+{
+  "includes": [
+    "terminal.json"
+  ],
+  "slots": {
+    "CRAFTING_GRID": {
+      "left": 26,
+      "bottom": 158,
+      "grid": "BREAK_AFTER_3COLS"
+    },
+    "APPLIEDTHAUMICS_ARCANE_CRYSTALS": {
+      "left": 88,
+      "bottom": 158,
+      "grid": "BREAK_AFTER_2COLS"
+    },
+    "CRAFTING_RESULT": {
+      "left": 146,
+      "bottom": 155
+    },
+    "APPLIEDTHAUMICS_ARCANE_WAND": {
+      "left": 146,
+      "bottom": 122
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "text": ""
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    },
+    "crafting_grid_title": {
+      "text": {
+        "translate": "gui.appliedthaumics.arcane_crafting"
+      },
+      "position": {
+        "left": 8,
+        "bottom": 177
+      }
+    },
+    "vis_required": {
+      "position": {
+        "left": 154,
+        "bottom": 133
+      },
+      "align": "CENTER",
+      "scale": 0.5
+    },
+    "vis_available": {
+      "position": {
+        "right": 8,
+        "bottom": 177
+      },
+      "align": "RIGHT",
+      "scale": 0.5
+    }
+  },
+  "terminalStyle": {
+    "header": {
+      "texture": "guis/arcane_terminal.png",
+      "srcRect": [
+        0,
+        0,
+        195,
+        17
+      ]
+    },
+    "firstRow": {
+      "texture": "guis/arcane_terminal.png",
+      "srcRect": [
+        0,
+        17,
+        195,
+        18
+      ]
+    },
+    "row": {
+      "texture": "guis/arcane_terminal.png",
+      "srcRect": [
+        0,
+        35,
+        195,
+        18
+      ]
+    },
+    "lastRow": {
+      "texture": "guis/arcane_terminal.png",
+      "srcRect": [
+        0,
+        53,
+        195,
+        18
+      ]
+    },
+    "bottom": {
+      "texture": "guis/arcane_terminal.png",
+      "srcRect": [
+        0,
+        71,
+        195,
+        180
+      ]
+    }
+  }
+}

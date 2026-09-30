@@ -1,0 +1,16 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "ae2:pattern_encoding_terminal",
+    "thaumaturge:arcane_workbench",
+    "ae2:engineering_processor"
+  ],
+  "research": {
+    "entry": "appliedthaumics:arcane_inscriber"
+  },
+  "result": {
+    "id": "appliedthaumics:arcane_inscriber"
+  },
+  "vis": 50
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "appliedthaumics:block/essentia_interface"
+    },
+    "active=true": {
+      "model": "appliedthaumics:block/essentia_interface_active"
+    }
+  }
+}

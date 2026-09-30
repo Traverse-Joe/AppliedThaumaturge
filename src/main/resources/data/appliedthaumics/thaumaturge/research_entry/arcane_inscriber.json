@@ -1,0 +1,57 @@
+{
+  "category": "appliedthaumics:energistics",
+  "name": "research.appliedthaumics.arcane_inscriber.title",
+  "parents": [
+    "appliedthaumics:arcane_terminal",
+    "appliedthaumics:knowledge_core"
+  ],
+  "column": 2,
+  "row": 4,
+  "icons": [
+    "appliedthaumics:arcane_inscriber"
+  ],
+  "meta": [
+    "round"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.arcane_inscriber.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumics:energistics",
+          "amount": 1
+        }
+      ],
+      "craft": [
+        {
+          "items": [
+            "appliedthaumics:blank_knowledge_core"
+          ],
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.arcane_inscriber.stage_1",
+      "recipes": [
+        "appliedthaumics:arcane_workbench/arcane_inscriber"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:cognitio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 2
+}

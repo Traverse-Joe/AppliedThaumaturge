@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "appliedthaumics:block/infusion_provider"
+    },
+    "active=true": {
+      "model": "appliedthaumics:block/infusion_provider_active"
+    }
+  }
+}
