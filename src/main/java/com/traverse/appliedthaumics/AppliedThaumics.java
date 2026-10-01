@@ -52,6 +52,7 @@ public class AppliedThaumics {
         ATCreativeTabs.TABS.register(modBus);
         modBus.addListener(this::onRegister);
         modBus.addListener(ATBlockEntities::registerCapabilities);
+        modBus.addListener(com.traverse.appliedthaumics.part.EssentiaExportBusPart::registerCapabilities);
         modBus.addListener((RegisterWorkbenchAuraSourcesEvent event) -> event.register(new ArcaneTerminalAuraSource()));
         modBus.addListener(ATNetwork::register);
         modBus.addListener(this::commonSetup);
