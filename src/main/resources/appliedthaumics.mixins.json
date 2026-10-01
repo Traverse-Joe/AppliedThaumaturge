@@ -12,7 +12,8 @@
     "MEStorageMenuMixin"
   ],
   "client": [
-    "InventoryScanHandlerMixin"
+    "InventoryScanHandlerMixin",
+    "GuiGraphicsExtractorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

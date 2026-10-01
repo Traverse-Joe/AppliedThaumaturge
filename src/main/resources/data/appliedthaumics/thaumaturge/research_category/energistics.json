@@ -1,7 +1,7 @@
 {
   "background": "thaumaturge:textures/gui/gui_research_back_4.png",
   "overlay_background": "thaumaturge:textures/gui/gui_research_back_over.png",
-  "icon": "appliedthaumics:textures/research/tab_icon.png",
+  "icon": "appliedthaumics:textures/item/knowledge_core.png",
   "index": 10,
   "required_research": "appliedthaumics:unlock_energistics",
   "formula": [
