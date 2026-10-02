@@ -1,0 +1,12 @@
+{
+  "type": "ae2:storage_cell_disassembly",
+  "cell": "appliedthaumaturge:essentia_cell_4k",
+  "cell_disassembly_items": [
+    {
+      "id": "appliedthaumaturge:essentia_cell_housing"
+    },
+    {
+      "id": "appliedthaumaturge:essentia_component_4k"
+    }
+  ]
+}

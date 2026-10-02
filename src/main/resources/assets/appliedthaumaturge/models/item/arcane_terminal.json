@@ -1,0 +1,10 @@
+{
+  "parent": "ae2:item/display_base",
+  "textures": {
+    "front": "appliedthaumaturge:part/arcane_terminal/overlay1",
+    "front_bright": "appliedthaumaturge:part/arcane_terminal/overlay1",
+    "front_medium_bright": "appliedthaumaturge:part/arcane_terminal/overlay2",
+    "front_medium": "appliedthaumaturge:part/arcane_terminal/overlay3",
+    "front_dark": "appliedthaumaturge:part/arcane_terminal/overlay4"
+  }
+}

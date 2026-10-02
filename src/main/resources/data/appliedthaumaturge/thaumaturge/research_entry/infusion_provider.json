@@ -1,0 +1,51 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.infusion_provider.title",
+  "parents": [
+    "appliedthaumaturge:digisentia",
+    "appliedthaumaturge:essentia_buses",
+    "thaumaturge:infusion"
+  ],
+  "column": 2,
+  "row": -4,
+  "icons": [
+    "appliedthaumaturge:infusion_provider"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.infusion_provider.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.infusion_provider.stage_1",
+      "recipes": [
+        "appliedthaumaturge:infusion/infusion_provider"
+      ],
+      "warp": 2
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    }
+  ],
+  "complexity": 3,
+  "meta": [
+    "round"
+  ]
+}

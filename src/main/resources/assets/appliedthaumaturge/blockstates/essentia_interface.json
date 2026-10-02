@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "appliedthaumaturge:block/essentia_interface"
+    },
+    "active=true": {
+      "model": "appliedthaumaturge:block/essentia_interface_active"
+    }
+  }
+}

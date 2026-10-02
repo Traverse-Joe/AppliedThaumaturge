@@ -1,0 +1,22 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "S": "thaumaturge:salis_mundus",
+    "C": "appliedthaumaturge:essentia_component_1k",
+    "P": "ae2:calculation_processor",
+    "G": "ae2:quartz_glass"
+  },
+  "pattern": [
+    "SPS",
+    "CGC",
+    "SCS"
+  ],
+  "research": {
+    "entry": "appliedthaumaturge:essentia_storage_4k"
+  },
+  "result": {
+    "id": "appliedthaumaturge:essentia_component_4k"
+  },
+  "vis": 20
+}

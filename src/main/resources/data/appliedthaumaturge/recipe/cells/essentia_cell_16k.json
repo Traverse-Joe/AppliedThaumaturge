@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "appliedthaumaturge:essentia_cell_housing",
+    "appliedthaumaturge:essentia_component_16k"
+  ],
+  "result": {
+    "id": "appliedthaumaturge:essentia_cell_16k"
+  }
+}

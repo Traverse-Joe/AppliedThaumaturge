@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "appliedthaumaturge:item/essentia_component_16k"
+  }
+}

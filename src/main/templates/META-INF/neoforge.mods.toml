@@ -42,4 +42,4 @@ side = "BOTH"
 
 
 [[mixins]]
-config = "appliedthaumics.mixins.json"
+config = "appliedthaumaturge.mixins.json"

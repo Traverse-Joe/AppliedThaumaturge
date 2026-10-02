@@ -1,0 +1,7 @@
+{
+  "result_component": "appliedthaumaturge:essentia_component_1k",
+  "result_cell": "appliedthaumaturge:portable_essentia_cell_4k",
+  "input_cell": "appliedthaumaturge:portable_essentia_cell_1k",
+  "input_component": "appliedthaumaturge:essentia_component_4k",
+  "type": "ae2:storage_cell_upgrade"
+}

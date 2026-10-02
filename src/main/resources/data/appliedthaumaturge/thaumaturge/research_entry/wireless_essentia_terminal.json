@@ -1,0 +1,56 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.wireless_essentia_terminal.title",
+  "parents": [
+    "appliedthaumaturge:essentia_terminal"
+  ],
+  "column": -2,
+  "row": -4,
+  "icons": [
+    "appliedthaumaturge:wireless_essentia_terminal"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.wireless_essentia_terminal.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ],
+      "obtain": [
+        {
+          "items": [
+            "ae2:wireless_terminal"
+          ],
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.wireless_essentia_terminal.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/wireless_essentia_terminal"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:sensus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:volatus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:potentia",
+      "amount": 2
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

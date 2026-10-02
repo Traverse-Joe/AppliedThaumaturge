@@ -1,0 +1,49 @@
+{
+  "type": "thaumaturge:infusion",
+  "aspects": [
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 64
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 32
+    },
+    {
+      "aspect": "thaumaturge:auram",
+      "amount": 16
+    },
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 16
+    },
+    {
+      "aspect": "thaumaturge:metallum",
+      "amount": 8
+    },
+    {
+      "aspect": "thaumaturge:vitreus",
+      "amount": 8
+    }
+  ],
+  "catalyst": "ae2:molecular_assembler",
+  "components": [
+    "appliedthaumaturge:coalescence_core",
+    "thaumaturge:crystal_aer",
+    "thaumaturge:crystal_aqua",
+    "thaumaturge:salis_mundus",
+    "thaumaturge:crystal_perditio",
+    "appliedthaumaturge:diffusion_core",
+    "thaumaturge:crystal_terra",
+    "thaumaturge:crystal_ignis",
+    "thaumaturge:salis_mundus",
+    "thaumaturge:crystal_ordo"
+  ],
+  "instability": 6,
+  "research": {
+    "entry": "appliedthaumaturge:arcane_assembler"
+  },
+  "result": {
+    "id": "appliedthaumaturge:arcane_assembler"
+  }
+}

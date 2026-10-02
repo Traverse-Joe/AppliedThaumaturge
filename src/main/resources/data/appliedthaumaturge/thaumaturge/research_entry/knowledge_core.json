@@ -1,0 +1,59 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.knowledge_core.title",
+  "parents": [
+    "appliedthaumaturge:arcane_terminal",
+    "appliedthaumaturge:arcane_assembler"
+  ],
+  "column": 4,
+  "row": 2,
+  "icons": [
+    "appliedthaumaturge:knowledge_core"
+  ],
+  "meta": [
+    "round",
+    "spiky"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.knowledge_core.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ],
+      "obtain": [
+        {
+          "items": [
+            "thaumaturge:brain"
+          ],
+          "amount": 2
+        }
+      ],
+      "warp": 1
+    },
+    {
+      "text": "research.appliedthaumaturge.knowledge_core.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/blank_knowledge_core"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:cognitio",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:mortuus",
+      "amount": 2
+    }
+  ],
+  "complexity": 3
+}

@@ -1,0 +1,23 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "S": "thaumaturge:nugget_quicksilver",
+    "Q": "#c:gems/certus_quartz",
+    "F": "ae2:fluix_dust",
+    "L": "ae2:logic_processor"
+  },
+  "pattern": [
+    "SSS",
+    "QFL",
+    "SSS"
+  ],
+  "research": {
+    "entry": "appliedthaumaturge:digisentia"
+  },
+  "result": {
+    "id": "appliedthaumaturge:coalescence_core",
+    "count": 2
+  },
+  "vis": 10
+}

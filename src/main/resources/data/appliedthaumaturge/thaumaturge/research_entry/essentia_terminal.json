@@ -1,0 +1,49 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.essentia_terminal.title",
+  "parents": [
+    "appliedthaumaturge:digisentia",
+    "appliedthaumaturge:essentia_storage_1k"
+  ],
+  "column": -2,
+  "row": -2,
+  "icons": [
+    "appliedthaumaturge:essentia_terminal"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.essentia_terminal.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.essentia_terminal.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/essentia_terminal"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:sensus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 2
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

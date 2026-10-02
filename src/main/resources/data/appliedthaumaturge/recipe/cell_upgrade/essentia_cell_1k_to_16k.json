@@ -1,0 +1,7 @@
+{
+  "type": "ae2:storage_cell_upgrade",
+  "input_cell": "appliedthaumaturge:essentia_cell_1k",
+  "input_component": "appliedthaumaturge:essentia_component_16k",
+  "result_cell": "appliedthaumaturge:essentia_cell_16k",
+  "result_component": "appliedthaumaturge:essentia_component_1k"
+}

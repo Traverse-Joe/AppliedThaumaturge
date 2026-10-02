@@ -1,0 +1,76 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.essentia_storage_4k.title",
+  "parents": [
+    "appliedthaumaturge:essentia_storage_1k"
+  ],
+  "column": -4,
+  "row": 0,
+  "icons": [
+    "appliedthaumaturge:essentia_component_4k",
+    "appliedthaumaturge:essentia_cell_4k"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.essentia_storage_4k.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ],
+      "obtain": [
+        {
+          "items": [
+            "thaumaturge:salis_mundus"
+          ],
+          "amount": 4
+        },
+        {
+          "items": [
+            "appliedthaumaturge:essentia_component_1k"
+          ],
+          "amount": 3
+        },
+        {
+          "items": [
+            "ae2:quartz_glass"
+          ],
+          "amount": 1
+        },
+        {
+          "items": [
+            "ae2:calculation_processor"
+          ],
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.essentia_storage_4k.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/essentia_component_4k",
+        "appliedthaumaturge:cells/essentia_cell_4k"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:vacuos",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

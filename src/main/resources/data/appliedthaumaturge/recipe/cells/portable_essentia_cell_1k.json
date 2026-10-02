@@ -1,0 +1,13 @@
+{
+  "ingredients": [
+    "ae2:me_chest",
+    "appliedthaumaturge:essentia_component_1k",
+    "ae2:energy_cell",
+    "appliedthaumaturge:essentia_cell_housing"
+  ],
+  "result": {
+    "id": "appliedthaumaturge:portable_essentia_cell_1k"
+  },
+  "category": "misc",
+  "type": "minecraft:crafting_shapeless"
+}

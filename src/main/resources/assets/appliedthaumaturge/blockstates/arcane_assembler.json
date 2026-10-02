@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "appliedthaumaturge:block/arcane_assembler"
+      }
+    },
+    {
+      "when": {
+        "active": "true"
+      },
+      "apply": {
+        "model": "appliedthaumaturge:block/arcane_assembler_lights"
+      }
+    }
+  ]
+}

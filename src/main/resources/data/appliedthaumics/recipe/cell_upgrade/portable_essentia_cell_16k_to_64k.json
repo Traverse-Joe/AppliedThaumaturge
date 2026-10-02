@@ -1,7 +1,0 @@
-{
-  "result_component": "appliedthaumics:essentia_component_16k",
-  "result_cell": "appliedthaumics:portable_essentia_cell_64k",
-  "input_cell": "appliedthaumics:portable_essentia_cell_16k",
-  "input_component": "appliedthaumics:essentia_component_64k",
-  "type": "ae2:storage_cell_upgrade"
-}

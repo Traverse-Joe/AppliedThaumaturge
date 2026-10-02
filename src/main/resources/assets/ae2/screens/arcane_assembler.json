@@ -28,7 +28,7 @@
       "left": 126,
       "top": 49
     },
-    "APPLIEDTHAUMICS_ARCANE_WAND": {
+    "APPLIEDTHAUMATURGE_ARCANE_WAND": {
       "left": 126,
       "top": 79
     }
@@ -36,7 +36,7 @@
   "text": {
     "dialog_title": {
       "text": {
-        "translate": "block.appliedthaumics.arcane_assembler"
+        "translate": "block.appliedthaumaturge.arcane_assembler"
       },
       "position": {
         "left": 8,

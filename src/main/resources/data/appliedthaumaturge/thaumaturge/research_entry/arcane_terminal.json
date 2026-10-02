@@ -1,0 +1,49 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.arcane_terminal.title",
+  "parents": [
+    "appliedthaumaturge:base_energistics"
+  ],
+  "column": 0,
+  "row": 2,
+  "icons": [
+    "appliedthaumaturge:arcane_terminal"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.arcane_terminal.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.arcane_terminal.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/arcane_terminal",
+        "appliedthaumaturge:arcane_workbench/upgrade_arcane"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:fabrico",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:praecantatio",
+      "amount": 3
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

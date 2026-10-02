@@ -1,0 +1,52 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.essentia_buses.title",
+  "parents": [
+    "appliedthaumaturge:digisentia"
+  ],
+  "column": 2,
+  "row": -2,
+  "icons": [
+    "appliedthaumaturge:essentia_import_bus",
+    "appliedthaumaturge:essentia_export_bus",
+    "appliedthaumaturge:essentia_storage_bus"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.essentia_buses.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.essentia_buses.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/essentia_import_bus",
+        "appliedthaumaturge:arcane_workbench/essentia_export_bus",
+        "appliedthaumaturge:arcane_workbench/essentia_storage_bus"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:motus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

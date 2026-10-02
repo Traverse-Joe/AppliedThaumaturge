@@ -1,0 +1,21 @@
+{
+  "type": "thaumaturge:arcane_workbench_shaped",
+  "crystals": [],
+  "key": {
+    "I": "#c:ingots/iron",
+    "C": "appliedthaumaturge:diffusion_core",
+    "S": "thaumaturge:salis_mundus",
+    "T": "thaumaturge:tube"
+  },
+  "pattern": [
+    "SCS",
+    "ITI"
+  ],
+  "research": {
+    "entry": "appliedthaumaturge:essentia_buses"
+  },
+  "result": {
+    "id": "appliedthaumaturge:essentia_import_bus"
+  },
+  "vis": 20
+}

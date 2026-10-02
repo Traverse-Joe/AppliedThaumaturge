@@ -1,0 +1,48 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.essentia_level_emitter.title",
+  "parents": [
+    "appliedthaumaturge:essentia_buses"
+  ],
+  "column": 4,
+  "row": -2,
+  "icons": [
+    "appliedthaumaturge:essentia_level_emitter"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.essentia_level_emitter.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.essentia_level_emitter.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/essentia_level_emitter"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:potentia",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:sensus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}

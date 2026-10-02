@@ -1,0 +1,82 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.digisentia.title",
+  "parents": [
+    "appliedthaumaturge:base_energistics"
+  ],
+  "column": 0,
+  "row": -2,
+  "icons": [
+    "appliedthaumaturge:coalescence_core",
+    "appliedthaumaturge:diffusion_core"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.digisentia.stage_0",
+      "required_knowledge": [
+        {
+          "type": "theory",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ],
+      "obtain": [
+        {
+          "items": [
+            "ae2:logic_processor"
+          ],
+          "amount": 2
+        },
+        {
+          "items": [
+            "ae2:fluix_dust"
+          ],
+          "amount": 2
+        },
+        {
+          "items": [
+            "ae2:certus_quartz_crystal"
+          ],
+          "amount": 1
+        },
+        {
+          "items": [
+            "minecraft:quartz"
+          ],
+          "amount": 1
+        },
+        {
+          "items": [
+            "thaumaturge:quicksilver"
+          ],
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.digisentia.stage_1",
+      "recipes": [
+        "appliedthaumaturge:arcane_workbench/coalescence_core",
+        "appliedthaumaturge:arcane_workbench/diffusion_core"
+      ]
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:permutatio",
+      "amount": 4
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:potentia",
+      "amount": 3
+    }
+  ],
+  "complexity": 2,
+  "meta": [
+    "round"
+  ]
+}
