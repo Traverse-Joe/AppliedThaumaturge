@@ -11,6 +11,7 @@ import appeng.menu.me.crafting.CraftingPlanSummaryEntry;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.aura.AuraHelper;
 import com.leclowndu93150.thaumaturge.content.wands.WandVisHelper;
+import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import com.traverse.appliedthaumics.me.key.VisKey;
 import com.traverse.appliedthaumics.registry.ATDataComponents;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public final class ArcanePlanCheck {
         }
         Map<AuraPool, Long> aura = new HashMap<>();
         Map<WandPool, Long> wand = new HashMap<>();
+        Map<BufferPool, Long> buffers = new HashMap<>();
         Map<AEItemKey, Long> crystals = new HashMap<>();
         var storedItems = grid.getStorageService().getInventory().getAvailableStacks();
         Map<AEKey, long[]> totals = new LinkedHashMap<>();
@@ -72,6 +74,7 @@ public final class ArcanePlanCheck {
                 var stack = assembler.getInventory().getStackInSlot(ArcaneAssemblerBlockEntity.WAND_SLOT);
                 Long pair = stack.get(ATDataComponents.ENTANGLEMENT.get());
                 Object reservoir = pair == null ? assembler : pair;
+                boolean hasWand = SlotWorkbenchWand.isUsableWand(stack);
                 var costs = ArcaneAssemblerBlockEntity.getWandCost(pattern);
                 List<AuraPool> pools = new ArrayList<>();
                 for (var anchor : assembler.getAuraAnchors()) {
@@ -86,18 +89,20 @@ public final class ArcanePlanCheck {
                     crystals.computeIfAbsent(key, ignored -> Math.max(0, storedItems.get(key) - plan.usedItems().get(key)));
                 }
                 long auraCost = assembler.getAuraCost(pattern) * 100L;
-                long crystalAuraCost = assembler.getAuraCost(pattern, true) * 100L;
+                long crystalAuraCost = assembler.getAuraCost(pattern, !hasWand) * 100L;
                 long availableAura = pools.stream().mapToLong(aura::get).sum();
                 long capacity = remaining;
                 long fullWandCrafts = remaining;
                 int perCrystal = WandEconomy.CRYSTAL_SUBSTITUTE_VIS * WandEconomy.CENTIVIS_PER_VIS;
                 for (var cost : costs.entrySet()) {
+                    var bufferPool = new BufferPool(assembler, cost.getKey());
+                    long buffered = buffers.computeIfAbsent(bufferPool, ignored -> (long) assembler.getStoredVis().amount(cost.getKey()));
                     var pool = new WandPool(reservoir, cost.getKey());
-                    long available = wand.computeIfAbsent(pool, ignored -> (long) WandVisHelper.getVis(stack, cost.getKey()));
-                    long wandCrafts = available / cost.getValue();
-                    fullWandCrafts = Math.min(fullWandCrafts, wandCrafts);
-                    long crystalCrafts = crystals.get(crystalKeys.get(cost.getKey())) / (cost.getValue() / perCrystal);
-                    capacity = Math.min(capacity, wandCrafts + crystalCrafts);
+                    long available = wand.computeIfAbsent(pool, ignored -> hasWand ? (long) WandVisHelper.getVis(stack, cost.getKey()) : 0L);
+                    long visCrafts = (buffered + available) / cost.getValue();
+                    fullWandCrafts = Math.min(fullWandCrafts, visCrafts);
+                    long crystalVis = hasWand ? 0 : crystals.get(crystalKeys.get(cost.getKey())) * perCrystal;
+                    capacity = Math.min(capacity, (buffered + available + crystalVis) / cost.getValue());
                 }
                 long affordableWandCrafts = auraCost == 0 ? fullWandCrafts : Math.min(fullWandCrafts, availableAura / auraCost);
                 long remainingAura = availableAura - affordableWandCrafts * auraCost;
@@ -106,16 +111,24 @@ public final class ArcanePlanCheck {
                 long crafts = index == candidates.size() - 1 ? remaining : capacity;
                 fullWandCrafts = Math.min(fullWandCrafts, crafts);
                 for (var cost : costs.entrySet()) {
+                    long required = crafts * cost.getValue();
+                    var bufferPool = new BufferPool(assembler, cost.getKey());
+                    long buffered = Math.min(required, buffers.get(bufferPool));
+                    buffers.put(bufferPool, buffers.get(bufferPool) - buffered);
+                    long unmet = required - buffered;
                     var pool = new WandPool(reservoir, cost.getKey());
-                    long wandCrafts = Math.min(crafts, wand.get(pool) / cost.getValue());
-                    long used = wandCrafts * cost.getValue();
-                    wand.put(pool, wand.get(pool) - used);
-                    record(totals, VisKey.of(cost.getKey()), used, used);
-                    AEItemKey key = crystalKeys.get(cost.getKey());
-                    long crystalNeed = (crafts - wandCrafts) * (cost.getValue() / perCrystal);
-                    long crystalUsed = Math.min(crystalNeed, crystals.get(key));
-                    crystals.put(key, crystals.get(key) - crystalUsed);
-                    record(totals, key, crystalNeed, crystalUsed);
+                    long wandUsed = hasWand ? Math.min(unmet, wand.get(pool)) : 0;
+                    wand.put(pool, wand.get(pool) - wandUsed);
+                    if (hasWand) {
+                        record(totals, VisKey.of(cost.getKey()), required, buffered + wandUsed);
+                    } else {
+                        record(totals, VisKey.of(cost.getKey()), buffered, buffered);
+                        AEItemKey key = crystalKeys.get(cost.getKey());
+                        long crystalNeed = Math.ceilDiv(unmet, perCrystal);
+                        long crystalUsed = Math.min(crystalNeed, crystals.get(key));
+                        crystals.put(key, crystals.get(key) - crystalUsed);
+                        record(totals, key, crystalNeed, crystalUsed);
+                    }
                 }
                 long needed = fullWandCrafts * auraCost + (crafts - fullWandCrafts) * crystalAuraCost;
                 long spend = Math.min(needed, availableAura);
@@ -141,6 +154,9 @@ public final class ArcanePlanCheck {
     }
 
     private record AuraPool(Level level, ChunkPos chunk) {
+    }
+
+    private record BufferPool(ArcaneAssemblerBlockEntity assembler, ResourceKey<IAspect> aspect) {
     }
 
     private record WandPool(Object reservoir, ResourceKey<IAspect> aspect) {

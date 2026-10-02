@@ -16,6 +16,7 @@ import com.traverse.appliedthaumics.part.EssentiaImportBusPart;
 import com.traverse.appliedthaumics.part.EssentiaLevelEmitterPart;
 import com.traverse.appliedthaumics.part.EssentiaStorageBusPart;
 import com.traverse.appliedthaumics.part.EssentiaTerminalPart;
+import com.traverse.appliedthaumics.part.VisRelayInterfacePart;
 import com.traverse.appliedthaumics.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumics.part.ArcaneInscriberPart;
 import com.traverse.appliedthaumics.item.WirelessEssentiaTerminalItem;
@@ -56,6 +57,7 @@ public final class ATItems {
     public static final DeferredItem<PartItem<EssentiaExportBusPart>> ESSENTIA_EXPORT_BUS = part("essentia_export_bus", EssentiaExportBusPart.class, EssentiaExportBusPart::new);
     public static final DeferredItem<PartItem<EssentiaStorageBusPart>> ESSENTIA_STORAGE_BUS = part("essentia_storage_bus", EssentiaStorageBusPart.class, EssentiaStorageBusPart::new);
     public static final DeferredItem<PartItem<EssentiaLevelEmitterPart>> ESSENTIA_LEVEL_EMITTER = part("essentia_level_emitter", EssentiaLevelEmitterPart.class, EssentiaLevelEmitterPart::new);
+    public static final DeferredItem<PartItem<VisRelayInterfacePart>> VIS_RELAY_INTERFACE = part("vis_relay_interface", VisRelayInterfacePart.class, VisRelayInterfacePart::new);
 
     public static final DeferredItem<PartItem<ArcaneTerminalPart>> ARCANE_TERMINAL = part("arcane_terminal", ArcaneTerminalPart.class, ArcaneTerminalPart::new);
     public static final DeferredItem<PartItem<ArcaneInscriberPart>> ARCANE_INSCRIBER = part("arcane_inscriber", ArcaneInscriberPart.class, ArcaneInscriberPart::new);

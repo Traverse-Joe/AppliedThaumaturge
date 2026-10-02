@@ -11,6 +11,7 @@ import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import com.traverse.appliedthaumics.assembler.ArcaneAssemblerBlockEntity;
 import com.traverse.appliedthaumics.knowledge.KnowledgeCores;
 import com.traverse.appliedthaumics.wand.EntangledWands;
+import com.leclowndu93150.thaumaturge.content.workbench.MenuArcaneWorkbench;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +22,20 @@ public class ArcaneAssemblerMenu extends UpgradeableMenu<ArcaneAssemblerBlockEnt
     public int craftProgress;
     @GuiSync(61)
     public int availableVis;
+    @GuiSync(62)
+    public int airVis;
+    @GuiSync(63)
+    public int fireVis;
+    @GuiSync(64)
+    public int waterVis;
+    @GuiSync(65)
+    public int earthVis;
+    @GuiSync(66)
+    public int orderVis;
+    @GuiSync(67)
+    public int entropyVis;
+    @GuiSync(68)
+    public boolean visLinked;
 
     private int auraRefresh;
 
@@ -49,6 +64,14 @@ public class ArcaneAssemblerMenu extends UpgradeableMenu<ArcaneAssemblerBlockEnt
             if (auraRefresh-- <= 0) {
                 auraRefresh = 10;
                 availableVis = getHost().getAvailableVis();
+                var stored = getHost().getStoredVis();
+                airVis = stored.amount(MenuArcaneWorkbench.PRIMAL_ORDER.get(0));
+                fireVis = stored.amount(MenuArcaneWorkbench.PRIMAL_ORDER.get(1));
+                waterVis = stored.amount(MenuArcaneWorkbench.PRIMAL_ORDER.get(2));
+                earthVis = stored.amount(MenuArcaneWorkbench.PRIMAL_ORDER.get(3));
+                orderVis = stored.amount(MenuArcaneWorkbench.PRIMAL_ORDER.get(4));
+                entropyVis = stored.amount(MenuArcaneWorkbench.PRIMAL_ORDER.get(5));
+                visLinked = getHost().isVisLinked();
             }
         }
         super.broadcastChanges();
@@ -62,6 +85,18 @@ public class ArcaneAssemblerMenu extends UpgradeableMenu<ArcaneAssemblerBlockEnt
     @Override
     public int getMaxProgress() {
         return 100;
+    }
+
+    public int getStoredVis(int index) {
+        return switch (index) {
+            case 0 -> airVis;
+            case 1 -> fireVis;
+            case 2 -> waterVis;
+            case 3 -> earthVis;
+            case 4 -> orderVis;
+            case 5 -> entropyVis;
+            default -> 0;
+        };
     }
 
     private static final class DisplaySlot extends AppEngSlot {

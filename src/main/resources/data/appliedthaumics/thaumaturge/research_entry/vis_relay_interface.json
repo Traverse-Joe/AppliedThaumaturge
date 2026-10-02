@@ -1,0 +1,27 @@
+{
+  "category": "appliedthaumics:energistics",
+  "name": "research.appliedthaumics.vis_relay_interface.title",
+  "parents": [ "appliedthaumics:arcane_terminal", "thaumaturge:vis_relay" ],
+  "column": 0,
+  "row": 4,
+  "icons": [ "appliedthaumics:vis_relay_interface" ],
+  "stages": [
+    {
+      "text": "research.appliedthaumics.vis_relay_interface.stage_0",
+      "required_knowledge": [
+        { "type": "theory", "category": "appliedthaumics:energistics", "amount": 1 }
+      ]
+    },
+    {
+      "text": "research.appliedthaumics.vis_relay_interface.stage_1",
+      "recipes": [ "appliedthaumics:arcane_workbench/vis_relay_interface" ]
+    }
+  ],
+  "note_aspects": [
+    { "aspect": "thaumaturge:auram", "amount": 5 },
+    { "aspect": "thaumaturge:potentia", "amount": 4 },
+    { "aspect": "thaumaturge:machina", "amount": 2 }
+  ],
+  "complexity": 2,
+  "meta": [ "round" ]
+}
