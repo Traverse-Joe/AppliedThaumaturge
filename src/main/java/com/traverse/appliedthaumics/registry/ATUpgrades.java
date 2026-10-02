@@ -18,6 +18,13 @@ public final class ATUpgrades {
             Upgrades.add(AEItems.VOID_CARD, cell, 1, cells);
         }
 
+        for (var cell : ATItems.portableCells()) {
+            Upgrades.add(AEItems.INVERTER_CARD, cell, 1, cells);
+            Upgrades.add(AEItems.EQUAL_DISTRIBUTION_CARD, cell, 1, cells);
+            Upgrades.add(AEItems.VOID_CARD, cell, 1, cells);
+            Upgrades.add(AEItems.ENERGY_CARD, cell, 2, cells);
+        }
+
         String buses = "group.appliedthaumics.essentia_io_buses";
         Upgrades.add(AEItems.REDSTONE_CARD, ATItems.ESSENTIA_IMPORT_BUS, 1, buses);
         Upgrades.add(AEItems.CAPACITY_CARD, ATItems.ESSENTIA_IMPORT_BUS, 5, buses);

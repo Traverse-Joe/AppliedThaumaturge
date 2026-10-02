@@ -1,0 +1,52 @@
+{
+  "row": -2,
+  "complexity": 2,
+  "column": -4,
+  "category": "appliedthaumics:energistics",
+  "stages": [
+    {
+      "required_knowledge": [
+        {
+          "category": "appliedthaumics:energistics",
+          "amount": 1,
+          "type": "observation"
+        }
+      ],
+      "text": "research.appliedthaumics.portable_essentia_cells.stage_0"
+    },
+    {
+      "text": "research.appliedthaumics.portable_essentia_cells.stage_1",
+      "recipes": [
+        "appliedthaumics:cells/portable_essentia_cell_1k",
+        "appliedthaumics:cells/portable_essentia_cell_4k",
+        "appliedthaumics:cells/portable_essentia_cell_16k",
+        "appliedthaumics:cells/portable_essentia_cell_64k"
+      ]
+    }
+  ],
+  "icons": [
+    "appliedthaumics:portable_essentia_cell_1k"
+  ],
+  "note_aspects": [
+    {
+      "amount": 3,
+      "aspect": "thaumaturge:vacuos"
+    },
+    {
+      "amount": 3,
+      "aspect": "thaumaturge:volatus"
+    },
+    {
+      "amount": 2,
+      "aspect": "thaumaturge:potentia"
+    }
+  ],
+  "parents": [
+    "appliedthaumics:essentia_storage_1k",
+    "appliedthaumics:essentia_terminal"
+  ],
+  "meta": [
+    "round"
+  ],
+  "name": "research.appliedthaumics.portable_essentia_cells.title"
+}

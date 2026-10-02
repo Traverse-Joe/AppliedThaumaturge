@@ -2,6 +2,8 @@ package com.traverse.appliedthaumics.registry;
 
 import appeng.items.materials.StorageComponentItem;
 import appeng.items.storage.BasicStorageCell;
+import appeng.items.storage.StorageTier;
+import com.traverse.appliedthaumics.item.PortableEssentiaCellItem;
 import com.traverse.appliedthaumics.AppliedThaumics;
 import com.traverse.appliedthaumics.item.CreativeEssentiaCellItem;
 import com.traverse.appliedthaumics.item.KnowledgeCoreItem;
@@ -47,6 +49,11 @@ public final class ATItems {
     public static final DeferredItem<CreativeEssentiaCellItem> ESSENTIA_CELL_CREATIVE = ITEMS.registerItem(
             "essentia_cell_creative", p -> new CreativeEssentiaCellItem(p.stacksTo(1).rarity(Rarity.EPIC)));
 
+    public static final DeferredItem<PortableEssentiaCellItem> PORTABLE_ESSENTIA_CELL_1K = portableCell("1k", StorageTier.SIZE_1K);
+    public static final DeferredItem<PortableEssentiaCellItem> PORTABLE_ESSENTIA_CELL_4K = portableCell("4k", StorageTier.SIZE_4K);
+    public static final DeferredItem<PortableEssentiaCellItem> PORTABLE_ESSENTIA_CELL_16K = portableCell("16k", StorageTier.SIZE_16K);
+    public static final DeferredItem<PortableEssentiaCellItem> PORTABLE_ESSENTIA_CELL_64K = portableCell("64k", StorageTier.SIZE_64K);
+
     public static final DeferredItem<Item> BLANK_KNOWLEDGE_CORE = ITEMS.registerSimpleItem("blank_knowledge_core", p -> p.stacksTo(16));
     public static final DeferredItem<KnowledgeCoreItem> KNOWLEDGE_CORE = ITEMS.registerItem("knowledge_core", p -> new KnowledgeCoreItem(p.stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<ItemWandRod> ENTANGLED_WAND_CORE = ITEMS.registerItem("entangled_wand_core",
@@ -81,6 +88,14 @@ public final class ATItems {
     private static DeferredItem<BasicStorageCell> cell(String size, double idleDrain, int kb, int bytesPerType) {
         return ITEMS.registerItem("essentia_cell_" + size,
                 p -> new BasicStorageCell(p.stacksTo(1), idleDrain, kb, bytesPerType, CELL_TYPES, EssentiaKeyType.TYPE));
+    }
+
+    private static DeferredItem<PortableEssentiaCellItem> portableCell(String size, StorageTier tier) {
+        return ITEMS.registerItem("portable_essentia_cell_" + size, p -> new PortableEssentiaCellItem(tier, p));
+    }
+
+    public static List<DeferredItem<PortableEssentiaCellItem>> portableCells() {
+        return List.of(PORTABLE_ESSENTIA_CELL_1K, PORTABLE_ESSENTIA_CELL_4K, PORTABLE_ESSENTIA_CELL_16K, PORTABLE_ESSENTIA_CELL_64K);
     }
 
     public static List<DeferredItem<BasicStorageCell>> cells() {

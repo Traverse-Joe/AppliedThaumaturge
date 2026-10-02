@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer1": "ae2:item/portable_cell_led",
+    "layer3": "appliedthaumics:item/portable_essentia_cell_side_64k",
+    "layer2": "ae2:item/portable_cell_screen",
+    "layer0": "appliedthaumics:item/portable_essentia_cell_housing"
+  }
+}

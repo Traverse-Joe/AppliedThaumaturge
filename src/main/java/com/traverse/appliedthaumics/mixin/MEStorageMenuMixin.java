@@ -5,6 +5,8 @@ import appeng.api.storage.ITerminalHost;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.menu.me.common.MEStorageMenu;
 import com.traverse.appliedthaumics.item.WirelessEssentiaTerminalItem;
+import com.traverse.appliedthaumics.item.PortableEssentiaCellItem;
+import appeng.items.contents.PortableCellMenuHost;
 import com.traverse.appliedthaumics.me.key.EssentiaKey;
 import com.traverse.appliedthaumics.part.ArcaneInscriberPart;
 import com.traverse.appliedthaumics.part.ArcaneTerminalPart;
@@ -27,6 +29,7 @@ public abstract class MEStorageMenuMixin {
             if (!(host instanceof EssentiaTerminalPart)
                     && !(host instanceof ArcaneTerminalPart)
                     && !(host instanceof ArcaneInscriberPart)
+                    && !(host instanceof PortableCellMenuHost<?> portable && portable.getItem() instanceof PortableEssentiaCellItem)
                     && !(host instanceof WirelessTerminalMenuHost<?> wireless && wireless.getItem() instanceof WirelessEssentiaTerminalItem)) {
                 cir.setReturnValue(false);
             }

@@ -10,6 +10,8 @@ import com.traverse.appliedthaumics.menu.ArcaneAssemblerMenu;
 import com.traverse.appliedthaumics.menu.ArcaneInscriberMenu;
 import com.traverse.appliedthaumics.menu.ArcaneTermMenu;
 import com.traverse.appliedthaumics.menu.EssentiaLevelEmitterMenu;
+import com.traverse.appliedthaumics.menu.PortableEssentiaCellMenu;
+import com.traverse.appliedthaumics.item.PortableEssentiaCellItem;
 import com.traverse.appliedthaumics.part.ArcaneInscriberPart;
 import com.traverse.appliedthaumics.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumics.part.EssentiaExportBusPart;
@@ -20,6 +22,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.inventory.MenuType;
 
 public final class ATMenus {
+    public static final MenuType<PortableEssentiaCellMenu> PORTABLE_ESSENTIA_CELL = MenuTypeBuilder
+            .create(PortableEssentiaCellMenu::new, PortableEssentiaCellItem.Host.class)
+            .buildUnregistered(AppliedThaumics.id("portable_essentia_cell"));
     public static final MenuType<IOBusMenu> ESSENTIA_IMPORT_BUS = MenuTypeBuilder
             .create(IOBusMenu::new, EssentiaImportBusPart.class)
             .buildUnregistered(AppliedThaumics.id("essentia_import_bus"));
@@ -53,6 +58,7 @@ public final class ATMenus {
     }
 
     public static void register() {
+        Registry.register(BuiltInRegistries.MENU, AppliedThaumics.id("portable_essentia_cell"), PORTABLE_ESSENTIA_CELL);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumics.id("arcane_terminal"), ARCANE_TERMINAL);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumics.id("arcane_inscriber"), ARCANE_INSCRIBER);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumics.id("arcane_assembler"), ARCANE_ASSEMBLER);

@@ -1,0 +1,21 @@
+{
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.appliedthaumics.portable_essentia_cell"
+      },
+      "position": {
+        "top": 6,
+        "left": 8
+      }
+    }
+  },
+  "includes": [
+    "terminal.json"
+  ],
+  "terminalStyle": {
+    "supportsAutoCrafting": false,
+    "maxRows": 3
+  },
+  "$schema": "../schema.json"
+}

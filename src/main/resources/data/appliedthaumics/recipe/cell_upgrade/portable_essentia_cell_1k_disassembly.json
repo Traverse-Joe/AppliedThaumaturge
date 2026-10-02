@@ -1,0 +1,18 @@
+{
+  "cell": "appliedthaumics:portable_essentia_cell_1k",
+  "cell_disassembly_items": [
+    {
+      "id": "ae2:me_chest"
+    },
+    {
+      "id": "ae2:energy_cell"
+    },
+    {
+      "id": "appliedthaumics:essentia_cell_housing"
+    },
+    {
+      "id": "appliedthaumics:essentia_component_1k"
+    }
+  ],
+  "type": "ae2:storage_cell_disassembly"
+}

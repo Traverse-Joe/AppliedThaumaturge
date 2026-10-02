@@ -8,6 +8,8 @@ import com.traverse.appliedthaumics.me.key.EssentiaKeyType;
 import appeng.client.InitScreens;
 import appeng.client.gui.implementations.IOBusScreen;
 import appeng.client.gui.implementations.StorageLevelEmitterScreen;
+import appeng.client.gui.me.common.MEStorageScreen;
+import com.traverse.appliedthaumics.menu.PortableEssentiaCellMenu;
 import com.traverse.appliedthaumics.registry.ATItems;
 import com.traverse.appliedthaumics.registry.ATMenus;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -27,6 +29,7 @@ public class AppliedThaumicsClient {
     }
 
     private void registerScreens(RegisterMenuScreensEvent event) {
+        InitScreens.register(event, ATMenus.PORTABLE_ESSENTIA_CELL, MEStorageScreen<PortableEssentiaCellMenu>::new, "/screens/terminals/portable_essentia_cell.json");
         InitScreens.register(event, ATMenus.ESSENTIA_IMPORT_BUS, IOBusScreen::new, "/screens/import_bus.json");
         InitScreens.register(event, ATMenus.ESSENTIA_EXPORT_BUS, IOBusScreen::new, "/screens/export_bus.json");
         InitScreens.register(event, ATMenus.ESSENTIA_LEVEL_EMITTER, StorageLevelEmitterScreen::new, "/screens/essentia_level_emitter.json");
@@ -44,6 +47,10 @@ public class AppliedThaumicsClient {
     }
 
     private void registerModels(RegisterBlockStateModels event) {
+        StorageCellModels.registerModel(ATItems.PORTABLE_ESSENTIA_CELL_1K.get(), AppliedThaumics.id("block/drive/essentia_cell_1k"));
+        StorageCellModels.registerModel(ATItems.PORTABLE_ESSENTIA_CELL_4K.get(), AppliedThaumics.id("block/drive/essentia_cell_4k"));
+        StorageCellModels.registerModel(ATItems.PORTABLE_ESSENTIA_CELL_16K.get(), AppliedThaumics.id("block/drive/essentia_cell_16k"));
+        StorageCellModels.registerModel(ATItems.PORTABLE_ESSENTIA_CELL_64K.get(), AppliedThaumics.id("block/drive/essentia_cell_64k"));
         StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_1K.get(), AppliedThaumics.id("block/drive/essentia_cell_1k"));
         StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_4K.get(), AppliedThaumics.id("block/drive/essentia_cell_4k"));
         StorageCellModels.registerModel(ATItems.ESSENTIA_CELL_16K.get(), AppliedThaumics.id("block/drive/essentia_cell_16k"));
