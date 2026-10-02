@@ -18,6 +18,7 @@ import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.aura.IVisRelaySource;
 import com.leclowndu93150.thaumaturge.content.aura.relay.BlockEntityVisRelay;
 import com.traverse.appliedthaumaturge.vis.VisRelayLink;
+import com.traverse.appliedthaumaturge.ATConfig;
 import java.util.UUID;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -35,7 +36,6 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
 public class VisRelayInterfacePart extends AEBasePart implements IVisRelaySource {
-    private static final double POWER_PER_REQUEST = 4;
     private String sourceId = UUID.randomUUID().toString();
     @Nullable
     private VisRelayLink link;
@@ -44,7 +44,13 @@ public class VisRelayInterfacePart extends AEBasePart implements IVisRelaySource
 
     public VisRelayInterfacePart(IPartItem<?> partItem) {
         super(partItem);
-        getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(0);
+        getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(ATConfig.visRelayInterfaceIdlePowerAE());
+    }
+
+    @Override
+    public void addToWorld() {
+        getMainNode().setIdlePowerUsage(ATConfig.visRelayInterfaceIdlePowerAE());
+        super.addToWorld();
     }
 
     public String getSourceId() {
@@ -211,13 +217,14 @@ public class VisRelayInterfacePart extends AEBasePart implements IVisRelaySource
 
         boolean canReserve() {
             var service = energy.get();
-            return service != null && service.extractAEPower(reserved + POWER_PER_REQUEST,
-                    Actionable.SIMULATE, PowerMultiplier.CONFIG) + 0.0001 >= reserved + POWER_PER_REQUEST;
+            double cost = reserved + ATConfig.visRelayInterfacePowerPerRequestAE();
+            return service != null && service.extractAEPower(cost,
+                    Actionable.SIMULATE, PowerMultiplier.CONFIG) + 0.0001 >= cost;
         }
 
         void reserve(TransactionContext transaction) {
             updateSnapshots(transaction);
-            reserved += POWER_PER_REQUEST;
+            reserved += ATConfig.visRelayInterfacePowerPerRequestAE();
         }
 
         @Override

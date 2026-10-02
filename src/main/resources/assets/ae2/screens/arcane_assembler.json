@@ -24,6 +24,11 @@
       "left": 126,
       "top": 16
     },
+    "APPLIEDTHAUMATURGE_KNOWLEDGE_CORE": {
+      "left": 90,
+      "top": 16,
+      "grid": "HORIZONTAL"
+    },
     "MACHINE_OUTPUT": {
       "left": 126,
       "top": 49
@@ -53,6 +58,10 @@
     }
   },
   "images": {
+    "coreSlot": {
+      "texture": "guis/molecular_assembler.png",
+      "srcRect": [125, 15, 18, 18]
+    },
     "progressBar": {
       "texture": "guis/molecular_assembler.png",
       "srcRect": [

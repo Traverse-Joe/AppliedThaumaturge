@@ -1,6 +1,7 @@
 package com.traverse.appliedthaumaturge.knowledge;
 
 import com.mojang.serialization.Codec;
+import com.traverse.appliedthaumaturge.ATConfig;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -9,13 +10,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
 public record KnowledgeCoreContents(List<KnowledgeRecipe> recipes) {
-    public static final int CAPACITY = 9;
     public static final KnowledgeCoreContents EMPTY = new KnowledgeCoreContents(List.of());
 
-    public static final Codec<KnowledgeCoreContents> CODEC = KnowledgeRecipe.CODEC.sizeLimitedListOf(CAPACITY)
+    public static final Codec<KnowledgeCoreContents> CODEC = KnowledgeRecipe.CODEC.sizeLimitedListOf(ATConfig.MAX_KNOWLEDGE_CORE_RECIPES)
             .xmap(KnowledgeCoreContents::new, KnowledgeCoreContents::recipes);
     public static final StreamCodec<RegistryFriendlyByteBuf, KnowledgeCoreContents> STREAM_CODEC =
-            KnowledgeRecipe.STREAM_CODEC.apply(ByteBufCodecs.list(CAPACITY)).map(KnowledgeCoreContents::new, KnowledgeCoreContents::recipes);
+            KnowledgeRecipe.STREAM_CODEC.apply(ByteBufCodecs.list(ATConfig.MAX_KNOWLEDGE_CORE_RECIPES)).map(KnowledgeCoreContents::new, KnowledgeCoreContents::recipes);
 
     public KnowledgeCoreContents {
         recipes = List.copyOf(recipes);
@@ -26,7 +26,7 @@ public record KnowledgeCoreContents(List<KnowledgeRecipe> recipes) {
     }
 
     public boolean isFull() {
-        return recipes.size() >= CAPACITY;
+        return recipes.size() >= ATConfig.knowledgeCoreMaxRecipes();
     }
 
     public int size() {
@@ -47,7 +47,7 @@ public record KnowledgeCoreContents(List<KnowledgeRecipe> recipes) {
         int existing = indexOfOutput(recipe.output());
         if (existing >= 0) {
             list.set(existing, recipe);
-        } else if (list.size() < CAPACITY) {
+        } else if (!isFull()) {
             list.add(recipe);
         } else {
             return this;

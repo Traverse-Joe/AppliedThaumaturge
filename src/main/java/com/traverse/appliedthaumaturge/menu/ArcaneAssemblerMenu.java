@@ -50,7 +50,10 @@ public class ArcaneAssemblerMenu extends UpgradeableMenu<ArcaneAssemblerBlockEnt
             addSlot(new DisplaySlot(inv, ArcaneAssemblerBlockEntity.GRID_START + i), SlotSemantics.MACHINE_CRAFTING_GRID);
         }
         addSlot(new WandSlot(inv, ArcaneAssemblerBlockEntity.WAND_SLOT), ATSlotSemantics.ARCANE_WAND);
-        addSlot(new CoreSlot(inv, ArcaneAssemblerBlockEntity.CORE_SLOT), SlotSemantics.ENCODED_PATTERN);
+        addSlot(new CoreSlot(inv, 0), SlotSemantics.ENCODED_PATTERN);
+        for (int i = 1; i < ArcaneAssemblerBlockEntity.MAX_CORE_SLOTS; i++) {
+            addSlot(new CoreSlot(inv, i), ATSlotSemantics.KNOWLEDGE_CORE);
+        }
         addSlot(new OutputSlot(inv, ArcaneAssemblerBlockEntity.OUTPUT_SLOT, null), SlotSemantics.MACHINE_OUTPUT);
     }
 
@@ -131,14 +134,28 @@ public class ArcaneAssemblerMenu extends UpgradeableMenu<ArcaneAssemblerBlockEnt
         }
     }
 
-    private static final class CoreSlot extends AppEngSlot {
-        CoreSlot(InternalInventory inv, int slot) {
-            super(inv, slot);
+    public boolean isCoreSlotActive(int index) {
+        return index < getHost().getEnabledCoreSlots()
+                || !getHost().getInventory().getStackInSlot(ArcaneAssemblerBlockEntity.getCoreSlot(index)).isEmpty();
+    }
+
+    private final class CoreSlot extends AppEngSlot {
+        private final int coreIndex;
+
+        CoreSlot(InternalInventory inv, int coreIndex) {
+            super(inv, ArcaneAssemblerBlockEntity.getCoreSlot(coreIndex));
+            this.coreIndex = coreIndex;
+        }
+
+        @Override
+        public boolean isActive() {
+            return isCoreSlotActive(coreIndex) && super.isActive();
         }
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return KnowledgeCores.isCore(stack) && !KnowledgeCores.isBlank(stack) && super.mayPlace(stack);
+            return coreIndex < getHost().getEnabledCoreSlots()
+                    && KnowledgeCores.isCore(stack) && !KnowledgeCores.isBlank(stack) && super.mayPlace(stack);
         }
 
         @Override

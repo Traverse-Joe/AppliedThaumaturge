@@ -6,6 +6,7 @@ import com.leclowndu93150.thaumaturge.api.recipe.ArcaneWorkbenchContext;
 import com.leclowndu93150.thaumaturge.api.recipe.IArcaneWorkbench;
 import com.leclowndu93150.thaumaturge.api.recipe.IWorkbenchAuraSource;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
+import com.traverse.appliedthaumaturge.ATConfig;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -62,13 +63,15 @@ public final class ArcaneTerminalAuraSource implements IWorkbenchAuraSource {
     }
 
     public static List<BlockPos> anchors(BlockPos pos, boolean charged) {
-        if (!charged) {
+        int radius = charged ? ATConfig.arcaneChargingCardRadiusChunks() : 0;
+        if (radius == 0) {
             return List.of(pos);
         }
         ChunkPos center = ChunkPos.containing(pos);
-        List<BlockPos> anchors = new ArrayList<>(9);
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
+        int diameter = radius * 2 + 1;
+        List<BlockPos> anchors = new ArrayList<>(diameter * diameter);
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
                 anchors.add(new ChunkPos(center.x() + x, center.z() + z).getMiddleBlockPosition(pos.getY()));
             }
         }

@@ -26,6 +26,7 @@ import appeng.api.upgrades.UpgradeInventories;
 import appeng.core.definitions.AEItems;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
+import com.traverse.appliedthaumaturge.ATConfig;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.wands.WandVis;
 import com.leclowndu93150.thaumaturge.content.wands.WandEconomy;
@@ -71,10 +72,10 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
     public static final int OUTPUT_SLOT = 9;
     public static final int CORE_SLOT = 10;
     public static final int WAND_SLOT = 11;
-    public static final int MAX_STORED_CENTIVIS = 150 * WandEconomy.CENTIVIS_PER_VIS;
+    public static final int MAX_CORE_SLOTS = 3;
     private static final int[] SPEED = {5, 10, 20, 34, 50, 100};
 
-    private final AppEngInternalInventory inventory = new AppEngInternalInventory(this, 12, 64);
+    private final AppEngInternalInventory inventory = new AppEngInternalInventory(this, 14, 64);
     private final IUpgradeInventory upgrades;
     private final List<ItemStack> crystals = new ArrayList<>();
     private final IActionSource source = IActionSource.ofMachine(this);
@@ -90,12 +91,33 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
 
     public ArcaneAssemblerBlockEntity(BlockPos pos, BlockState state) {
         super(ATBlockEntities.ARCANE_ASSEMBLER.get(), pos, state);
-        this.upgrades = UpgradeInventories.forMachine(ATBlocks.ARCANE_ASSEMBLER_ITEM.get(), 6, this::saveChanges);
+        this.upgrades = UpgradeInventories.forMachine(ATBlocks.ARCANE_ASSEMBLER_ITEM.get(), 6, this::onUpgradesChanged);
         getMainNode().addService(ICraftingProvider.class, this).addService(IGridTickable.class, this);
     }
 
     public InternalInventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public void onReady() {
+        getMainNode().setIdlePowerUsage(ATConfig.arcaneAssemblerIdlePowerAE());
+        super.onReady();
+    }
+
+    public static int getCoreSlot(int index) {
+        return index == 0 ? CORE_SLOT : WAND_SLOT + index;
+    }
+
+    public int getEnabledCoreSlots() {
+        return 1 + Math.min(MAX_CORE_SLOTS - 1, upgrades.getInstalledUpgrades(AEItems.CAPACITY_CARD));
+    }
+
+    private void onUpgradesChanged() {
+        patterns = null;
+        ICraftingProvider.requestUpdate(getMainNode());
+        saveChanges();
+        wake();
     }
 
     public boolean useVisMemoryCard(ItemStack stack, Player player) {
@@ -162,7 +184,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
         }
         boolean changed = false;
         for (var aspect : MenuArcaneWorkbench.PRIMAL_ORDER) {
-            int room = MAX_STORED_CENTIVIS - storedVis.amount(aspect);
+            int room = ATConfig.arcaneAssemblerMaxBufferCentivis() - storedVis.amount(aspect);
             if (room <= 0) {
                 continue;
             }
@@ -190,7 +212,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
 
     @Override
     public void onChangeInventory(AppEngInternalInventory inv, int slot) {
-        if (slot == CORE_SLOT || slot == WAND_SLOT) {
+        if (slot >= CORE_SLOT) {
             patterns = null;
             ICraftingProvider.requestUpdate(getMainNode());
         }
@@ -211,18 +233,23 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
     }
 
     private List<IPatternDetails> buildPatterns() {
-        ItemStack core = inventory.getStackInSlot(CORE_SLOT);
-        if (!(level instanceof ServerLevel serverLevel) || !KnowledgeCores.isCore(core)) {
+        if (!(level instanceof ServerLevel serverLevel)) {
             return List.of();
         }
         List<IPatternDetails> out = new ArrayList<>();
-        for (KnowledgeRecipe knowledge : KnowledgeCores.contents(core).recipes()) {
-            ArcaneCraftingRecipe recipe = resolve(serverLevel, knowledge);
-            if (recipe != null) {
-                ArcanePattern pattern = ArcanePattern.create(knowledge, recipe, visSource != null
-                        || !storedVis.isEmpty() || SlotWorkbenchWand.isUsableWand(inventory.getStackInSlot(WAND_SLOT)));
-                if (pattern != null) {
-                    out.add(pattern);
+        for (int i = 0; i < getEnabledCoreSlots(); i++) {
+            ItemStack core = inventory.getStackInSlot(getCoreSlot(i));
+            if (!KnowledgeCores.isCore(core)) {
+                continue;
+            }
+            for (KnowledgeRecipe knowledge : KnowledgeCores.contents(core).recipes()) {
+                ArcaneCraftingRecipe recipe = resolve(serverLevel, knowledge);
+                if (recipe != null) {
+                    ArcanePattern pattern = ArcanePattern.create(knowledge, recipe, visSource != null
+                            || !storedVis.isEmpty() || SlotWorkbenchWand.isUsableWand(inventory.getStackInSlot(WAND_SLOT)));
+                    if (pattern != null) {
+                        out.add(pattern);
+                    }
                 }
             }
         }
@@ -562,7 +589,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
         progress = data.getIntOr("progress", 0);
         storedVis = data.read("storedVis", WandVis.CODEC).orElse(WandVis.EMPTY);
         for (var aspect : MenuArcaneWorkbench.PRIMAL_ORDER) {
-            storedVis = storedVis.with(aspect, Math.clamp(storedVis.amount(aspect), 0, MAX_STORED_CENTIVIS));
+            storedVis = storedVis.with(aspect, Math.clamp(storedVis.amount(aspect), 0, ATConfig.arcaneAssemblerMaxBufferCentivis()));
         }
         visSource = data.read("visSource", VisRelayLink.CODEC).orElse(null);
         visChargeTicks = 0;

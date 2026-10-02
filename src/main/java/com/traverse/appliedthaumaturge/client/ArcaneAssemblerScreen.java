@@ -2,8 +2,10 @@ package com.traverse.appliedthaumaturge.client;
 
 import appeng.client.gui.implementations.UpgradeableScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.widgets.ProgressBar;
 import appeng.client.gui.widgets.BackgroundPanel;
+import com.traverse.appliedthaumaturge.ATConfig;
 import com.traverse.appliedthaumaturge.menu.ArcaneAssemblerMenu;
 import com.traverse.appliedthaumaturge.assembler.ArcaneAssemblerBlockEntity;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu> {
     private final ProgressBar progressBar;
+    private final Blitter coreSlot;
     private static final int BAR_LEFT = 5;
     private static final int BAR_TOP = 29;
     private static final int BAR_HEIGHT = 6;
@@ -24,6 +27,7 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
 
     public ArcaneAssemblerScreen(ArcaneAssemblerMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
+        coreSlot = style.getImage("coreSlot");
         widgets.add("wandSlot", new BackgroundPanel(style.getImage("wandSlot")));
         progressBar = new ProgressBar(menu, style.getImage("progressBar"), ProgressBar.Direction.VERTICAL);
         widgets.add("progressBar", progressBar);
@@ -32,6 +36,11 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
     @Override
     public void drawBG(GuiGraphicsExtractor graphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTick) {
         super.drawBG(graphics, offsetX, offsetY, mouseX, mouseY, partialTick);
+        for (int index = 1; index < ArcaneAssemblerBlockEntity.MAX_CORE_SLOTS; index++) {
+            if (getMenu().isCoreSlotActive(index)) {
+                coreSlot.dest(getGuiLeft() + 89 + (index - 1) * 18, getGuiTop() + 15).blit(graphics);
+            }
+        }
         var level = Minecraft.getInstance().level;
         if (level == null) {
             return;
@@ -44,7 +53,8 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
                     .getOrThrow(MenuArcaneWorkbench.PRIMAL_ORDER.get(index));
             graphics.fill(x - 1, y - 1, x + BAR_WIDTH + 1, y + BAR_HEIGHT + 1, 0xFF56468A);
             graphics.fill(x, y, x + BAR_WIDTH, y + BAR_HEIGHT, 0xFF251F35);
-            int width = Math.clamp((int) Math.ceil(amount * BAR_WIDTH / (double) ArcaneAssemblerBlockEntity.MAX_STORED_CENTIVIS), 0, BAR_WIDTH);
+            int capacity = ATConfig.arcaneAssemblerMaxBufferCentivis();
+            int width = capacity == 0 ? 0 : Math.clamp((int) Math.ceil(amount * (double) BAR_WIDTH / capacity), 0, BAR_WIDTH);
             if (width > 0) {
                 graphics.fill(x, y, x + width, y + BAR_HEIGHT, 0xFF000000 | aspect.value().color());
             }
@@ -64,7 +74,7 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
                         "gui.appliedthaumaturge.stored_primal_vis",
                         Component.translatable("aspect." + aspect.identifier().getNamespace() + "." + aspect.identifier().getPath()),
                         String.format(java.util.Locale.ROOT, "%.2f", getMenu().getStoredVis(index) / 100.0),
-                        ArcaneAssemblerBlockEntity.MAX_STORED_CENTIVIS / 100),
+                        ATConfig.arcaneAssemblerMaxBufferCentivis() / 100),
                         Component.translatable(getMenu().visLinked ? "gui.appliedthaumaturge.relay_linked" : "gui.appliedthaumaturge.relay_unlinked")));
                 return;
             }

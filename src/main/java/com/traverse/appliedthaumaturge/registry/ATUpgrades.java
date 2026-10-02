@@ -41,6 +41,7 @@ public final class ATUpgrades {
         Upgrades.add(ATItems.UPGRADE_ARCANE, ATItems.ARCANE_TERMINAL, 1);
         Upgrades.add(ATItems.UPGRADE_ARCANE, ATBlocks.ARCANE_ASSEMBLER_ITEM, 1);
         Upgrades.add(AEItems.SPEED_CARD, ATBlocks.ARCANE_ASSEMBLER_ITEM, 5);
+        Upgrades.add(AEItems.CAPACITY_CARD, ATBlocks.ARCANE_ASSEMBLER_ITEM, 2);
 
         Upgrades.add(AEItems.ENERGY_CARD, ATItems.WIRELESS_ESSENTIA_TERMINAL, 2, GuiText.WirelessTerminals.getTranslationKey());
         GridLinkables.register(ATItems.WIRELESS_ESSENTIA_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
