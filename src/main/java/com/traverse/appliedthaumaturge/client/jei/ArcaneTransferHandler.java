@@ -1,7 +1,5 @@
 package com.traverse.appliedthaumaturge.client.jei;
 
-import com.leclowndu93150.thaumaturge.compat.jei.category.ArcaneWorkbenchCategory;
-import com.leclowndu93150.thaumaturge.content.recipe.workbench.ArcaneCraftingRecipe;
 import com.traverse.appliedthaumaturge.menu.ArcaneRecipeTarget;
 import com.traverse.appliedthaumaturge.network.ArcaneTransferPacket;
 import java.util.ArrayList;
@@ -20,22 +18,25 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecipeTarget>
-        implements IRecipeTransferHandler<M, RecipeHolder<ArcaneCraftingRecipe>> {
-    private static final int SLOTS = 15;
+public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecipeTarget, R>
+        implements IRecipeTransferHandler<M, R> {
     private static final int MAX_CANDIDATES = 32;
 
     private final IRecipeTransferHandlerHelper helper;
     private final Class<M> menuClass;
     private final MenuType<M> menuType;
+    private final IRecipeType<R> recipeType;
+    private final int slotCount;
 
-    public ArcaneTransferHandler(IRecipeTransferHandlerHelper helper, Class<M> menuClass, MenuType<M> menuType) {
+    public ArcaneTransferHandler(IRecipeTransferHandlerHelper helper, Class<M> menuClass, MenuType<M> menuType,
+                                IRecipeType<R> recipeType, int slotCount) {
         this.helper = helper;
         this.menuClass = menuClass;
         this.menuType = menuType;
+        this.recipeType = recipeType;
+        this.slotCount = slotCount;
     }
 
     @Override
@@ -49,21 +50,21 @@ public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecip
     }
 
     @Override
-    public IRecipeType<RecipeHolder<ArcaneCraftingRecipe>> getRecipeType() {
-        return ArcaneWorkbenchCategory.RECIPE_TYPE;
+    public IRecipeType<R> getRecipeType() {
+        return recipeType;
     }
 
     @Override
-    public IRecipeTransferError transferRecipe(IRecipeTransferContext<RecipeHolder<ArcaneCraftingRecipe>, M> context, boolean doTransfer) {
+    public IRecipeTransferError transferRecipe(IRecipeTransferContext<R, M> context, boolean doTransfer) {
         List<IRecipeSlotView> inputs = context.getRecipeSlots().getSlotViews(RecipeIngredientRole.INPUT);
-        if (inputs.size() < SLOTS) {
+        if (inputs.size() < slotCount) {
             return helper.createInternalError();
         }
         if (!doTransfer) {
             return null;
         }
-        List<List<ItemStack>> slots = new ArrayList<>(SLOTS);
-        for (int i = 0; i < SLOTS; i++) {
+        List<List<ItemStack>> slots = new ArrayList<>(slotCount);
+        for (int i = 0; i < slotCount; i++) {
             slots.add(inputs.get(i).getItemStacks().limit(MAX_CANDIDATES).map(ItemStack::copy).toList());
         }
         ClientPacketDistributor.sendToServer(new ArcaneTransferPacket(context.getContainer().containerId, slots));
@@ -73,7 +74,7 @@ public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecip
 
     @SuppressWarnings("removal")
     @Override
-    public IRecipeTransferError transferRecipe(M menu, RecipeHolder<ArcaneCraftingRecipe> recipe, IRecipeSlotsView view,
+    public IRecipeTransferError transferRecipe(M menu, R recipe, IRecipeSlotsView view,
                                                Player player, boolean maxTransfer, boolean doTransfer) {
         return helper.createInternalError();
     }

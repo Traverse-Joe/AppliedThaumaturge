@@ -37,6 +37,10 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import org.jetbrains.annotations.Nullable;
 
 public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, ArcaneRecipeTarget {
     private static final ClientActionKey<Void> ACTION_STORE_GRID = new ClientActionKey<>("storeCraftingGrid");
@@ -58,6 +62,8 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
     public int availableVis;
 
     private int auraRefresh;
+    @Nullable
+    private RecipeHolder<CraftingRecipe> vanillaRecipe;
 
     public ArcaneTermMenu(MenuType<?> type, int id, Inventory ip, ArcaneTerminalHost host) {
         super(type, id, ip, host);
@@ -161,6 +167,11 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         return arcaneInventory;
     }
 
+    @Nullable
+    public RecipeHolder<CraftingRecipe> getVanillaRecipe() {
+        return vanillaRecipe;
+    }
+
     @Override
     public void slotsChanged(Container inventory) {
         updateOutput();
@@ -172,6 +183,20 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         }
         ArcaneCraftingTransaction.Inspection inspection = ArcaneCrafter.inspect(player, arcaneHost, arcaneInventory);
         boolean valid = inspection != null && inspection.successful();
+        vanillaRecipe = null;
+        if (!valid) {
+            CraftingInput input = ArcaneCrafter.prepareVanilla(arcaneInventory).input();
+            vanillaRecipe = ArcaneCrafter.findVanillaRecipe(player, input);
+            if (vanillaRecipe != null) {
+                ItemStack output = vanillaRecipe.value().assemble(input);
+                outputSlot.set(output);
+                baseVis = 0;
+                visCost = 0;
+                crudeCost = false;
+                paymentAvailable = !output.isEmpty();
+                return;
+            }
+        }
         outputSlot.set(valid ? inspection.output() : ItemStack.EMPTY);
         baseVis = valid && inspection.requirements() != null ? inspection.requirements().baseVis() : 0;
         ArcaneCraftingTransaction.Result cost = valid ? ArcaneCrafter.previewCost(player, arcaneHost, arcaneInventory) : null;

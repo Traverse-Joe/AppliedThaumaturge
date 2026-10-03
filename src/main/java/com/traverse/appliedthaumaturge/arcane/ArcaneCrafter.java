@@ -8,10 +8,12 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.storage.MEStorage;
 import appeng.api.storage.StorageHelper;
 import com.leclowndu93150.thaumaturge.api.aspect.AspectInstance;
+import com.leclowndu93150.thaumaturge.api.aspect.AspectList;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.recipe.ArcaneCraftingTransaction;
 import com.leclowndu93150.thaumaturge.api.recipe.ArcaneWorkbenchContext;
 import com.leclowndu93150.thaumaturge.api.recipe.IArcaneCraftingStore;
+import com.leclowndu93150.thaumaturge.content.research.ResearchProgressionEvents;
 import com.leclowndu93150.thaumaturge.content.recipe.workbench.ArcaneCraftingInput;
 import com.leclowndu93150.thaumaturge.content.taint.item.ItemEssentiaCrystal;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
@@ -20,6 +22,10 @@ import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,16 +83,52 @@ public final class ArcaneCrafter {
             }
             tx.commit();
         }
-        apply(captured[0], positioned, inv, player, storage, energy, source);
+        apply(captured[0], positioned.input().width(), positioned.left(), positioned.top(), inv, player, storage, energy, source);
         return result.output();
     }
 
-    private static void apply(IArcaneCraftingStore.Consumption consumption, ArcaneCraftingInput.Positioned positioned, InternalInventory inv,
+    public static CraftingInput.Positioned prepareVanilla(InternalInventory inv) {
+        List<ItemStack> items = new ArrayList<>(ArcaneTerminalPart.GRID_SLOTS);
+        for (int i = 0; i < ArcaneTerminalPart.GRID_SLOTS; i++) {
+            items.add(inv.getStackInSlot(i).copy());
+        }
+        return CraftingInput.ofPositioned(3, 3, items);
+    }
+
+    @Nullable
+    public static RecipeHolder<CraftingRecipe> findVanillaRecipe(ServerPlayer player, CraftingInput input) {
+        if (input.isEmpty()) {
+            return null;
+        }
+        return player.level().recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, player.level()).orElse(null);
+    }
+
+    public static ItemStack craftVanilla(ServerPlayer player, RecipeHolder<CraftingRecipe> holder, InternalInventory inv,
+                                         @Nullable MEStorage storage, IEnergySource energy, IActionSource source) {
+        CraftingInput.Positioned positioned = prepareVanilla(inv);
+        CraftingInput input = positioned.input();
+        CraftingRecipe recipe = holder.value();
+        if (input.isEmpty() || !recipe.matches(input, player.level())) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack output = recipe.assemble(input);
+        if (output.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        IArcaneCraftingStore.Consumption consumption = new IArcaneCraftingStore.Consumption(
+                input.items(), recipe.getRemainingItems(input), AspectList.EMPTY, inv.getStackInSlot(ArcaneTerminalPart.WAND_SLOT).copy());
+        apply(consumption, input.width(), positioned.left(), positioned.top(), inv, player, storage, energy, source);
+        player.triggerRecipeCrafted(holder, input.items());
+        player.awardRecipes(List.of(holder));
+        ResearchProgressionEvents.recordCrafted(player, output);
+        return output;
+    }
+
+    private static void apply(IArcaneCraftingStore.Consumption consumption, int width, int gridLeft, int gridTop, InternalInventory inv,
                               ServerPlayer player, @Nullable MEStorage storage, IEnergySource energy, IActionSource source) {
-        int width = positioned.input().width();
         List<ItemStack> remainders = consumption.remainders();
         for (int i = 0; i < consumption.grid().size(); i++) {
-            int slot = (i % width + positioned.left()) + (i / width + positioned.top()) * 3;
+            int slot = (i % width + gridLeft) + (i / width + gridTop) * 3;
             ItemStack original = inv.getStackInSlot(slot);
             if (original.isEmpty()) {
                 continue;
