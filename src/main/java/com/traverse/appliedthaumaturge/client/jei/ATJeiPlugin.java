@@ -24,11 +24,13 @@ public class ATJeiPlugin implements IModPlugin {
         registration.addRecipeTransferHandler(
                 new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, ATMenus.ARCANE_TERMINAL), ArcaneWorkbenchCategory.RECIPE_TYPE);
         registration.addRecipeTransferHandler(
+                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, ATMenus.WIRELESS_ARCANE_TERMINAL), ArcaneWorkbenchCategory.RECIPE_TYPE);
+        registration.addRecipeTransferHandler(
                 new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneInscriberMenu.class, ATMenus.ARCANE_INSCRIBER), ArcaneWorkbenchCategory.RECIPE_TYPE);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addCraftingStation(ArcaneWorkbenchCategory.RECIPE_TYPE, ATItems.ARCANE_TERMINAL.get(), ATItems.ARCANE_INSCRIBER.get());
+        registration.addCraftingStation(ArcaneWorkbenchCategory.RECIPE_TYPE, ATItems.ARCANE_TERMINAL.get(), ATItems.ARCANE_INSCRIBER.get(), ATItems.WIRELESS_ARCANE_TERMINAL.get());
     }
 }

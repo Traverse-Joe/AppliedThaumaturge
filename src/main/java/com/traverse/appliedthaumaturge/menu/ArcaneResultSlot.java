@@ -29,7 +29,7 @@ public class ArcaneResultSlot extends CraftingTermSlot {
 
     @Override
     public void doClick(InventoryAction action, Player who) {
-        if (getItem().isEmpty() || !(who instanceof ServerPlayer player)) {
+        if (getItem().isEmpty() || !(who instanceof ServerPlayer player) || !menu.canCraft()) {
             return;
         }
         int perCraft = getItem().getCount();
@@ -75,7 +75,10 @@ public class ArcaneResultSlot extends CraftingTermSlot {
     }
 
     private ItemStack craftOnce(ServerPlayer player) {
-        ItemStack crafted = ArcaneCrafter.craft(player, menu.getPart(), menu.getArcaneInventory(), storage, energy, source);
+        if (!menu.canCraft()) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack crafted = ArcaneCrafter.craft(player, menu.getArcaneHost(), menu.getArcaneInventory(), storage, energy, source);
         if (!crafted.isEmpty()) {
             crafted.onCraftedBy(player, crafted.getCount());
         }

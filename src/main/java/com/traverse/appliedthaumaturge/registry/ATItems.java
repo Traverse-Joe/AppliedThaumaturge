@@ -22,6 +22,7 @@ import com.traverse.appliedthaumaturge.part.VisRelayInterfacePart;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumaturge.part.ArcaneInscriberPart;
 import com.traverse.appliedthaumaturge.item.WirelessEssentiaTerminalItem;
+import com.traverse.appliedthaumaturge.item.WirelessArcaneTerminalItem;
 import appeng.core.AEConfig;
 import java.util.List;
 import java.util.function.Function;
@@ -59,6 +60,7 @@ public final class ATItems {
     public static final DeferredItem<ItemWandRod> ENTANGLED_WAND_CORE = ITEMS.registerItem("entangled_wand_core",
             p -> new ItemWandRod(p.stacksTo(2).rarity(Rarity.RARE), ATWandParts.ENTANGLED));
     public static final DeferredItem<Item> UPGRADE_ARCANE = ITEMS.registerItem("upgrade_arcane", Upgrades::createUpgradeCardItem);
+    public static final DeferredItem<Item> UPGRADE_NODE = ITEMS.registerItem("upgrade_node", Upgrades::createUpgradeCardItem);
 
     public static final DeferredItem<PartItem<EssentiaImportBusPart>> ESSENTIA_IMPORT_BUS = part("essentia_import_bus", EssentiaImportBusPart.class, EssentiaImportBusPart::new);
     public static final DeferredItem<PartItem<EssentiaExportBusPart>> ESSENTIA_EXPORT_BUS = part("essentia_export_bus", EssentiaExportBusPart.class, EssentiaExportBusPart::new);
@@ -71,6 +73,8 @@ public final class ATItems {
     public static final DeferredItem<PartItem<EssentiaTerminalPart>> ESSENTIA_TERMINAL = part("essentia_terminal", EssentiaTerminalPart.class, EssentiaTerminalPart::new);
     public static final DeferredItem<WirelessEssentiaTerminalItem> WIRELESS_ESSENTIA_TERMINAL = ITEMS.registerItem("wireless_essentia_terminal",
             p -> new WirelessEssentiaTerminalItem(AEConfig.instance().getWirelessTerminalBattery(), p.stacksTo(1)));
+    public static final DeferredItem<WirelessArcaneTerminalItem> WIRELESS_ARCANE_TERMINAL = ITEMS.registerItem("wireless_arcane_terminal",
+            p -> new WirelessArcaneTerminalItem(AEConfig.instance().getWirelessTerminalBattery(), p.stacksTo(1)));
 
     public static final int CELL_TYPES = 12;
 

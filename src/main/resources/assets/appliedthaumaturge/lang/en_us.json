@@ -1,5 +1,12 @@
 {
   "itemGroup.appliedthaumaturge": "Applied Thaumaturge",
+  "item.appliedthaumaturge.upgrade_node": "Drain Upgrade",
+  "tooltip.appliedthaumaturge.wireless_arcane_terminal.drain_mode": "Drain",
+  "tooltip.appliedthaumaturge.wireless_arcane_terminal.terminal_mode": "Terminal",
+  "item.appliedthaumaturge.wireless_arcane_terminal": "ME Wireless Arcane Crafting Terminal",
+  "research.appliedthaumaturge.wireless_arcane_terminal.title": "Wireless Arcane Crafting",
+  "research.appliedthaumaturge.wireless_arcane_terminal.stage_0": "My Arcane Crafting Terminal connects the workbench to ME storage, but it still ties me to a cable. A Wireless Crafting Terminal could carry the same grid, crystals, and wand wherever I need them.",
+  "research.appliedthaumaturge.wireless_arcane_terminal.stage_1": "The ME Wireless Arcane Crafting Terminal gives me the same arcane crafting interface in a handheld device. I link it in a Wireless Access Point and charge it in an AE2 Charger. An active Wireless Access Point must be within range, and Energy Cards increase its battery capacity.<BR>The crafting grid, essentia crystals, and wand remain inside the terminal when I close it. It draws aura vis from my current chunk; an Arcane Charging Card expands that area using the configured chunk radius. A wand supplies the recipe's primal vis, or matching essentia crystals cover the requirement when no usable wand is installed. An entangled wand shares its charge with its paired wand elsewhere.<BR>Installing a Drain Upgrade lets me Shift-right-click the handheld terminal to switch between terminal mode and drain mode. The tooltip shows the current mode. In drain mode, I hold regular right-click while aiming at an aura node to fill the wand in its slot, following the same wand capacity, parts, research, and node rules as a wand held directly, with the same colored beam. Releasing right-click or looking away stops the drain. The terminal interface stays locked until I Shift-right-click again to return to terminal mode.<BR>Recipe transfer, clearing the crafting grid, and scanning stored items with a Thaumometer work just as they do in the placed terminal.",
   "key.appliedthaumaturge.essentia": "Essentia",
   "item.appliedthaumaturge.diffusion_core": "Diffusion Core",
   "item.appliedthaumaturge.coalescence_core": "Coalescence Core",

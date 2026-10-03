@@ -1,0 +1,16 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "ae2:advanced_card",
+    "minecraft:ender_pearl",
+    "thaumaturge:salis_mundus"
+  ],
+  "research": {
+    "entry": "appliedthaumaturge:wireless_arcane_terminal"
+  },
+  "result": {
+    "id": "appliedthaumaturge:upgrade_node"
+  },
+  "vis": 25
+}

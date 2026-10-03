@@ -4,6 +4,7 @@ import com.traverse.appliedthaumaturge.AppliedThaumaturge;
 import com.traverse.appliedthaumaturge.knowledge.KnowledgeCoreContents;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -23,6 +24,17 @@ public final class ATDataComponents {
             COMPONENTS.registerComponentType("entanglement", builder -> builder
                     .persistent(Codec.LONG)
                     .networkSynchronized(ByteBufCodecs.VAR_LONG));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> ARCANE_TERMINAL_INVENTORY =
+            COMPONENTS.registerComponentType("arcane_terminal_inventory", builder -> builder
+                    .persistent(ItemContainerContents.CODEC)
+                    .networkSynchronized(ItemContainerContents.STREAM_CODEC)
+                    .cacheEncoding());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> DRAIN_MODE =
+            COMPONENTS.registerComponentType("drain_mode", builder -> builder
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
 
     private ATDataComponents() {
     }

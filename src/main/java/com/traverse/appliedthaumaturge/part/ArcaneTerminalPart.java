@@ -17,6 +17,10 @@ import appeng.util.inv.AppEngInternalInventory;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import com.traverse.appliedthaumaturge.vis.VisRelayLink;
 import com.traverse.appliedthaumaturge.vis.VisRelayCharging;
+import com.traverse.appliedthaumaturge.arcane.ArcaneTerminalHost;
+import com.leclowndu93150.thaumaturge.api.recipe.ArcaneWorkbenchContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import appeng.util.InteractionUtil;
 import appeng.util.Platform;
 import java.util.List;
@@ -29,7 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class ArcaneTerminalPart extends AbstractTerminalPart implements IUpgradeableObject, IGridTickable {
+public class ArcaneTerminalPart extends AbstractTerminalPart implements IUpgradeableObject, IGridTickable, ArcaneTerminalHost {
     public static final int GRID_SLOTS = 9;
     public static final int CRYSTAL_START = 9;
     public static final int CRYSTAL_SLOTS = 6;
@@ -108,6 +112,21 @@ public class ArcaneTerminalPart extends AbstractTerminalPart implements IUpgrade
 
     public UUID getHostId() {
         return hostId;
+    }
+
+    @Override
+    public ArcaneWorkbenchContext getArcaneContext(ServerPlayer player) {
+        return ArcaneWorkbenchContext.placed(player, getAuraPosition(), hostId, null);
+    }
+
+    @Override
+    public BlockPos getAuraPosition() {
+        return getHost().getBlockEntity().getBlockPos();
+    }
+
+    @Override
+    public void saveArcaneInventory() {
+        getHost().markForSave();
     }
 
     @Override

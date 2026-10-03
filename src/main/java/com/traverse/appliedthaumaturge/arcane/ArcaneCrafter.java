@@ -17,7 +17,6 @@ import com.leclowndu93150.thaumaturge.content.taint.item.ItemEssentiaCrystal;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -38,30 +37,29 @@ public final class ArcaneCrafter {
         return positioned;
     }
 
-    public static ArcaneWorkbenchContext context(ServerPlayer player, ArcaneTerminalPart part) {
-        BlockPos pos = part.getHost().getBlockEntity().getBlockPos();
-        return ArcaneWorkbenchContext.placed(player, pos, part.getHostId(), null);
+    public static ArcaneWorkbenchContext context(ServerPlayer player, ArcaneTerminalHost host) {
+        return host.getArcaneContext(player);
     }
 
     @Nullable
-    public static ArcaneCraftingTransaction.Inspection inspect(ServerPlayer player, ArcaneTerminalPart part, InternalInventory inv) {
+    public static ArcaneCraftingTransaction.Inspection inspect(ServerPlayer player, ArcaneTerminalHost host, InternalInventory inv) {
         ArcaneCraftingInput.Positioned positioned = prepare(inv, player);
         if (positioned.input().isEmpty()) {
             return null;
         }
-        return ArcaneCraftingTransaction.inspect(context(player, part), player, positioned.input());
+        return ArcaneCraftingTransaction.inspect(context(player, host), player, positioned.input());
     }
 
     @Nullable
-    public static ArcaneCraftingTransaction.Result previewCost(ServerPlayer player, ArcaneTerminalPart part, InternalInventory inv) {
+    public static ArcaneCraftingTransaction.Result previewCost(ServerPlayer player, ArcaneTerminalHost host, InternalInventory inv) {
         ArcaneCraftingInput.Positioned positioned = prepare(inv, player);
         if (positioned.input().isEmpty()) {
             return null;
         }
-        return ArcaneCraftingTransaction.preview(context(player, part), player, positioned.input());
+        return ArcaneCraftingTransaction.preview(context(player, host), player, positioned.input());
     }
 
-    public static ItemStack craft(ServerPlayer player, ArcaneTerminalPart part, InternalInventory inv,
+    public static ItemStack craft(ServerPlayer player, ArcaneTerminalHost host, InternalInventory inv,
                                   @Nullable MEStorage storage, IEnergySource energy, IActionSource source) {
         ArcaneCraftingInput.Positioned positioned = prepare(inv, player);
         if (positioned.input().isEmpty()) {
@@ -70,7 +68,7 @@ public final class ArcaneCrafter {
         IArcaneCraftingStore.Consumption[] captured = new IArcaneCraftingStore.Consumption[1];
         ArcaneCraftingTransaction.Result result;
         try (Transaction tx = Transaction.openRoot()) {
-            result = ArcaneCraftingTransaction.craft(context(player, part), player, positioned.input(), (consumption, transaction) -> {
+            result = ArcaneCraftingTransaction.craft(context(player, host), player, positioned.input(), (consumption, transaction) -> {
                 captured[0] = consumption;
                 return true;
             }, tx);

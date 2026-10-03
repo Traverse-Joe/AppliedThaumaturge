@@ -24,6 +24,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.codec.ByteBufCodecs;
 import com.leclowndu93150.thaumaturge.api.aura.AuraHelper;
 import com.traverse.appliedthaumaturge.arcane.ArcaneCrafter;
+import com.traverse.appliedthaumaturge.arcane.ArcaneTerminalHost;
 import com.traverse.appliedthaumaturge.arcane.ArcaneTerminalAuraSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -41,7 +42,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
     private static final ClientActionKey<Void> ACTION_STORE_GRID = new ClientActionKey<>("storeCraftingGrid");
     private static final ClientActionKey<Void> ACTION_TAKE_GRID = new ClientActionKey<>("clearToPlayer");
     private static final ClientActionKey<Long> ACTION_SCAN_ITEM = new ClientActionKey<>("scanStoredItem");
-    private final ArcaneTerminalPart part;
+    private final ArcaneTerminalHost arcaneHost;
     private final AppEngInternalInventory arcaneInventory;
     private final ArcaneResultSlot outputSlot;
 
@@ -58,9 +59,9 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
 
     private int auraRefresh;
 
-    public ArcaneTermMenu(MenuType<?> type, int id, Inventory ip, ArcaneTerminalPart host) {
+    public ArcaneTermMenu(MenuType<?> type, int id, Inventory ip, ArcaneTerminalHost host) {
         super(type, id, ip, host);
-        this.part = host;
+        this.arcaneHost = host;
         this.arcaneInventory = host.getArcaneInventory();
 
         for (int i = 0; i < ArcaneTerminalPart.GRID_SLOTS; i++) {
@@ -85,8 +86,12 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         updateOutput();
     }
 
-    public ArcaneTerminalPart getPart() {
-        return part;
+    public ArcaneTerminalHost getArcaneHost() {
+        return arcaneHost;
+    }
+
+    public boolean canCraft() {
+        return isValidMenu() && stillValid(getPlayer()) && canInteractWithGrid();
     }
 
     public void scanStoredItem(long serial) {
@@ -100,7 +105,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         }
         AEKey key = getStackBySerial(serial);
         if (!(key instanceof AEItemKey item) || !isKeyVisible(item)
-                || part.getInventory().extract(item, 1, Actionable.SIMULATE, getActionSource()) < 1) {
+                || arcaneHost.getInventory().extract(item, 1, Actionable.SIMULATE, getActionSource()) < 1) {
             return;
         }
         ScanningManager.scanTheThing(getPlayer(), item.toStack(1));
@@ -111,12 +116,15 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
             sendClientAction(ACTION_STORE_GRID);
             return;
         }
+        if (!canCraft()) {
+            return;
+        }
         InternalInventory grid = getCraftingMatrix();
         for (int slot = 0; slot < grid.size(); slot++) {
             ItemStack stack = grid.getStackInSlot(slot);
             AEItemKey key = AEItemKey.of(stack);
             if (key != null) {
-                long inserted = StorageHelper.poweredInsert(energySource, part.getInventory(), key, stack.getCount(), getActionSource(), Actionable.MODULATE);
+                long inserted = StorageHelper.poweredInsert(energySource, arcaneHost.getInventory(), key, stack.getCount(), getActionSource(), Actionable.MODULATE);
                 grid.setItemDirect(slot, stack.copyWithCount(stack.getCount() - (int) inserted));
             }
         }
@@ -127,6 +135,9 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
     public void clearToPlayerInventory() {
         if (isClientSide()) {
             sendClientAction(ACTION_TAKE_GRID);
+            return;
+        }
+        if (!isValidMenu() || !stillValid(getPlayer())) {
             return;
         }
         InternalInventory grid = getCraftingMatrix();
@@ -158,11 +169,11 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         if (isClientSide() || !(getPlayer() instanceof ServerPlayer player)) {
             return;
         }
-        ArcaneCraftingTransaction.Inspection inspection = ArcaneCrafter.inspect(player, part, arcaneInventory);
+        ArcaneCraftingTransaction.Inspection inspection = ArcaneCrafter.inspect(player, arcaneHost, arcaneInventory);
         boolean valid = inspection != null && inspection.successful();
         outputSlot.set(valid ? inspection.output() : ItemStack.EMPTY);
         baseVis = valid && inspection.requirements() != null ? inspection.requirements().baseVis() : 0;
-        ArcaneCraftingTransaction.Result cost = valid ? ArcaneCrafter.previewCost(player, part, arcaneInventory) : null;
+        ArcaneCraftingTransaction.Result cost = valid ? ArcaneCrafter.previewCost(player, arcaneHost, arcaneInventory) : null;
         visCost = cost == null || cost.cost() == null ? 0 : cost.cost().auraVis();
         crudeCost = cost != null && cost.cost() != null && !cost.cost().crystalsNeeded().isEmpty();
         paymentAvailable = cost != null && cost.successful();
@@ -170,10 +181,10 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
 
     @Override
     public void fillFromRecipe(List<List<ItemStack>> wanted) {
-        if (isClientSide()) {
+        if (isClientSide() || !canCraft()) {
             return;
         }
-        MEStorage storage = part.getInventory();
+        MEStorage storage = arcaneHost.getInventory();
         for (int i = 0; i < wanted.size() && i < ArcaneTerminalPart.GRID_SLOTS + ArcaneTerminalPart.CRYSTAL_SLOTS; i++) {
             int slot = i < ArcaneTerminalPart.GRID_SLOTS ? i : ArcaneTerminalPart.CRYSTAL_START + (i - ArcaneTerminalPart.GRID_SLOTS);
             List<ItemStack> candidates = wanted.get(i).stream().filter(stack -> !stack.isEmpty()).toList();
@@ -235,7 +246,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         if (!isClientSide()) {
             boolean wandChanged = EntangledWands.mirror(arcaneInventory.getStackInSlot(ArcaneTerminalPart.WAND_SLOT));
             if (wandChanged) {
-                part.getHost().markForSave();
+                arcaneHost.saveArcaneInventory();
             }
             boolean refreshAura = auraRefresh-- <= 0;
             if (refreshAura) {
@@ -251,9 +262,9 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
 
     private int measureAura() {
         Level level = getPlayer().level();
-        BlockPos pos = part.getHost().getBlockEntity().getBlockPos();
+        BlockPos pos = arcaneHost.getAuraPosition();
         float total = 0;
-        for (BlockPos anchor : ArcaneTerminalAuraSource.anchors(pos, part.hasChargingCard())) {
+        for (BlockPos anchor : ArcaneTerminalAuraSource.anchors(pos, arcaneHost.hasChargingCard())) {
             total += AuraHelper.getVis(level, anchor);
         }
         return (int) total;

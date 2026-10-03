@@ -34,6 +34,7 @@ public class AppliedThaumaturgeClient {
         InitScreens.register(event, ATMenus.ESSENTIA_EXPORT_BUS, IOBusScreen::new, "/screens/export_bus.json");
         InitScreens.register(event, ATMenus.ESSENTIA_LEVEL_EMITTER, StorageLevelEmitterScreen::new, "/screens/essentia_level_emitter.json");
         InitScreens.register(event, ATMenus.ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
+        InitScreens.register(event, ATMenus.WIRELESS_ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
         InitScreens.register(event, ATMenus.ARCANE_INSCRIBER, ArcaneInscriberScreen::new, "/screens/terminals/arcane_inscriber.json");
         InitScreens.register(event, ATMenus.ARCANE_ASSEMBLER, ArcaneAssemblerScreen::new, "/screens/arcane_assembler.json");
     }
