@@ -9,7 +9,6 @@ import com.traverse.appliedthaumaturge.item.PortableEssentiaCellItem;
 import appeng.items.contents.PortableCellMenuHost;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
 import com.traverse.appliedthaumaturge.part.ArcaneInscriberPart;
-import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumaturge.part.EssentiaTerminalPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,7 +26,6 @@ public abstract class MEStorageMenuMixin {
         if (key instanceof EssentiaKey) {
             ITerminalHost host = getHost();
             if (!(host instanceof EssentiaTerminalPart)
-                    && !(host instanceof ArcaneTerminalPart)
                     && !(host instanceof ArcaneInscriberPart)
                     && !(host instanceof PortableCellMenuHost<?> portable && portable.getItem() instanceof PortableEssentiaCellItem)
                     && !(host instanceof WirelessTerminalMenuHost<?> wireless && wireless.getItem() instanceof WirelessEssentiaTerminalItem)) {
