@@ -21,9 +21,8 @@ import com.traverse.appliedthaumaturge.part.EssentiaTerminalPart;
 import com.traverse.appliedthaumaturge.part.VisRelayInterfacePart;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumaturge.part.ArcaneInscriberPart;
-import com.traverse.appliedthaumaturge.item.WirelessEssentiaTerminalItem;
-import com.traverse.appliedthaumaturge.item.WirelessArcaneTerminalItem;
-import appeng.core.AEConfig;
+import appeng.items.tools.powered.WirelessTerminalItem;
+import com.traverse.appliedthaumaturge.integration.TerminalIntegration;
 import java.util.List;
 import java.util.function.Function;
 import net.minecraft.world.item.Item;
@@ -72,10 +71,10 @@ public final class ATItems {
     public static final DeferredItem<PartItem<ArcaneTerminalPart>> ARCANE_TERMINAL = part("arcane_terminal", ArcaneTerminalPart.class, ArcaneTerminalPart::new);
     public static final DeferredItem<PartItem<ArcaneInscriberPart>> ARCANE_INSCRIBER = part("arcane_inscriber", ArcaneInscriberPart.class, ArcaneInscriberPart::new);
     public static final DeferredItem<PartItem<EssentiaTerminalPart>> ESSENTIA_TERMINAL = part("essentia_terminal", EssentiaTerminalPart.class, EssentiaTerminalPart::new);
-    public static final DeferredItem<WirelessEssentiaTerminalItem> WIRELESS_ESSENTIA_TERMINAL = ITEMS.registerItem("wireless_essentia_terminal",
-            p -> new WirelessEssentiaTerminalItem(AEConfig.instance().getWirelessTerminalBattery(), p.stacksTo(1)));
-    public static final DeferredItem<WirelessArcaneTerminalItem> WIRELESS_ARCANE_TERMINAL = ITEMS.registerItem("wireless_arcane_terminal",
-            p -> new WirelessArcaneTerminalItem(AEConfig.instance().getWirelessTerminalBattery(), p.stacksTo(1)));
+    public static final DeferredItem<WirelessTerminalItem> WIRELESS_ESSENTIA_TERMINAL = ITEMS.registerItem("wireless_essentia_terminal",
+            TerminalIntegration::essentiaItem);
+    public static final DeferredItem<WirelessTerminalItem> WIRELESS_ARCANE_TERMINAL = ITEMS.registerItem("wireless_arcane_terminal",
+            TerminalIntegration::arcaneItem);
 
     public static final int CELL_TYPES = 12;
 

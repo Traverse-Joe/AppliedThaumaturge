@@ -16,4 +16,8 @@ public interface ArcaneTerminalHost extends ITerminalHost {
     boolean hasChargingCard();
 
     void saveArcaneInventory();
+
+    default boolean matchesContext(ArcaneWorkbenchContext context) {
+        return false;
+    }
 }

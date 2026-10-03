@@ -70,16 +70,17 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
     }
 
     public static boolean isDrainMode(ItemStack terminal) {
-        return terminal.getOrDefault(ATDataComponents.DRAIN_MODE.get(), false);
+        return terminal.is(ATItems.WIRELESS_ARCANE_TERMINAL.get())
+                && terminal.getOrDefault(ATDataComponents.DRAIN_MODE.get(), false);
     }
 
-    private boolean hasDrainUpgrade(ItemStack terminal) {
-        return getUpgrades(terminal).isInstalled(ATItems.UPGRADE_NODE);
+    private static boolean hasDrainUpgrade(WirelessTerminalItem item, ItemStack terminal) {
+        return item.getUpgrades(terminal).isInstalled(ATItems.UPGRADE_NODE);
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        InteractionResult result = useMode(player, hand, player.getItemInHand(hand));
+        InteractionResult result = useMode(this, player, hand, player.getItemInHand(hand));
         if (result != InteractionResult.PASS) {
             return result;
         }
@@ -89,12 +90,12 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
         Player player = context.getPlayer();
-        return player == null ? InteractionResult.PASS : useMode(player, context.getHand(), stack);
+        return player == null ? InteractionResult.PASS : useMode(this, player, context.getHand(), stack);
     }
 
-    private InteractionResult useMode(Player player, InteractionHand hand, ItemStack terminal) {
+    public static InteractionResult useMode(WirelessTerminalItem item, Player player, InteractionHand hand, ItemStack terminal) {
         boolean draining = isDrainMode(terminal);
-        boolean hasUpgrade = hasDrainUpgrade(terminal);
+        boolean hasUpgrade = hasDrainUpgrade(item, terminal);
         if (player.isShiftKeyDown() && (hasUpgrade || draining)) {
             if (!player.level().isClientSide()) {
                 terminal.set(ATDataComponents.DRAIN_MODE.get(), !draining);
@@ -134,11 +135,15 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack terminal, int remainingUseTicks) {
+        drainTick(this, level, entity, terminal, remainingUseTicks);
+    }
+
+    public static void drainTick(WirelessTerminalItem item, Level level, LivingEntity entity, ItemStack terminal, int remainingUseTicks) {
         if (!(entity instanceof Player player)) {
             return;
         }
         BlockEntityNode node = targetedNode(player);
-        if (!isDrainMode(terminal) || !hasDrainUpgrade(terminal) || node == null) {
+        if (!isDrainMode(terminal) || !hasDrainUpgrade(item, terminal) || node == null) {
             player.stopUsingItem();
             return;
         }
@@ -166,7 +171,11 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
                                 Consumer<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, display, tooltip, flag);
-        if (!hasDrainUpgrade(stack)) {
+        appendModeTooltip(this, stack, tooltip);
+    }
+
+    public static void appendModeTooltip(WirelessTerminalItem item, ItemStack stack, Consumer<Component> tooltip) {
+        if (!hasDrainUpgrade(item, stack)) {
             return;
         }
         boolean draining = isDrainMode(stack);
@@ -193,14 +202,14 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
         return null;
     }
 
-    public static final class Host extends WirelessTerminalMenuHost<WirelessArcaneTerminalItem>
+    public static final class Host extends WirelessTerminalMenuHost<WirelessTerminalItem>
             implements ArcaneTerminalHost, InternalInventoryHost {
         private final UUID hostId = UUID.randomUUID();
         private final ItemStack terminalStack = getItemStack();
         private final AppEngInternalInventory arcaneInventory = new AppEngInternalInventory(this, ArcaneTerminalPart.SIZE);
 
-        private Host(WirelessArcaneTerminalItem item, Player player, ItemMenuHostLocator locator) {
-            super(item, player, locator, (p, subMenu) -> item.openFromInventory(p, locator, true));
+        public Host(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator) {
+            super(item, player, locator, (p, subMenu) -> appeng.menu.MenuOpener.open(ATMenus.WIRELESS_ARCANE_TERMINAL, p, locator, true));
             arcaneInventory.fromItemContainerContents(getItemStack().getOrDefault(
                     ATDataComponents.ARCANE_TERMINAL_INVENTORY.get(), ItemContainerContents.EMPTY));
         }

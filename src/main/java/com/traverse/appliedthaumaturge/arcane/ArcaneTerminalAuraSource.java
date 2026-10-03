@@ -7,7 +7,6 @@ import com.leclowndu93150.thaumaturge.api.recipe.IArcaneWorkbench;
 import com.leclowndu93150.thaumaturge.api.recipe.IWorkbenchAuraSource;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumaturge.ATConfig;
-import com.traverse.appliedthaumaturge.item.WirelessArcaneTerminalItem;
 import com.traverse.appliedthaumaturge.menu.ArcaneTermMenu;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,8 @@ public final class ArcaneTerminalAuraSource implements IWorkbenchAuraSource {
         }
         ArcaneTerminalHost terminal = findTerminal(level, pos, context);
         if (terminal == null && player.containerMenu instanceof ArcaneTermMenu menu
-                && menu.getArcaneHost() instanceof WirelessArcaneTerminalItem.Host wireless
-                && wireless.matchesContext(context) && menu.canCraft()) {
-            terminal = wireless;
+                && menu.getArcaneHost().matchesContext(context) && menu.canCraft()) {
+            terminal = menu.getArcaneHost();
         }
         if (terminal == null) {
             return 0;

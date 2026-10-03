@@ -4,7 +4,7 @@ import appeng.api.stacks.AEKey;
 import appeng.api.storage.ITerminalHost;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.menu.me.common.MEStorageMenu;
-import com.traverse.appliedthaumaturge.item.WirelessEssentiaTerminalItem;
+import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
 import com.traverse.appliedthaumaturge.item.PortableEssentiaCellItem;
 import appeng.items.contents.PortableCellMenuHost;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
@@ -28,7 +28,8 @@ public abstract class MEStorageMenuMixin {
             if (!(host instanceof EssentiaTerminalPart)
                     && !(host instanceof ArcaneInscriberPart)
                     && !(host instanceof PortableCellMenuHost<?> portable && portable.getItem() instanceof PortableEssentiaCellItem)
-                    && !(host instanceof WirelessTerminalMenuHost<?> wireless && wireless.getItem() instanceof WirelessEssentiaTerminalItem)) {
+                    && !(host instanceof WirelessTerminalMenuHost<?> wireless
+                    && ATTerminalHotkeys.WIRELESS_ESSENTIA_TERMINAL.equals(wireless.getCloseHotkey()))) {
                 cir.setReturnValue(false);
             }
         }

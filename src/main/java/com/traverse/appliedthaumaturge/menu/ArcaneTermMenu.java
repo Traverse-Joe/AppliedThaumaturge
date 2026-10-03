@@ -63,6 +63,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         super(type, id, ip, host);
         this.arcaneHost = host;
         this.arcaneInventory = host.getArcaneInventory();
+        com.traverse.appliedthaumaturge.integration.TerminalIntegration.addSlots(host, this::addSlot);
 
         for (int i = 0; i < ArcaneTerminalPart.GRID_SLOTS; i++) {
             addSlot(new ArcaneSlot(this, arcaneInventory, i, stack -> true), SlotSemantics.CRAFTING_GRID);

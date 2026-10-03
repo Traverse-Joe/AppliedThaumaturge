@@ -12,7 +12,9 @@ import com.traverse.appliedthaumaturge.menu.ArcaneTermMenu;
 import com.traverse.appliedthaumaturge.menu.EssentiaLevelEmitterMenu;
 import com.traverse.appliedthaumaturge.menu.PortableEssentiaCellMenu;
 import com.traverse.appliedthaumaturge.item.PortableEssentiaCellItem;
-import com.traverse.appliedthaumaturge.item.WirelessArcaneTerminalItem;
+import com.traverse.appliedthaumaturge.arcane.ArcaneTerminalHost;
+import appeng.helpers.WirelessTerminalMenuHost;
+import com.traverse.appliedthaumaturge.menu.WirelessEssentiaTerminalMenu;
 import com.traverse.appliedthaumaturge.part.ArcaneInscriberPart;
 import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumaturge.part.EssentiaExportBusPart;
@@ -48,8 +50,12 @@ public final class ATMenus {
             .buildUnregistered(AppliedThaumaturge.id("arcane_terminal"));
 
     public static final MenuType<ArcaneTermMenu> WIRELESS_ARCANE_TERMINAL = MenuTypeBuilder
-            .create(ArcaneTermMenu::new, WirelessArcaneTerminalItem.Host.class)
+            .create(ArcaneTermMenu::new, ArcaneTerminalHost.class)
             .buildUnregistered(AppliedThaumaturge.id("wireless_arcane_terminal"));
+
+    public static final MenuType<WirelessEssentiaTerminalMenu> WIRELESS_ESSENTIA_TERMINAL = MenuTypeBuilder
+            .create(WirelessEssentiaTerminalMenu::new, WirelessTerminalMenuHost.class)
+            .buildUnregistered(AppliedThaumaturge.id("wireless_essentia_terminal"));
 
     public static final MenuType<ArcaneInscriberMenu> ARCANE_INSCRIBER = MenuTypeBuilder
             .create(ArcaneInscriberMenu::new, ArcaneInscriberPart.class)
@@ -66,6 +72,7 @@ public final class ATMenus {
         Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("portable_essentia_cell"), PORTABLE_ESSENTIA_CELL);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("arcane_terminal"), ARCANE_TERMINAL);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("wireless_arcane_terminal"), WIRELESS_ARCANE_TERMINAL);
+        Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("wireless_essentia_terminal"), WIRELESS_ESSENTIA_TERMINAL);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("arcane_inscriber"), ARCANE_INSCRIBER);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("arcane_assembler"), ARCANE_ASSEMBLER);
         Registry.register(BuiltInRegistries.MENU, AppliedThaumaturge.id("essentia_import_bus"), ESSENTIA_IMPORT_BUS);

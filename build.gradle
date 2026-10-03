@@ -92,6 +92,11 @@ dependencies {
     localRuntime files('libs/lithostitched-1.8.0-neoforge-26.1.jar')
     localRuntime files('libs/curios-neoforge-15.0.0+26.1.2.jar')
     compileOnly files('libs/curios-neoforge-15.0.0+26.1.2.jar')
+    compileOnly files('libs/ae2wtlib-26.1.1-beta.jar')
+    compileOnly zipTree('libs/ae2wtlib-26.1.1-beta.jar').matching {
+        include 'META-INF/jarjar/*ae2wtlib_api*.jar'
+    }
+    localRuntime files('libs/ae2wtlib-26.1.1-beta.jar')
     compileOnly files('libs/Jade-mc26.1-NeoForge-26.1.11.jar')
     localRuntime files('libs/Jade-mc26.1-NeoForge-26.1.11.jar')
 

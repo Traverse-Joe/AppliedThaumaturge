@@ -12,6 +12,8 @@ import com.leclowndu93150.thaumaturge.registry.TCSounds;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
+import com.traverse.appliedthaumaturge.registry.ATMenus;
+import net.minecraft.world.inventory.MenuType;
 import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -44,6 +46,11 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         super(powerCapacity, props);
     }
 
+    @Override
+    public MenuType<?> getMenuType() {
+        return ATMenus.WIRELESS_ESSENTIA_TERMINAL;
+    }
+
     @Nullable
     @Override
     public WirelessTerminalMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator, @Nullable BlockHitResult hitResult) {
@@ -51,11 +58,12 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
     }
 
     public static boolean isAlchemyMode(ItemStack terminal) {
-        return terminal.getOrDefault(ATDataComponents.ALCHEMY_MODE.get(), false);
+        return terminal.is(ATItems.WIRELESS_ESSENTIA_TERMINAL.get())
+                && terminal.getOrDefault(ATDataComponents.ALCHEMY_MODE.get(), false);
     }
 
-    private boolean hasAlchemyUpgrade(ItemStack terminal) {
-        return getUpgrades(terminal).isInstalled(ATItems.UPGRADE_ALCHEMY);
+    private static boolean hasAlchemyUpgrade(WirelessTerminalItem item, ItemStack terminal) {
+        return item.getUpgrades(terminal).isInstalled(ATItems.UPGRADE_ALCHEMY);
     }
 
     @Override
@@ -66,19 +74,19 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        InteractionResult result = useMode(player, hand, player.getItemInHand(hand));
+        InteractionResult result = useMode(this, player, hand, player.getItemInHand(hand));
         return result != InteractionResult.PASS ? result : super.use(level, player, hand);
     }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
         Player player = context.getPlayer();
-        return player == null ? InteractionResult.PASS : useMode(player, context.getHand(), stack);
+        return player == null ? InteractionResult.PASS : useMode(this, player, context.getHand(), stack);
     }
 
-    private InteractionResult useMode(Player player, InteractionHand hand, ItemStack terminal) {
+    public static InteractionResult useMode(WirelessTerminalItem item, Player player, InteractionHand hand, ItemStack terminal) {
         boolean alchemy = isAlchemyMode(terminal);
-        boolean upgraded = hasAlchemyUpgrade(terminal);
+        boolean upgraded = hasAlchemyUpgrade(item, terminal);
         if (player.isShiftKeyDown() && (upgraded || alchemy)) {
             if (!player.level().isClientSide()) {
                 terminal.set(ATDataComponents.ALCHEMY_MODE.get(), !alchemy);
@@ -92,7 +100,7 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
             if (upgraded) {
                 BlockHitResult hit = targetedBlock(player);
                 if (hit != null) {
-                    transferJar(player, hand, hit.getBlockPos(), true);
+                    transferJar(item, player, hand, hit.getBlockPos(), true);
                 }
             }
             return InteractionResult.CONSUME;
@@ -103,14 +111,15 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
     public static void onLeftClickJar(PlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
         ItemStack terminal = player.getMainHandItem();
-        if (!(terminal.getItem() instanceof WirelessEssentiaTerminalItem item)
-                || !isAlchemyMode(terminal) || !item.hasAlchemyUpgrade(terminal)
+        if (!(terminal.getItem() instanceof WirelessTerminalItem item)
+                || !terminal.is(ATItems.WIRELESS_ESSENTIA_TERMINAL.get())
+                || !isAlchemyMode(terminal) || !hasAlchemyUpgrade(item, terminal)
                 || !(player.level().getBlockEntity(event.getPos()) instanceof BlockEntityJar)) {
             return;
         }
         event.setCanceled(true);
         if (event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START) {
-            item.transferJar(player, InteractionHand.MAIN_HAND, event.getPos(), false);
+            transferJar(item, player, InteractionHand.MAIN_HAND, event.getPos(), false);
         }
     }
 
@@ -120,13 +129,13 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         return hit instanceof BlockHitResult blockHit && hit.getType() == HitResult.Type.BLOCK ? blockHit : null;
     }
 
-    private void transferJar(Player player, InteractionHand hand, BlockPos pos, boolean fill) {
+    private static void transferJar(WirelessTerminalItem item, Player player, InteractionHand hand, BlockPos pos, boolean fill) {
         if (player.level().isClientSide() || player.isSpectator()) {
             return;
         }
         ItemStack terminal = player.getItemInHand(hand);
         BlockHitResult hit = targetedBlock(player);
-        if (!terminal.is(this) || !isAlchemyMode(terminal) || !hasAlchemyUpgrade(terminal)
+        if (!terminal.is(item) || !isAlchemyMode(terminal) || !hasAlchemyUpgrade(item, terminal)
                 || hit == null || !hit.getBlockPos().equals(pos)
                 || !Platform.hasPermissions(new DimensionalBlockPos(player.level(), pos), player)
                 || !(player.level().getBlockEntity(pos) instanceof BlockEntityJar jar)) {
@@ -142,7 +151,7 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         if (aspect == null) {
             return;
         }
-        Host host = new Host(this, player, MenuLocators.forHand(player, hand));
+        WirelessTerminalMenuHost<?> host = com.traverse.appliedthaumaturge.integration.TerminalIntegration.essentiaHost(item, player, MenuLocators.forHand(player, hand));
         if (!host.getLinkStatus().connected()) {
             return;
         }
@@ -187,7 +196,11 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
                                 Consumer<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, display, tooltip, flag);
-        if (hasAlchemyUpgrade(stack)) {
+        appendModeTooltip(this, stack, tooltip);
+    }
+
+    public static void appendModeTooltip(WirelessTerminalItem item, ItemStack stack, Consumer<Component> tooltip) {
+        if (hasAlchemyUpgrade(item, stack)) {
             boolean alchemy = isAlchemyMode(stack);
             tooltip.accept(Component.translatable(alchemy
                     ? "tooltip.appliedthaumaturge.wireless_essentia_terminal.alchemy_mode"
@@ -196,12 +209,12 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         }
     }
 
-    private static final class Host extends WirelessTerminalMenuHost<WirelessEssentiaTerminalItem> {
+    public static final class Host extends WirelessTerminalMenuHost<WirelessTerminalItem> {
         private final KeyTypeSelection essentiaOnly = new KeyTypeSelection(() -> {
         }, type -> type == EssentiaKeyType.TYPE);
 
-        private Host(WirelessEssentiaTerminalItem item, Player player, ItemMenuHostLocator locator) {
-            super(item, player, locator, (p, subMenu) -> item.openFromInventory(p, locator, true));
+        public Host(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator) {
+            super(item, player, locator, (p, subMenu) -> appeng.menu.MenuOpener.open(item.getMenuType(), p, locator, true));
         }
 
         @Override

@@ -55,6 +55,7 @@ public class AppliedThaumaturge {
         ATDataComponents.COMPONENTS.register(modBus);
         ATBlockEntities.TYPES.register(modBus);
         ATCreativeTabs.TABS.register(modBus);
+        com.traverse.appliedthaumaturge.integration.TerminalIntegration.register();
         modBus.addListener(this::onRegister);
         modBus.addListener(EventPriority.LOWEST, ATRegistryAliases::register);
         modBus.addListener(ATBlockEntities::registerCapabilities);
@@ -90,6 +91,7 @@ public class AppliedThaumaturge {
             GenericSlotCapacities.register(EssentiaKeyType.TYPE, 1000L);
             StorageCells.addCellHandler(CreativeEssentiaCellHandler.INSTANCE);
             ATUpgrades.register();
+            com.traverse.appliedthaumaturge.integration.TerminalIntegration.registerUpgrades();
             ATBlockEntities.registerRepresentativeItems();
         });
     }

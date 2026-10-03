@@ -1,0 +1,6 @@
+{
+  "includes": [
+    "terminal.json",
+    "../wtlib/universal_terminal.json"
+  ]
+}

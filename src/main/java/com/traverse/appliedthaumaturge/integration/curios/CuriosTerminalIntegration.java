@@ -5,6 +5,7 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
+import com.traverse.appliedthaumaturge.integration.TerminalIntegration;
 import top.theillusivec4.curios.api.CuriosApi;
 
 public final class CuriosTerminalIntegration {
@@ -27,8 +28,8 @@ public final class CuriosTerminalIntegration {
             for (var entry : inventory.getCurios().entrySet()) {
                 var stacks = entry.getValue().getStacks();
                 for (int slot = 0; slot < stacks.getSlots(); slot++) {
-                    if (inventory.isSlotActive(entry.getKey(), slot) && stacks.getStackInSlot(slot).is(item)
-                            && item.openFromInventory(player, new CuriosTerminalLocator(entry.getKey(), slot))) {
+                    if (inventory.isSlotActive(entry.getKey(), slot)
+                            && TerminalIntegration.openFromCurios(item, player, new CuriosTerminalLocator(entry.getKey(), slot))) {
                         return true;
                     }
                 }

@@ -50,3 +50,17 @@ side = "BOTH"
 
 [[mixins]]
 config = "appliedthaumaturge.mixins.json"
+
+[[dependencies."${mod_id}"]]
+modId = "ae2wtlib"
+type = "optional"
+versionRange = "[26.1.1-beta,27.0.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "ae2wtlib_api"
+type = "optional"
+versionRange = "[26.1.1-beta,27.0.0)"
+ordering = "BEFORE"
+side = "BOTH"

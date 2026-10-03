@@ -19,6 +19,9 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterBlockStateModels;
+import net.neoforged.fml.ModList;
+import com.traverse.appliedthaumaturge.menu.WirelessEssentiaTerminalMenu;
+import com.traverse.appliedthaumaturge.integration.wtlib.client.LibraryTerminalScreens;
 
 @Mod(value = AppliedThaumaturge.MODID, dist = Dist.CLIENT)
 public class AppliedThaumaturgeClient {
@@ -34,7 +37,13 @@ public class AppliedThaumaturgeClient {
         InitScreens.register(event, ATMenus.ESSENTIA_EXPORT_BUS, IOBusScreen::new, "/screens/export_bus.json");
         InitScreens.register(event, ATMenus.ESSENTIA_LEVEL_EMITTER, StorageLevelEmitterScreen::new, "/screens/essentia_level_emitter.json");
         InitScreens.register(event, ATMenus.ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
-        InitScreens.register(event, ATMenus.WIRELESS_ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
+        if (ModList.get().isLoaded("ae2wtlib")) {
+            LibraryTerminalScreens.register(event);
+        } else {
+            InitScreens.register(event, ATMenus.WIRELESS_ARCANE_TERMINAL, ArcaneTermScreen::new, "/screens/terminals/arcane_terminal.json");
+            InitScreens.register(event, ATMenus.WIRELESS_ESSENTIA_TERMINAL,
+                    MEStorageScreen<WirelessEssentiaTerminalMenu>::new, "/screens/terminals/terminal.json");
+        }
         InitScreens.register(event, ATMenus.ARCANE_INSCRIBER, ArcaneInscriberScreen::new, "/screens/terminals/arcane_inscriber.json");
         InitScreens.register(event, ATMenus.ARCANE_ASSEMBLER, ArcaneAssemblerScreen::new, "/screens/arcane_assembler.json");
     }
