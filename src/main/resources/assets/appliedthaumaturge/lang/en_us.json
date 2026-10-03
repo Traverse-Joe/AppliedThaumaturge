@@ -1,4 +1,6 @@
 {
+  "key.ae2.appliedthaumaturge.wireless_essentia_terminal": "Open Wireless Essentia Terminal",
+  "key.ae2.appliedthaumaturge.wireless_arcane_terminal": "Open Wireless Arcane Crafting Terminal",
   "item.appliedthaumaturge.upgrade_alchemy": "Alchemy Upgrade",
   "tooltip.appliedthaumaturge.wireless_essentia_terminal.alchemy_mode": "Alchemy",
   "tooltip.appliedthaumaturge.wireless_essentia_terminal.terminal_mode": "Terminal",

@@ -15,6 +15,7 @@ import com.traverse.appliedthaumaturge.part.ArcaneTerminalPart;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
+import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
 import java.util.UUID;
 import java.util.function.DoubleSupplier;
 import java.util.function.Consumer;
@@ -208,6 +209,11 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
         public boolean isValid() {
             return super.isValid() && !isDrainMode(getItemStack())
                     && (isClientSide() || terminalStack == null || getItemStack() == terminalStack);
+        }
+
+        @Override
+        public String getCloseHotkey() {
+            return ATTerminalHotkeys.WIRELESS_ARCANE_TERMINAL;
         }
 
         @Override

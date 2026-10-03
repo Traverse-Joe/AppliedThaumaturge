@@ -91,6 +91,7 @@ dependencies {
 
     localRuntime files('libs/lithostitched-1.8.0-neoforge-26.1.jar')
     localRuntime files('libs/curios-neoforge-15.0.0+26.1.2.jar')
+    compileOnly files('libs/curios-neoforge-15.0.0+26.1.2.jar')
     compileOnly files('libs/Jade-mc26.1-NeoForge-26.1.11.jar')
     localRuntime files('libs/Jade-mc26.1-NeoForge-26.1.11.jar')
 

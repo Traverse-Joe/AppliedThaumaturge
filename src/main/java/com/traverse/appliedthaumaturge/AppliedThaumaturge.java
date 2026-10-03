@@ -30,6 +30,7 @@ import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import net.minecraft.core.registries.Registries;
 import com.traverse.appliedthaumaturge.registry.ATUpgrades;
+import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -76,6 +77,7 @@ public class AppliedThaumaturge {
             AEKeyTypes.register(com.traverse.appliedthaumaturge.me.key.VisKeyType.TYPE);
         } else if (event.getRegistryKey().equals(Registries.MENU)) {
             ATMenus.register();
+            ATTerminalHotkeys.register();
         }
     }
 

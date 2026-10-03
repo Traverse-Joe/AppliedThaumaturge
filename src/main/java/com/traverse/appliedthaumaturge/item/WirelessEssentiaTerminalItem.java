@@ -12,6 +12,7 @@ import com.leclowndu93150.thaumaturge.registry.TCSounds;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
+import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -206,6 +207,11 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         @Override
         public boolean isValid() {
             return super.isValid() && !isAlchemyMode(getItemStack());
+        }
+
+        @Override
+        public String getCloseHotkey() {
+            return ATTerminalHotkeys.WIRELESS_ESSENTIA_TERMINAL;
         }
 
         @Override
