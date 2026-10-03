@@ -23,15 +23,11 @@ public class ATJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(
-                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, ATMenus.ARCANE_TERMINAL, ArcaneWorkbenchCategory.RECIPE_TYPE, 15), ArcaneWorkbenchCategory.RECIPE_TYPE);
-        registration.addRecipeTransferHandler(
-                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, ATMenus.WIRELESS_ARCANE_TERMINAL, ArcaneWorkbenchCategory.RECIPE_TYPE, 15), ArcaneWorkbenchCategory.RECIPE_TYPE);
+                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, null, ArcaneWorkbenchCategory.RECIPE_TYPE, 15), ArcaneWorkbenchCategory.RECIPE_TYPE);
         registration.addRecipeTransferHandler(
                 new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneInscriberMenu.class, ATMenus.ARCANE_INSCRIBER, ArcaneWorkbenchCategory.RECIPE_TYPE, 15), ArcaneWorkbenchCategory.RECIPE_TYPE);
         registration.addRecipeTransferHandler(
-                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, ATMenus.ARCANE_TERMINAL, RecipeTypes.CRAFTING, 9), RecipeTypes.CRAFTING);
-        registration.addRecipeTransferHandler(
-                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, ATMenus.WIRELESS_ARCANE_TERMINAL, RecipeTypes.CRAFTING, 9), RecipeTypes.CRAFTING);
+                new ArcaneTransferHandler<>(registration.getTransferHelper(), ArcaneTermMenu.class, null, RecipeTypes.CRAFTING, 9), RecipeTypes.CRAFTING);
     }
 
     @Override

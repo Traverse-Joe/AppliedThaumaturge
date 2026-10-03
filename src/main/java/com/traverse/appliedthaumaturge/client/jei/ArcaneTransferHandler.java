@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecipeTarget, R>
         implements IRecipeTransferHandler<M, R> {
@@ -26,11 +27,12 @@ public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecip
 
     private final IRecipeTransferHandlerHelper helper;
     private final Class<M> menuClass;
+    @Nullable
     private final MenuType<M> menuType;
     private final IRecipeType<R> recipeType;
     private final int slotCount;
 
-    public ArcaneTransferHandler(IRecipeTransferHandlerHelper helper, Class<M> menuClass, MenuType<M> menuType,
+    public ArcaneTransferHandler(IRecipeTransferHandlerHelper helper, Class<M> menuClass, @Nullable MenuType<M> menuType,
                                 IRecipeType<R> recipeType, int slotCount) {
         this.helper = helper;
         this.menuClass = menuClass;
@@ -46,7 +48,7 @@ public class ArcaneTransferHandler<M extends AbstractContainerMenu & ArcaneRecip
 
     @Override
     public Optional<MenuType<M>> getMenuType() {
-        return Optional.of(menuType);
+        return Optional.ofNullable(menuType);
     }
 
     @Override

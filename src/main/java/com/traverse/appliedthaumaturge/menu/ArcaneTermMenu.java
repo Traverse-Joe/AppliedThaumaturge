@@ -126,7 +126,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         if (!canCraft()) {
             return;
         }
-        InternalInventory grid = getCraftingMatrix();
+        InternalInventory grid = arcaneInventory.getSubInventory(0, ArcaneTerminalPart.CRYSTAL_START + ArcaneTerminalPart.CRYSTAL_SLOTS);
         for (int slot = 0; slot < grid.size(); slot++) {
             ItemStack stack = grid.getStackInSlot(slot);
             AEItemKey key = AEItemKey.of(stack);
@@ -147,7 +147,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
         if (!isValidMenu() || !stillValid(getPlayer())) {
             return;
         }
-        InternalInventory grid = getCraftingMatrix();
+        InternalInventory grid = arcaneInventory.getSubInventory(0, ArcaneTerminalPart.CRYSTAL_START + ArcaneTerminalPart.CRYSTAL_SLOTS);
         PlayerInternalInventory playerInventory = new PlayerInternalInventory(getPlayerInventory());
         for (int slot = 0; slot < grid.size(); slot++) {
             for (int pass = 0; pass < 2; pass++) {
