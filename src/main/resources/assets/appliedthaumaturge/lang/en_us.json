@@ -1,4 +1,7 @@
 {
+  "item.appliedthaumaturge.upgrade_alchemy": "Alchemy Upgrade",
+  "tooltip.appliedthaumaturge.wireless_essentia_terminal.alchemy_mode": "Alchemy",
+  "tooltip.appliedthaumaturge.wireless_essentia_terminal.terminal_mode": "Terminal",
   "itemGroup.appliedthaumaturge": "Applied Thaumaturge",
   "item.appliedthaumaturge.upgrade_node": "Drain Upgrade",
   "tooltip.appliedthaumaturge.wireless_arcane_terminal.drain_mode": "Drain",
@@ -62,7 +65,7 @@
   "research.appliedthaumaturge.essentia_terminal.stage_1": "The ME Essentia Terminal allows me to see all essentia my ME network can access. Additionally, I can insert and extract essentia with phials and jars through it.",
   "research.appliedthaumaturge.wireless_essentia_terminal.title": "Wireless Essentia Monitoring",
   "research.appliedthaumaturge.wireless_essentia_terminal.stage_0": "Standing at a terminal to check my essentia reserves is tedious. The wireless terminals of Applied Energistics could surely be attuned to digitized essentia.",
-  "research.appliedthaumaturge.wireless_essentia_terminal.stage_1": "By binding my Essentia Terminal into a wireless terminal, I can now watch and manage my essentia from anywhere within range of a wireless access point.",
+  "research.appliedthaumaturge.wireless_essentia_terminal.stage_1": "By binding my Essentia Terminal into a wireless terminal, I can now watch and manage my essentia from anywhere within range of a wireless access point.<BR>An Alchemy Upgrade lets me Shift-right-click to switch between Terminal and Alchemy modes, with a ding marking the change. In Alchemy mode, right-clicking a labeled jar fills it with matching essentia from my network. Left-clicking a jar sends its contents into the network; no label is needed to empty it. Transfers require an active wireless connection and terminal power. The interface remains locked until I switch back to Terminal mode.",
   "block.appliedthaumaturge.essentia_interface": "ME Essentia Interface",
   "block.appliedthaumaturge.infusion_provider": "ME Infusion Provider",
   "research.appliedthaumaturge.infusion_provider.title": "Infusion Provider",

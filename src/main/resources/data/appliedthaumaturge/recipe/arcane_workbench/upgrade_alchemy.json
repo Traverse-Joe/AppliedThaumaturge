@@ -1,0 +1,16 @@
+{
+  "type": "thaumaturge:arcane_workbench_shapeless",
+  "crystals": [],
+  "ingredients": [
+    "ae2:advanced_card",
+    "thaumaturge:phial",
+    "thaumaturge:salis_mundus"
+  ],
+  "research": {
+    "entry": "appliedthaumaturge:wireless_essentia_terminal"
+  },
+  "result": {
+    "id": "appliedthaumaturge:upgrade_alchemy"
+  },
+  "vis": 25
+}

@@ -63,6 +63,7 @@ public class AppliedThaumaturge {
         modBus.addListener(ATNetwork::register);
         modBus.addListener(this::commonSetup);
         NeoForge.EVENT_BUS.addListener(EntangledWands::onInfusionCrafted);
+        NeoForge.EVENT_BUS.addListener(com.traverse.appliedthaumaturge.item.WirelessEssentiaTerminalItem::onLeftClickJar);
     }
 
     public static Identifier id(String path) {

@@ -60,6 +60,7 @@ public final class ATItems {
     public static final DeferredItem<ItemWandRod> ENTANGLED_WAND_CORE = ITEMS.registerItem("entangled_wand_core",
             p -> new ItemWandRod(p.stacksTo(2).rarity(Rarity.RARE), ATWandParts.ENTANGLED));
     public static final DeferredItem<Item> UPGRADE_ARCANE = ITEMS.registerItem("upgrade_arcane", Upgrades::createUpgradeCardItem);
+    public static final DeferredItem<Item> UPGRADE_ALCHEMY = ITEMS.registerItem("upgrade_alchemy", Upgrades::createUpgradeCardItem);
     public static final DeferredItem<Item> UPGRADE_NODE = ITEMS.registerItem("upgrade_node", Upgrades::createUpgradeCardItem);
 
     public static final DeferredItem<PartItem<EssentiaImportBusPart>> ESSENTIA_IMPORT_BUS = part("essentia_import_bus", EssentiaImportBusPart.class, EssentiaImportBusPart::new);

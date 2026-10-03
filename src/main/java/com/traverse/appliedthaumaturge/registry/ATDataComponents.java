@@ -36,6 +36,11 @@ public final class ATDataComponents {
                     .persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> ALCHEMY_MODE =
+            COMPONENTS.registerComponentType("alchemy_mode", builder -> builder
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
+
     private ATDataComponents() {
     }
 }

@@ -31,7 +31,8 @@
     {
       "text": "research.appliedthaumaturge.wireless_essentia_terminal.stage_1",
       "recipes": [
-        "appliedthaumaturge:arcane_workbench/wireless_essentia_terminal"
+        "appliedthaumaturge:arcane_workbench/wireless_essentia_terminal",
+        "appliedthaumaturge:arcane_workbench/upgrade_alchemy"
       ]
     }
   ],
