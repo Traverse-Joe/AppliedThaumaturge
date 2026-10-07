@@ -83,7 +83,7 @@ public final class ArcanePlanCheck {
                     pools.add(pool);
                 }
                 Map<ResourceKey<IAspect>, AEItemKey> crystalKeys = new HashMap<>();
-                for (var requirement : pattern.recipe().getCrystals().entries()) {
+                for (var requirement : pattern.recipe().crystalCost().entries()) {
                     AEItemKey key = AEItemKey.of(EssentiaCrystalFactory.of(requirement.aspect(), 1));
                     crystalKeys.put(requirement.aspect().getKey(), key);
                     crystals.computeIfAbsent(key, ignored -> Math.max(0, storedItems.get(key) - plan.usedItems().get(key)));

@@ -55,7 +55,7 @@ public final class ArcanePattern implements IPatternDetails {
         }
         this.crystalAspects = new ArrayList<>();
         for (ResourceKey<IAspect> primal : MenuArcaneWorkbench.PRIMAL_ORDER) {
-            for (AspectInstance crystal : recipe.getCrystals().entries()) {
+            for (AspectInstance crystal : recipe.crystalCost().entries()) {
                 if (!usesWand && crystal.aspect().is(primal) && crystal.amount() > 0) {
                     ItemStack stack = EssentiaCrystalFactory.of(crystal.aspect(), 1);
                     inputList.add(new Input(new GenericStack[]{new GenericStack(AEItemKey.of(stack), 1)}, crystal.amount()));

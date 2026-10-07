@@ -19,7 +19,7 @@ public record ArcaneVisPayment(Map<ResourceKey<IAspect>, Integer> buffer,
 
     public static Map<ResourceKey<IAspect>, Integer> costs(ArcaneCraftingRecipe recipe) {
         Map<ResourceKey<IAspect>, Integer> costs = new LinkedHashMap<>();
-        for (var requirement : recipe.getCrystals().entries()) {
+        for (var requirement : recipe.crystalCost().entries()) {
             if (requirement.amount() > 0) {
                 costs.merge(requirement.aspect().getKey(), Math.multiplyExact(requirement.amount(), CENTIVIS_PER_CRYSTAL), Integer::sum);
             }

@@ -1,6 +1,6 @@
 package com.traverse.appliedthaumaturge.vis;
 
-import com.leclowndu93150.thaumaturge.api.aspect.TCAspects;
+import com.leclowndu93150.thaumaturge.api.aspect.TTAspects;
 import com.leclowndu93150.thaumaturge.content.wands.ItemWand;
 import com.leclowndu93150.thaumaturge.content.wands.WandVisHelper;
 import com.traverse.appliedthaumaturge.part.VisRelayInterfacePart;
@@ -17,7 +17,7 @@ public final class VisRelayCharging {
             return false;
         }
         boolean charged = false;
-        for (var aspect : TCAspects.PRIMALS) {
+        for (var aspect : TTAspects.PRIMALS) {
             int room = Math.min(10, WandVisHelper.getMaxVis(wand) - WandVisHelper.getVis(wand, aspect));
             if (room <= 0) {
                 continue;

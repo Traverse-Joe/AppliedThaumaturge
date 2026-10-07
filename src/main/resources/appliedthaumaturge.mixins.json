@@ -14,7 +14,9 @@
   ],
   "client": [
     "InventoryScanHandlerMixin",
-    "GuiGraphicsExtractorMixin"
+    "GuiGraphicsExtractorMixin",
+    "RepoSearchMixin",
+    "MEStorageScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

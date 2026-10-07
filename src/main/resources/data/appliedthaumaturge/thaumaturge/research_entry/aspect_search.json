@@ -1,0 +1,45 @@
+{
+  "category": "appliedthaumaturge:energistics",
+  "name": "research.appliedthaumaturge.aspect_search.title",
+  "parents": [
+    "appliedthaumaturge:arcane_terminal"
+  ],
+  "column": 1,
+  "row": 3,
+  "icons": [
+    "minecraft:spyglass"
+  ],
+  "stages": [
+    {
+      "text": "research.appliedthaumaturge.aspect_search.stage_0",
+      "required_knowledge": [
+        {
+          "type": "observation",
+          "category": "appliedthaumaturge:energistics",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "text": "research.appliedthaumaturge.aspect_search.stage_1"
+    }
+  ],
+  "note_aspects": [
+    {
+      "aspect": "thaumaturge:sensus",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:cognitio",
+      "amount": 3
+    },
+    {
+      "aspect": "thaumaturge:machina",
+      "amount": 2
+    }
+  ],
+  "complexity": 1,
+  "meta": [
+    "round"
+  ]
+}

@@ -5,7 +5,7 @@ import com.leclowndu93150.thaumaturge.api.recipe.IArcaneCraftingInput;
 import com.leclowndu93150.thaumaturge.api.wands.IWandRodOnAssemble;
 import com.leclowndu93150.thaumaturge.api.wands.IWandVisStorage;
 import com.leclowndu93150.thaumaturge.api.wands.WandVis;
-import com.leclowndu93150.thaumaturge.registry.TCDataComponents;
+import com.leclowndu93150.thaumaturge.registry.TTDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,7 +35,7 @@ public final class EntangledWands implements IWandVisStorage, IWandRodOnAssemble
     }
 
     private static WandVis ownVis(ItemStack stack) {
-        WandVis vis = stack.get(TCDataComponents.WAND_VIS.get());
+        WandVis vis = stack.get(TTDataComponents.WAND_VIS.get());
         return vis != null ? vis : WandVis.EMPTY;
     }
 
@@ -61,7 +61,7 @@ public final class EntangledWands implements IWandVisStorage, IWandRodOnAssemble
         if (data != null) {
             data.setPool(id, vis);
         }
-        wand.set(TCDataComponents.WAND_VIS.get(), vis);
+        wand.set(TTDataComponents.WAND_VIS.get(), vis);
     }
 
     public static boolean mirror(ItemStack wand) {
@@ -69,7 +69,7 @@ public final class EntangledWands implements IWandVisStorage, IWandRodOnAssemble
         EntangledVisData data = id == null ? null : serverData();
         WandVis pool = data == null ? null : data.pool(id);
         if (pool != null && !pool.equals(ownVis(wand))) {
-            wand.set(TCDataComponents.WAND_VIS.get(), pool);
+            wand.set(TTDataComponents.WAND_VIS.get(), pool);
             return true;
         }
         return false;

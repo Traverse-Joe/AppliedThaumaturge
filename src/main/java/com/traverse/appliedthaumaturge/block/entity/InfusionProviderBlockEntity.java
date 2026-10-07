@@ -29,17 +29,17 @@ public class InfusionProviderBlockEntity extends EssentiaNetworkBlockEntity impl
     }
 
     @Override
-    public boolean doesContainerAccept(Holder<IAspect> aspect) {
+    public boolean accepts(Holder<IAspect> aspect) {
         return false;
     }
 
     @Override
-    public int addToContainer(Holder<IAspect> aspect, int amount) {
+    public int fill(Holder<IAspect> aspect, int amount) {
         return amount;
     }
 
     @Override
-    public boolean takeFromContainer(Holder<IAspect> aspect, int amount) {
+    public boolean drain(Holder<IAspect> aspect, int amount) {
         if (extractFromNetwork(aspect, amount, Actionable.SIMULATE) < amount) {
             return false;
         }
@@ -47,12 +47,12 @@ public class InfusionProviderBlockEntity extends EssentiaNetworkBlockEntity impl
     }
 
     @Override
-    public boolean doesContainerContainAmount(Holder<IAspect> aspect, int amount) {
+    public boolean holds(Holder<IAspect> aspect, int amount) {
         return networkAmount(aspect) >= amount;
     }
 
     @Override
-    public int containerContains(Holder<IAspect> aspect) {
+    public int amountOf(Holder<IAspect> aspect) {
         return (int) Math.min(Integer.MAX_VALUE, networkAmount(aspect));
     }
 }

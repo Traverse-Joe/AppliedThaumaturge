@@ -87,7 +87,7 @@ configurations {
 dependencies {
     implementation files('libs/appliedenergistics2-26.1.12-beta.jar')
     implementation files('libs/guideme-26.1.14-beta.jar')
-    implementation files('libs/thaumaturge-26.1.2-NeoForge-BETA-0.2.1.jar')
+    implementation files('libs/thaumaturge-26.1.2-NeoForge-1.0.0.jar')
 
     localRuntime files('libs/lithostitched-1.8.0-neoforge-26.1.jar')
     localRuntime files('libs/curios-neoforge-15.0.0+26.1.2.jar')

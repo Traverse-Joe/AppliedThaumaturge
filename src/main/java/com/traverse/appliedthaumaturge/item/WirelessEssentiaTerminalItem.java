@@ -8,7 +8,7 @@ import appeng.me.helpers.PlayerSource;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.Platform;
 import com.leclowndu93150.thaumaturge.content.essentia.jar.BlockEntityJar;
-import com.leclowndu93150.thaumaturge.registry.TCSounds;
+import com.leclowndu93150.thaumaturge.registry.TTSounds;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
@@ -186,7 +186,7 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
                 inventory.extract(key, moved, Actionable.MODULATE, source);
             }
         } else {
-            player.level().playSound(null, pos, TCSounds.JAR.get(), SoundSource.BLOCKS, 0.25F, 1.0F);
+            player.level().playSound(null, pos, TTSounds.JAR.get(), SoundSource.BLOCKS, 0.25F, 1.0F);
         }
         player.getInventory().setChanged();
         player.containerMenu.broadcastChanges();

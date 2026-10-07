@@ -492,7 +492,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
     public static Map<ResourceKey<IAspect>, Integer> getWandCost(ArcanePattern pattern) {
         Map<ResourceKey<IAspect>, Integer> cost = new LinkedHashMap<>();
         if (pattern.usesWand()) {
-            for (var crystal : pattern.recipe().getCrystals().entries()) {
+            for (var crystal : pattern.recipe().crystalCost().entries()) {
                 if (crystal.amount() > 0) {
                     cost.merge(crystal.aspect().getKey(), crystal.amount() * WandEconomy.CRYSTAL_SUBSTITUTE_VIS
                             * WandEconomy.CENTIVIS_PER_VIS, Integer::sum);
@@ -516,7 +516,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
             }
             modifier /= MenuArcaneWorkbench.PRIMAL_ORDER.size();
         }
-        int base = pattern.recipe().getBaseVis();
+        int base = pattern.recipe().visCost();
         return base <= 0 ? 0 : Math.max(1, (int) Math.ceil(base * modifier));
     }
 

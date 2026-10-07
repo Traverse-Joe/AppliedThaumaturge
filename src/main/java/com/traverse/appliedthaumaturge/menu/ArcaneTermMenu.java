@@ -15,6 +15,7 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.PlayerInternalInventory;
 import com.leclowndu93150.thaumaturge.api.recipe.ArcaneCraftingTransaction;
 import com.leclowndu93150.thaumaturge.api.research.scan.ScanningManager;
+import com.leclowndu93150.thaumaturge.api.research.scan.ScanTarget;
 import com.leclowndu93150.thaumaturge.content.item.ThaumometerItem;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.content.workbench.MenuArcaneWorkbench;
@@ -62,6 +63,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
     public int availableVis;
 
     private int auraRefresh;
+    private boolean lastChargingCard;
     @Nullable
     private RecipeHolder<CraftingRecipe> vanillaRecipe;
 
@@ -115,7 +117,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
                 || arcaneHost.getInventory().extract(item, 1, Actionable.SIMULATE, getActionSource()) < 1) {
             return;
         }
-        ScanningManager.scanTheThing(getPlayer(), item.toStack(1));
+        ScanningManager.scan(getPlayer(), ScanTarget.stack(item.toStack(1)));
     }
 
     public void clearCraftingGrid() {
@@ -274,8 +276,10 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
             if (wandChanged) {
                 arcaneHost.saveArcaneInventory();
             }
-            boolean refreshAura = auraRefresh-- <= 0;
+            boolean chargingCard = arcaneHost.hasChargingCard();
+            boolean refreshAura = auraRefresh-- <= 0 || chargingCard != lastChargingCard;
             if (refreshAura) {
+                lastChargingCard = chargingCard;
                 auraRefresh = 10;
                 availableVis = measureAura();
             }

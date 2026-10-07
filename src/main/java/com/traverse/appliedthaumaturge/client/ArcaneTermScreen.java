@@ -3,10 +3,14 @@ package com.traverse.appliedthaumaturge.client;
 import appeng.client.gui.me.common.MEStorageScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.api.config.ActionItems;
+import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.menu.me.common.GridInventoryEntry;
 import com.leclowndu93150.thaumaturge.content.item.ThaumometerItem;
 import com.traverse.appliedthaumaturge.menu.ArcaneTermMenu;
+import com.traverse.appliedthaumaturge.mixin.MEStorageScreenAccessor;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerInput;
@@ -53,5 +57,24 @@ public class ArcaneTermScreen extends MEStorageScreen<ArcaneTermMenu> {
             required = required.copy().withColor(0xC0FFFF);
         }
         setTextContent("vis_required", required);
+        updateSearchTooltip();
+    }
+
+    private void updateSearchTooltip() {
+        AETextField searchField = ((MEStorageScreenAccessor) this).appliedthaumaturge$getSearchField();
+        Component aspectLine = AspectSearch.tooltip();
+        List<Component> current = searchField.getTooltipMessage();
+        boolean shown = current.contains(aspectLine);
+        boolean unlocked = AspectSearch.isUnlocked();
+        if (shown == unlocked) {
+            return;
+        }
+        List<Component> lines = new ArrayList<>(current);
+        if (unlocked) {
+            lines.add(aspectLine);
+        } else {
+            lines.remove(aspectLine);
+        }
+        searchField.setTooltipMessage(lines);
     }
 }

@@ -6,6 +6,7 @@ import appeng.util.inv.AppEngInternalInventory;
 import com.leclowndu93150.thaumaturge.api.recipe.ArcaneWorkbenchContext;
 import com.traverse.appliedthaumaturge.arcane.ArcaneTerminalHost;
 import com.traverse.appliedthaumaturge.item.WirelessArcaneTerminalItem;
+import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
@@ -55,7 +56,7 @@ public final class ArcaneWTMenuHost extends WTMenuHost implements ArcaneTerminal
 
     @Override
     public boolean hasChargingCard() {
-        return arcaneHost.hasChargingCard();
+        return getUpgrades().isInstalled(ATItems.UPGRADE_ARCANE);
     }
 
     @Override
