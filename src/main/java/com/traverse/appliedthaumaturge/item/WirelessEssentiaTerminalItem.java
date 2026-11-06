@@ -7,7 +7,7 @@ import appeng.api.util.DimensionalBlockPos;
 import appeng.me.helpers.PlayerSource;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.Platform;
-import com.leclowndu93150.thaumaturge.content.essentia.jar.BlockEntityJar;
+import com.leclowndu93150.thaumaturge.content.essentia.jar.AbstractBlockEntityJar;
 import com.leclowndu93150.thaumaturge.registry.TTSounds;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
@@ -114,7 +114,7 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         if (!(terminal.getItem() instanceof WirelessTerminalItem item)
                 || !terminal.is(ATItems.WIRELESS_ESSENTIA_TERMINAL.get())
                 || !isAlchemyMode(terminal) || !hasAlchemyUpgrade(item, terminal)
-                || !(player.level().getBlockEntity(event.getPos()) instanceof BlockEntityJar)) {
+                || !(player.level().getBlockEntity(event.getPos()) instanceof AbstractBlockEntityJar)) {
             return;
         }
         event.setCanceled(true);
@@ -138,7 +138,7 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
         if (!terminal.is(item) || !isAlchemyMode(terminal) || !hasAlchemyUpgrade(item, terminal)
                 || hit == null || !hit.getBlockPos().equals(pos)
                 || !Platform.hasPermissions(new DimensionalBlockPos(player.level(), pos), player)
-                || !(player.level().getBlockEntity(pos) instanceof BlockEntityJar jar)) {
+                || !(player.level().getBlockEntity(pos) instanceof AbstractBlockEntityJar jar)) {
             return;
         }
         var aspectKey = fill ? jar.aspectFilterKey() : jar.aspectKey();

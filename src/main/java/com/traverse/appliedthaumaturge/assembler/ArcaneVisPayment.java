@@ -1,10 +1,10 @@
 package com.traverse.appliedthaumaturge.assembler;
 
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
+import com.leclowndu93150.thaumaturge.api.wands.WandAccess;
 import com.leclowndu93150.thaumaturge.api.wands.WandVis;
 import com.leclowndu93150.thaumaturge.content.recipe.workbench.ArcaneCraftingRecipe;
 import com.leclowndu93150.thaumaturge.content.wands.WandEconomy;
-import com.leclowndu93150.thaumaturge.content.wands.WandVisHelper;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ public record ArcaneVisPayment(Map<ResourceKey<IAspect>, Integer> buffer,
                 continue;
             }
             if (hasWand) {
-                if (WandVisHelper.getVis(wandStack, cost.getKey()) < remaining) {
+                if (WandAccess.getVis(wandStack, cost.getKey()) < remaining) {
                     return null;
                 }
                 wand.put(cost.getKey(), remaining);

@@ -4,7 +4,7 @@
   "package": "com.traverse.appliedthaumics.devfix.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "TCCreativeTabsMixin"
+    "TTCreativeTabsMixin"
   ],
   "injectors": {
     "defaultRequire": 0

@@ -87,7 +87,8 @@ configurations {
 dependencies {
     implementation files('libs/appliedenergistics2-26.1.12-beta.jar')
     implementation files('libs/guideme-26.1.14-beta.jar')
-    implementation files('libs/thaumaturge-26.1.2-NeoForge-1.0.0.jar')
+    implementation files(providers.gradleProperty('thaumaturge_jar').getOrElse(
+            "libs/thaumaturge-${minecraft_version}-NeoForge-${thaumaturge_version}.jar"))
 
     localRuntime files('libs/lithostitched-1.8.0-neoforge-26.1.jar')
     localRuntime files('libs/curios-neoforge-15.0.0+26.1.2.jar')
@@ -111,6 +112,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
             neo_version_range      : neo_version_range,
+            thaumaturge_version_range: thaumaturge_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,

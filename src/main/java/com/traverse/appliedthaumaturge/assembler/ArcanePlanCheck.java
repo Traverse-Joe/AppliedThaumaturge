@@ -10,7 +10,7 @@ import appeng.menu.me.crafting.CraftingPlanSummary;
 import appeng.menu.me.crafting.CraftingPlanSummaryEntry;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.aura.AuraHelper;
-import com.leclowndu93150.thaumaturge.content.wands.WandVisHelper;
+import com.leclowndu93150.thaumaturge.api.wands.WandAccess;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import com.traverse.appliedthaumaturge.me.key.VisKey;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
@@ -98,7 +98,7 @@ public final class ArcanePlanCheck {
                     var bufferPool = new BufferPool(assembler, cost.getKey());
                     long buffered = buffers.computeIfAbsent(bufferPool, ignored -> (long) assembler.getStoredVis().amount(cost.getKey()));
                     var pool = new WandPool(reservoir, cost.getKey());
-                    long available = wand.computeIfAbsent(pool, ignored -> hasWand ? (long) WandVisHelper.getVis(stack, cost.getKey()) : 0L);
+                    long available = wand.computeIfAbsent(pool, ignored -> hasWand ? (long) WandAccess.getVis(stack, cost.getKey()) : 0L);
                     long visCrafts = (buffered + available) / cost.getValue();
                     fullWandCrafts = Math.min(fullWandCrafts, visCrafts);
                     long crystalVis = hasWand ? 0 : crystals.get(crystalKeys.get(cost.getKey())) * perCrystal;

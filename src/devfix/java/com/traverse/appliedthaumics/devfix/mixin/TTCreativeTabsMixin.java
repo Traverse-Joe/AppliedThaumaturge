@@ -2,15 +2,15 @@ package com.traverse.appliedthaumics.devfix.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.leclowndu93150.thaumaturge.registry.TCCreativeTabs;
+import com.leclowndu93150.thaumaturge.registry.TTCreativeTabs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(TCCreativeTabs.class)
-public class TCCreativeTabsMixin {
+@Mixin(TTCreativeTabs.class)
+public class TTCreativeTabsMixin {
     @WrapOperation(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CreativeModeTab$Output;accept(Lnet/minecraft/world/item/ItemStack;)V"))
     private static void appliedthaumics$skipDuplicateStack(CreativeModeTab.Output output, ItemStack stack, Operation<Void> original) {
         try {
