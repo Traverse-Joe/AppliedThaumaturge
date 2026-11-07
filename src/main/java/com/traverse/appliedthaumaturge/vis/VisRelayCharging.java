@@ -18,7 +18,7 @@ public final class VisRelayCharging {
         }
         boolean charged = false;
         for (var aspect : TTAspects.PRIMALS) {
-            int room = Math.min(10, WandVisHelper.getMaxVis(wand) - WandVisHelper.getVis(wand, aspect));
+            int room = Math.min(10, WandVisHelper.capacityOf(wand) - WandVisHelper.storedIn(wand, aspect));
             if (room <= 0) {
                 continue;
             }
@@ -31,7 +31,7 @@ public final class VisRelayCharging {
             }
             if (drained > 0) {
                 charged = true;
-                WandVisHelper.addRealVis(wand, aspect, drained, true);
+                WandVisHelper.topUpCentivis(wand, aspect, drained, true);
             }
         }
         return charged;

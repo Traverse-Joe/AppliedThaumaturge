@@ -98,7 +98,7 @@ public final class ArcanePlanCheck {
                     var bufferPool = new BufferPool(assembler, cost.getKey());
                     long buffered = buffers.computeIfAbsent(bufferPool, ignored -> (long) assembler.getStoredVis().amount(cost.getKey()));
                     var pool = new WandPool(reservoir, cost.getKey());
-                    long available = wand.computeIfAbsent(pool, ignored -> hasWand ? (long) WandVisHelper.getVis(stack, cost.getKey()) : 0L);
+                    long available = wand.computeIfAbsent(pool, ignored -> hasWand ? (long) WandVisHelper.storedIn(stack, cost.getKey()) : 0L);
                     long visCrafts = (buffered + available) / cost.getValue();
                     fullWandCrafts = Math.min(fullWandCrafts, visCrafts);
                     long crystalVis = hasWand ? 0 : crystals.get(crystalKeys.get(cost.getKey())) * perCrystal;

@@ -449,13 +449,13 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
             if (vis > 0 && !drainAura(serverLevel, vis, tx)) {
                 return false;
             }
-            if (!payment.wand().isEmpty() && !WandVisHelper.consumeAllVisRaw(wand, payment.wand(), true)) {
+            if (!payment.wand().isEmpty() && !WandVisHelper.payExact(wand, payment.wand(), true)) {
                 return false;
             }
             tx.commit();
         }
         if (!payment.wand().isEmpty()) {
-            WandVisHelper.consumeAllVisRaw(wand, payment.wand(), false);
+            WandVisHelper.payExact(wand, payment.wand(), false);
             inventory.setItemDirect(WAND_SLOT, wand);
         }
         for (int i = 0; i < 9; i++) {
@@ -512,7 +512,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
             ItemStack wand = inventory.getStackInSlot(WAND_SLOT);
             modifier = 0;
             for (var primal : MenuArcaneWorkbench.PRIMAL_ORDER) {
-                modifier += WandVisHelper.getConsumptionModifier(wand, null, primal, true);
+                modifier += WandVisHelper.costFactor(wand, null, primal, true);
             }
             modifier /= MenuArcaneWorkbench.PRIMAL_ORDER.size();
         }

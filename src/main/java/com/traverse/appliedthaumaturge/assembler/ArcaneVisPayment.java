@@ -43,7 +43,7 @@ public record ArcaneVisPayment(Map<ResourceKey<IAspect>, Integer> buffer,
                 continue;
             }
             if (hasWand) {
-                if (WandVisHelper.getVis(wandStack, cost.getKey()) < remaining) {
+                if (WandVisHelper.storedIn(wandStack, cost.getKey()) < remaining) {
                     return null;
                 }
                 wand.put(cost.getKey(), remaining);
