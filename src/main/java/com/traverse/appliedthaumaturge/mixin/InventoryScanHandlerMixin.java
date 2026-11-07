@@ -47,7 +47,7 @@ public abstract class InventoryScanHandlerMixin {
         appliedthaumaturge$hoveredSerial = -1;
     }
 
-    @Inject(method = "onClientTick", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/network/ClientPacketDistributor;sendToServer(Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;[Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;)V"), cancellable = true)
+    @Inject(method = "onClientTick", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/network/PacketDistributor;sendToServer(Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;[Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;)V"), cancellable = true)
     private static void appliedthaumaturge$scanStoredItem(ClientTickEvent.Post event, CallbackInfo ci) {
         if (Minecraft.getInstance().screen instanceof ArcaneTermScreen screen) {
             var menu = screen.getMenu();

@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "[4,)"
 license = "${mod_license}"
 
 [[mods]]
@@ -29,14 +29,14 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "ae2"
 type = "required"
-versionRange = "[26.1.12-beta,)"
+versionRange = "[19.2.17,20.0.0)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "thaumaturge"
 type = "required"
-versionRange = "[1.0.0,)"
+versionRange = "${thaumaturge_version_range}"
 ordering = "AFTER"
 side = "BOTH"
 
@@ -44,7 +44,7 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "curios"
 type = "optional"
-versionRange = "[15.0.0,)"
+versionRange = "[9.5.0,)"
 ordering = "AFTER"
 side = "BOTH"
 
@@ -54,13 +54,13 @@ config = "appliedthaumaturge.mixins.json"
 [[dependencies."${mod_id}"]]
 modId = "ae2wtlib"
 type = "optional"
-versionRange = "[26.1.1-beta,27.0.0)"
+versionRange = "[19.5.1,20.0.0)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "ae2wtlib_api"
 type = "optional"
-versionRange = "[26.1.1-beta,27.0.0)"
+versionRange = "[19.5.1,20.0.0)"
 ordering = "BEFORE"
 side = "BOTH"

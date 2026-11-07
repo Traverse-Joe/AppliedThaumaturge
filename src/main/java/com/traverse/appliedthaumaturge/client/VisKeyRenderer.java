@@ -1,22 +1,23 @@
 package com.traverse.appliedthaumaturge.client;
 
-import appeng.client.api.AEKeyRenderer;
-import com.leclowndu93150.thaumaturge.api.aspect.AspectKnowledge;
-import com.leclowndu93150.thaumaturge.api.aspect.AspectKnowledgeAccess;
+import appeng.api.client.AEKeyRenderHandler;
+import appeng.api.client.AEKeyRendering;
+import appeng.api.stacks.AEItemKey;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.client.AspectRendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.traverse.appliedthaumaturge.me.key.VisKey;
+import com.traverse.appliedthaumaturge.registry.ATItems;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public final class VisKeyRenderer implements AEKeyRenderer<VisKey, VisKeyRenderer.State> {
+public final class VisKeyRenderer implements AEKeyRenderHandler<VisKey> {
     public static final VisKeyRenderer INSTANCE = new VisKeyRenderer();
 
     private VisKeyRenderer() {
@@ -32,10 +33,9 @@ public final class VisKeyRenderer implements AEKeyRenderer<VisKey, VisKeyRendere
     }
 
     @Override
-    public void drawInGui(Minecraft minecraft, GuiGraphicsExtractor graphics, int x, int y, VisKey key) {
+    public void drawInGui(Minecraft minecraft, GuiGraphics graphics, int x, int y, VisKey key) {
         if (key.equals(VisKey.AURA)) {
-            appeng.client.api.AEKeyRendering.drawInGui(minecraft, graphics, x, y,
-                    appeng.api.stacks.AEItemKey.of(com.traverse.appliedthaumaturge.registry.ATItems.UPGRADE_ARCANE.get()));
+            AEKeyRendering.drawInGui(minecraft, graphics, x, y, AEItemKey.of(ATItems.UPGRADE_ARCANE.get()));
             return;
         }
         Holder<IAspect> aspect = resolve(key);
@@ -47,45 +47,18 @@ public final class VisKeyRenderer implements AEKeyRenderer<VisKey, VisKeyRendere
     }
 
     @Override
-    public Class<State> stateClass() {
-        return State.class;
+    public void drawOnBlockFace(PoseStack poseStack, MultiBufferSource buffers, VisKey key, float scale, int combinedLight, Level level) {
+        Holder<IAspect> aspect = level != null ? key.holderOrNull(level.registryAccess()) : resolve(key);
+        EssentiaKeyRenderer.drawAspectOnBlockFace(poseStack, buffers, aspect, scale, combinedLight);
     }
 
     @Override
-    public State createState() {
-        return new State();
-    }
-
-    @Override
-    public void extract(State state, VisKey key, @Nullable Level level, int seed) {
-        state.aspect = level != null ? key.holderOrNull(level.registryAccess()) : resolve(key);
-        state.knowledge = state.aspect != null ? AspectKnowledgeAccess.of(state.aspect) : AspectKnowledge.UNKNOWN;
-    }
-
-    @Override
-    public void submit(PoseStack poseStack, State state, SubmitNodeCollector nodes, int lightCoords) {
-        Holder<IAspect> aspect = state.aspect;
-        AspectKnowledge knowledge = state.knowledge;
-        poseStack.pushPose();
-        poseStack.translate(0.0F, 0.0F, 0.01F);
-        if (aspect == null) {
-            nodes.submitCustomGeometry(poseStack, AspectRendering.missingRenderType(AspectRendering.BlendMode.ALPHA),
-                    (pose, buffer) -> AspectRendering.renderMissingQuad(pose, buffer, 1.0F, lightCoords));
-        } else {
-            nodes.submitCustomGeometry(poseStack, AspectRendering.renderType(aspect, knowledge, AspectRendering.BlendMode.ALPHA),
-                    (pose, buffer) -> AspectRendering.renderQuad(pose, buffer, aspect, knowledge, 1.0F, false, lightCoords));
-        }
-        poseStack.popPose();
+    public Component getDisplayName(VisKey key) {
+        return key.getDisplayName();
     }
 
     @Override
     public List<Component> getTooltip(VisKey key) {
         return List.of(key.getDisplayName());
-    }
-
-    public static final class State {
-        @Nullable
-        Holder<IAspect> aspect;
-        AspectKnowledge knowledge = AspectKnowledge.UNKNOWN;
     }
 }

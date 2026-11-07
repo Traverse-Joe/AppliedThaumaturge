@@ -12,7 +12,7 @@ import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.content.workbench.MenuArcaneWorkbench;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import java.util.List;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -34,7 +34,7 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
     }
 
     @Override
-    public void drawBG(GuiGraphicsExtractor graphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTick) {
+    public void drawBG(GuiGraphics graphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTick) {
         super.drawBG(graphics, offsetX, offsetY, mouseX, mouseY, partialTick);
         for (int index = 1; index < ArcaneAssemblerBlockEntity.MAX_CORE_SLOTS; index++) {
             if (getMenu().isCoreSlotActive(index)) {
@@ -62,8 +62,8 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        super.render(graphics, mouseX, mouseY, partialTick);
         int x = mouseX - getGuiLeft();
         int y = mouseY - getGuiTop();
         for (int index = 0; index < 6; index++) {
@@ -72,7 +72,7 @@ public class ArcaneAssemblerScreen extends UpgradeableScreen<ArcaneAssemblerMenu
                 var aspect = MenuArcaneWorkbench.PRIMAL_ORDER.get(index);
                 drawTooltip(graphics, mouseX, mouseY, List.of(Component.translatable(
                         "gui.appliedthaumaturge.stored_primal_vis",
-                        Component.translatable("aspect." + aspect.identifier().getNamespace() + "." + aspect.identifier().getPath()),
+                        Component.translatable("aspect." + aspect.location().getNamespace() + "." + aspect.location().getPath()),
                         String.format(java.util.Locale.ROOT, "%.2f", getMenu().getStoredVis(index) / 100.0),
                         ATConfig.arcaneAssemblerMaxBufferCentivis() / 100),
                         Component.translatable(getMenu().visLinked ? "gui.appliedthaumaturge.relay_linked" : "gui.appliedthaumaturge.relay_unlinked")));

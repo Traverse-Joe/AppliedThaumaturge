@@ -21,7 +21,7 @@ public final class CuriosTerminalIntegration {
 
     private static void register(WirelessTerminalItem item, String id) {
         HotkeyAction.register(player -> {
-            var inventory = CuriosApi.getCuriosInventoryOrNull(player);
+            var inventory = CuriosApi.getCuriosInventory(player).orElse(null);
             if (inventory == null) {
                 return false;
             }

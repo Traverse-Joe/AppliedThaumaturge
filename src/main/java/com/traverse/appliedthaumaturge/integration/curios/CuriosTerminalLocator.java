@@ -17,7 +17,7 @@ public record CuriosTerminalLocator(String identifier, int slot) implements Item
 
     @Override
     public ItemStack locateItem(Player player) {
-        var inventory = CuriosApi.getCuriosInventoryOrNull(player);
+        var inventory = CuriosApi.getCuriosInventory(player).orElse(null);
         if (inventory == null || slot < 0) {
             return ItemStack.EMPTY;
         }

@@ -18,14 +18,28 @@
       "amount": 16
     }
   ],
-  "catalyst": "thaumaturge:wand_rod_silverwood",
+  "catalyst": {
+    "item": "thaumaturge:wand_rod_silverwood"
+  },
   "components": [
-    "thaumaturge:wand_rod_silverwood",
-    "ae2:fluix_crystal",
-    "minecraft:ender_pearl",
-    "ae2:singularity",
-    "minecraft:ender_pearl",
-    "ae2:fluix_crystal"
+    {
+      "item": "thaumaturge:wand_rod_silverwood"
+    },
+    {
+      "item": "ae2:fluix_crystal"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "ae2:singularity"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "ae2:fluix_crystal"
+    }
   ],
   "instability": 5,
   "research": {

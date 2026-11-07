@@ -16,21 +16,18 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public class EssentiaContainerItemStrategy implements ContainerItemStrategy<EssentiaKey, EssentiaContainerItemStrategy.Context> {
 
-    public record Context(ItemAccess access, Player player, @Nullable AbstractContainerMenu menu) {
+    public record Context(EssentiaItemAccess access, Player player, @Nullable AbstractContainerMenu menu) {
         @Nullable
         IEssentiaItemStorage storage() {
-            ItemResource resource = access.getResource();
-            if (resource.isEmpty()) {
+            ItemStack stack = access.getOne();
+            if (stack.isEmpty()) {
                 return null;
             }
-            return resource.toStack(1).getCapability(EssentiaCapabilities.ITEM_STORAGE);
+            return stack.getCapability(EssentiaCapabilities.ITEM_STORAGE);
         }
 
         HolderLookup.Provider registries() {
@@ -58,17 +55,17 @@ public class EssentiaContainerItemStrategy implements ContainerItemStrategy<Esse
     @Nullable
     @Override
     public Context findCarriedContext(Player player, AbstractContainerMenu menu) {
-        return wrap(ItemAccess.forPlayerCursor(player, menu), player, menu);
+        return wrap(EssentiaItemAccess.forPlayerCursor(player, menu), player, menu);
     }
 
     @Nullable
     @Override
     public Context findPlayerSlotContext(Player player, int slot) {
-        return wrap(ItemAccess.forPlayerSlot(player, slot), player, player.containerMenu);
+        return wrap(EssentiaItemAccess.forPlayerSlot(player, slot), player, player.containerMenu);
     }
 
     @Nullable
-    private static Context wrap(ItemAccess access, Player player, @Nullable AbstractContainerMenu menu) {
+    private static Context wrap(EssentiaItemAccess access, Player player, @Nullable AbstractContainerMenu menu) {
         Context context = new Context(access, player, menu);
         return context.storage() == null ? null : context;
     }
@@ -111,21 +108,8 @@ public class EssentiaContainerItemStrategy implements ContainerItemStrategy<Esse
         if (result.amountMoved() <= 0) {
             return 0;
         }
-        ItemStack resulting = result.resultingStack();
-        ItemResource newResource = resulting.isEmpty() ? null : ItemResource.of(resulting);
-        try (Transaction tx = Transaction.openRoot()) {
-            int changed;
-            if (newResource == null) {
-                changed = context.access().extract(context.access().getResource(), 1, tx);
-            } else {
-                changed = context.access().exchange(newResource, 1, tx);
-            }
-            if (changed != 1) {
-                return 0;
-            }
-            if (mode == Actionable.MODULATE) {
-                tx.commit();
-            }
+        if (!context.access().exchange(result.resultingStack(), mode == Actionable.SIMULATE)) {
+            return 0;
         }
         return result.amountMoved();
     }

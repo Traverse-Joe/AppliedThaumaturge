@@ -11,7 +11,6 @@ import com.traverse.appliedthaumaturge.block.EssentiaNetworkBlock;
 import com.traverse.appliedthaumaturge.block.entity.EssentiaInterfaceBlockEntity;
 import com.traverse.appliedthaumaturge.block.entity.EssentiaNetworkBlockEntity;
 import com.traverse.appliedthaumaturge.block.entity.InfusionProviderBlockEntity;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -39,7 +38,7 @@ public final class ATBlockEntities {
 
     private static <T extends EssentiaNetworkBlockEntity> BlockEntityType<T> create(
             Class<T> clazz, BiFunction<BlockPos, BlockState, T> factory, Supplier<EssentiaNetworkBlock<T>> block) {
-        BlockEntityType<T> type = new BlockEntityType<>(factory::apply, Set.of(block.get()));
+        BlockEntityType<T> type = BlockEntityType.Builder.of(factory::apply, block.get()).build(null);
         BlockEntityTicker<T> serverTicker = ServerTickingBlockEntity.class.isAssignableFrom(clazz)
                 ? (level, pos, state, be) -> ((ServerTickingBlockEntity) be).serverTick()
                 : null;

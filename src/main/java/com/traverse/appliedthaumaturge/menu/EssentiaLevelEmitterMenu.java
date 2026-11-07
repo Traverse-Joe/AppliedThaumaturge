@@ -3,7 +3,6 @@ package com.traverse.appliedthaumaturge.menu;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;
 import appeng.menu.SlotSemantics;
-import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.implementations.StorageLevelEmitterMenu;
 import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigMenuInventory;
@@ -17,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class EssentiaLevelEmitterMenu extends StorageLevelEmitterMenu {
-    private static final ClientActionKey<Long> ACTION_SET_VALUE = new ClientActionKey<>("setReportingValue");
+    private static final String ACTION_SET_VALUE = "setReportingValue";
     private long currentValue;
 
     public EssentiaLevelEmitterMenu(MenuType<StorageLevelEmitterMenu> type, int id, Inventory inventory, EssentiaLevelEmitterPart host) {

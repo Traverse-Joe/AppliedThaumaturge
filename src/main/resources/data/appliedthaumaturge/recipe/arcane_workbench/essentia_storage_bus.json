@@ -3,12 +3,22 @@
   "crystals": [],
   "ingredients": [
     [
-      "ae2:interface",
-      "ae2:cable_interface"
+      {
+        "item": "ae2:interface"
+      },
+      {
+        "item": "ae2:cable_interface"
+      }
     ],
-    "minecraft:piston",
-    "minecraft:sticky_piston",
-    "thaumaturge:salis_mundus"
+    {
+      "item": "minecraft:piston"
+    },
+    {
+      "item": "minecraft:sticky_piston"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:essentia_buses"

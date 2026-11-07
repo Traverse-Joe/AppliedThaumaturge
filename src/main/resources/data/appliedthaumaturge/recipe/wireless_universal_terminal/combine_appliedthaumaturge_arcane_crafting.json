@@ -6,8 +6,12 @@
     }
   ],
   "type": "ae2wtlib:combine",
-  "terminalA": "appliedthaumaturge:wireless_arcane_terminal",
-  "terminalB": "ae2:wireless_crafting_terminal",
+  "terminalA": {
+    "item": "appliedthaumaturge:wireless_arcane_terminal"
+  },
+  "terminalB": {
+    "item": "ae2:wireless_crafting_terminal"
+  },
   "terminalAName": "appliedthaumaturge_arcane",
   "terminalBName": "crafting"
 }

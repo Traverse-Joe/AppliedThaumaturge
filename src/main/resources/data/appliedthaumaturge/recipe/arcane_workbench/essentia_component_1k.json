@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shaped",
   "crystals": [],
   "key": {
-    "S": "thaumaturge:salis_mundus",
-    "Q": "#c:gems/certus_quartz",
-    "P": "ae2:logic_processor"
+    "S": {
+      "item": "thaumaturge:salis_mundus"
+    },
+    "Q": {
+      "tag": "c:gems/certus_quartz"
+    },
+    "P": {
+      "item": "ae2:logic_processor"
+    }
   },
   "pattern": [
     "SQS",

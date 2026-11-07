@@ -26,7 +26,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import com.leclowndu93150.thaumaturge.api.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public final class ArcaneCrafter {
@@ -100,7 +100,7 @@ public final class ArcaneCrafter {
         if (input.isEmpty()) {
             return null;
         }
-        return player.level().recipeAccess().getRecipeFor(RecipeType.CRAFTING, input, player.level()).orElse(null);
+        return player.level().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, player.level()).orElse(null);
     }
 
     public static ItemStack craftVanilla(ServerPlayer player, RecipeHolder<CraftingRecipe> holder, InternalInventory inv,
@@ -111,7 +111,7 @@ public final class ArcaneCrafter {
         if (input.isEmpty() || !recipe.matches(input, player.level())) {
             return ItemStack.EMPTY;
         }
-        ItemStack output = recipe.assemble(input);
+        ItemStack output = recipe.assemble(input, player.registryAccess());
         if (output.isEmpty()) {
             return ItemStack.EMPTY;
         }

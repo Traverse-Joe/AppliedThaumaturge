@@ -13,6 +13,8 @@ import appeng.api.parts.IPart;
 import appeng.api.upgrades.Upgrades;
 import appeng.api.parts.IPartItem;
 import appeng.items.parts.PartItem;
+import appeng.items.parts.PartModelsHelper;
+import appeng.api.parts.PartModels;
 import com.traverse.appliedthaumaturge.part.EssentiaExportBusPart;
 import com.traverse.appliedthaumaturge.part.EssentiaImportBusPart;
 import com.traverse.appliedthaumaturge.part.EssentiaLevelEmitterPart;
@@ -54,7 +56,7 @@ public final class ATItems {
     public static final DeferredItem<PortableEssentiaCellItem> PORTABLE_ESSENTIA_CELL_16K = portableCell("16k", StorageTier.SIZE_16K);
     public static final DeferredItem<PortableEssentiaCellItem> PORTABLE_ESSENTIA_CELL_64K = portableCell("64k", StorageTier.SIZE_64K);
 
-    public static final DeferredItem<Item> BLANK_KNOWLEDGE_CORE = ITEMS.registerSimpleItem("blank_knowledge_core", p -> p.stacksTo(16));
+    public static final DeferredItem<Item> BLANK_KNOWLEDGE_CORE = ITEMS.registerSimpleItem("blank_knowledge_core", new Item.Properties().stacksTo(16));
     public static final DeferredItem<KnowledgeCoreItem> KNOWLEDGE_CORE = ITEMS.registerItem("knowledge_core", p -> new KnowledgeCoreItem(p.stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<ItemWandRod> ENTANGLED_WAND_CORE = ITEMS.registerItem("entangled_wand_core",
             p -> new ItemWandRod(p.stacksTo(2).rarity(Rarity.RARE), ATWandParts.ENTANGLED));
@@ -79,6 +81,7 @@ public final class ATItems {
     public static final int CELL_TYPES = 12;
 
     private static <P extends IPart> DeferredItem<PartItem<P>> part(String name, Class<P> partClass, Function<IPartItem<P>, P> factory) {
+        PartModels.registerModels(PartModelsHelper.createModels(partClass));
         return ITEMS.registerItem(name, p -> new PartItem<>(p, partClass, factory));
     }
 

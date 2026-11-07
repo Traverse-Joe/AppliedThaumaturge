@@ -5,6 +5,14 @@ import appeng.api.config.Actionable;
 import appeng.api.config.RedstoneMode;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartItem;
+import appeng.api.parts.IPartModel;
+import appeng.core.AppEng;
+import appeng.items.parts.PartModels;
+import appeng.parts.PartModel;
+import com.traverse.appliedthaumaturge.AppliedThaumaturge;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.stacks.AEKey;
 import appeng.api.storage.StorageHelper;
@@ -24,11 +32,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class EssentiaExportBusPart extends IOBusPart implements IEssentiaTransport {
+    @PartModels
+    public static final ResourceLocation MODEL_BASE = AppliedThaumaturge.id("part/essentia_export_bus_base");
+    @PartModels
+    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_off"));
+    @PartModels
+    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_on"));
+    @PartModels
+    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_has_channel"));
+
     @Nullable
     private EssentiaExportStrategy strategy;
     private int nextSlot;
@@ -185,15 +200,25 @@ public class EssentiaExportBusPart extends IOBusPart implements IEssentiaTranspo
     }
 
     @Override
-    public void readFromNBT(ValueInput extra) {
-        super.readFromNBT(extra);
-        nextSlot = extra.getIntOr("nextSlot", 0);
+    public void readFromNBT(CompoundTag extra, HolderLookup.Provider registries) {
+        super.readFromNBT(extra, registries);
+        nextSlot = extra.getInt("nextSlot");
     }
 
     @Override
-    public void writeToNBT(ValueOutput extra) {
-        super.writeToNBT(extra);
+    public void writeToNBT(CompoundTag extra, HolderLookup.Provider registries) {
+        super.writeToNBT(extra, registries);
         extra.putInt("nextSlot", nextSlot);
+    }
+
+    @Override
+    public IPartModel getStaticModels() {
+        if (isActive() && isPowered()) {
+            return MODELS_HAS_CHANNEL;
+        } else if (isPowered()) {
+            return MODELS_ON;
+        }
+        return MODELS_OFF;
     }
 
     @Override

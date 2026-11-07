@@ -42,10 +42,15 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
     version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
 
     runs {
         client {
@@ -58,7 +63,7 @@ neoForge {
         }
 
         data {
-            clientData()
+            data()
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
@@ -85,20 +90,20 @@ configurations {
 }
 
 dependencies {
-    implementation files('libs/appliedenergistics2-26.1.12-beta.jar')
-    implementation files('libs/guideme-26.1.14-beta.jar')
-    implementation files('libs/thaumaturge-26.1.2-NeoForge-1.0.0.jar')
+    implementation files('libs/appliedenergistics2-19.2.18.jar')
+    implementation files('libs/guideme-21.1.19.jar')
+    implementation files("libs/thaumaturge-${minecraft_version}-NeoForge-${thaumaturge_version}.jar")
 
-    localRuntime files('libs/lithostitched-1.8.0-neoforge-26.1.jar')
-    localRuntime files('libs/curios-neoforge-15.0.0+26.1.2.jar')
-    compileOnly files('libs/curios-neoforge-15.0.0+26.1.2.jar')
-    compileOnly files('libs/ae2wtlib-26.1.1-beta.jar')
-    compileOnly zipTree('libs/ae2wtlib-26.1.1-beta.jar').matching {
+    localRuntime files('libs/lithostitched-1.8.0-neoforge-21.1.jar')
+    localRuntime files('libs/curios-neoforge-9.5.1+1.21.1.jar')
+    compileOnly files('libs/curios-neoforge-9.5.1+1.21.1.jar')
+    compileOnly files('libs/ae2wtlib-19.5.1.jar')
+    compileOnly zipTree('libs/ae2wtlib-19.5.1.jar').matching {
         include 'META-INF/jarjar/*ae2wtlib_api*.jar'
     }
-    localRuntime files('libs/ae2wtlib-26.1.1-beta.jar')
-    compileOnly files('libs/Jade-mc26.1-NeoForge-26.1.11.jar')
-    localRuntime files('libs/Jade-mc26.1-NeoForge-26.1.11.jar')
+    localRuntime files('libs/ae2wtlib-19.5.1.jar')
+    compileOnly files('libs/Jade-1.21.1-NeoForge-15.10.6.jar')
+    localRuntime files('libs/Jade-1.21.1-NeoForge-15.10.6.jar')
 
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
@@ -117,6 +122,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
+            thaumaturge_version_range: thaumaturge_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties

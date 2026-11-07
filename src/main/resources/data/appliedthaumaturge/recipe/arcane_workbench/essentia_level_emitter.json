@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "ae2:level_emitter",
-    "appliedthaumaturge:diffusion_core",
-    "thaumaturge:salis_mundus"
+    {
+      "item": "ae2:level_emitter"
+    },
+    {
+      "item": "appliedthaumaturge:diffusion_core"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:essentia_level_emitter"

@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "ae2:advanced_card",
-    "thaumaturge:phial",
-    "thaumaturge:salis_mundus"
+    {
+      "item": "ae2:advanced_card"
+    },
+    {
+      "item": "thaumaturge:phial"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:wireless_essentia_terminal"

@@ -17,12 +17,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 
 public final class AspectSearch {
     public static final String PREFIX = "%";
-    public static final Identifier RESEARCH = AppliedThaumaturge.id("aspect_search");
+    public static final ResourceLocation RESEARCH = AppliedThaumaturge.id("aspect_search");
 
     private AspectSearch() {
     }
@@ -72,7 +72,7 @@ public final class AspectSearch {
             if (!AspectKnowledgeAccess.isKnown(holder)) {
                 return;
             }
-            String path = holder.key().identifier().getPath();
+            String path = holder.key().location().getPath();
             String name = AspectComponents.trueName(holder).getString().toLowerCase(Locale.ROOT);
             if (path.startsWith(query) || name.startsWith(query)) {
                 matches.add(holder.key());

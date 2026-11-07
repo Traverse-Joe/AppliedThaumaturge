@@ -10,13 +10,14 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public final class VisKey extends AEKey {
@@ -24,7 +25,7 @@ public final class VisKey extends AEKey {
             ResourceKey.codec(IAspect.REGISTRY_KEY).fieldOf("aspect").forGetter(VisKey::getAspect)
     ).apply(builder, VisKey::of));
 
-    public static final VisKey AURA = of(ResourceKey.create(IAspect.REGISTRY_KEY, Identifier.fromNamespaceAndPath("appliedthaumaturge", "aura")));
+    public static final VisKey AURA = of(ResourceKey.create(IAspect.REGISTRY_KEY, ResourceLocation.fromNamespaceAndPath("appliedthaumaturge", "aura")));
 
     private final ResourceKey<IAspect> aspect;
 
@@ -58,7 +59,7 @@ public final class VisKey extends AEKey {
     }
 
     public static VisKey fromPacket(RegistryFriendlyByteBuf buf) {
-        return new VisKey(ResourceKey.create(IAspect.REGISTRY_KEY, buf.readIdentifier()));
+        return new VisKey(ResourceKey.create(IAspect.REGISTRY_KEY, buf.readResourceLocation()));
     }
 
     @Override
@@ -72,8 +73,8 @@ public final class VisKey extends AEKey {
     }
 
     @Override
-    public void toTag(ValueOutput output) {
-        output.store(MAP_CODEC, this);
+    public CompoundTag toTag(HolderLookup.Provider registries) {
+        return (CompoundTag) MAP_CODEC.codec().encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), this).getOrThrow();
     }
 
     @Override
@@ -82,18 +83,18 @@ public final class VisKey extends AEKey {
     }
 
     @Override
-    public Identifier getId() {
-        return aspect.identifier();
+    public ResourceLocation getId() {
+        return aspect.location();
     }
 
     @Override
     public String getModId() {
-        return aspect.identifier().getNamespace();
+        return aspect.location().getNamespace();
     }
 
     @Override
     public void writeToPacket(RegistryFriendlyByteBuf data) {
-        data.writeIdentifier(aspect.identifier());
+        data.writeResourceLocation(aspect.location());
     }
 
     @Override
@@ -101,7 +102,7 @@ public final class VisKey extends AEKey {
         if (equals(AURA)) {
             return Component.translatable("key.appliedthaumaturge.aura_vis");
         }
-        Identifier id = aspect.identifier();
+        ResourceLocation id = aspect.location();
         return Component.translatable("key.appliedthaumaturge.wand_vis", Component.translatable("aspect." + id.getNamespace() + "." + id.getPath()));
     }
 
@@ -126,6 +127,6 @@ public final class VisKey extends AEKey {
 
     @Override
     public String toString() {
-        return "VisKey{" + aspect.identifier() + "}";
+        return "VisKey{" + aspect.location() + "}";
     }
 }

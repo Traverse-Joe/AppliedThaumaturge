@@ -15,7 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
+import com.leclowndu93150.thaumaturge.api.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
 public final class ArcaneTerminalAuraSource implements IWorkbenchAuraSource {
@@ -72,12 +72,12 @@ public final class ArcaneTerminalAuraSource implements IWorkbenchAuraSource {
         if (radius == 0) {
             return List.of(pos);
         }
-        ChunkPos center = ChunkPos.containing(pos);
+        ChunkPos center = new ChunkPos(pos);
         int diameter = radius * 2 + 1;
         List<BlockPos> anchors = new ArrayList<>(diameter * diameter);
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                anchors.add(new ChunkPos(center.x() + x, center.z() + z).getMiddleBlockPosition(pos.getY()));
+                anchors.add(new ChunkPos(center.x + x, center.z + z).getMiddleBlockPosition(pos.getY()));
             }
         }
         return anchors;

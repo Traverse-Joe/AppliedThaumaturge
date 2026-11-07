@@ -1,6 +1,6 @@
 package com.traverse.appliedthaumaturge.integration.wtlib.client;
 
-import appeng.client.InitScreens;
+import appeng.init.client.InitScreens;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 

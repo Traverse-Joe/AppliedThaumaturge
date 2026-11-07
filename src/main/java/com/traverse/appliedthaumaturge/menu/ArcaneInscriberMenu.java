@@ -1,8 +1,6 @@
 package com.traverse.appliedthaumaturge.menu;
 
 import appeng.menu.SlotSemantics;
-import net.minecraft.network.codec.ByteBufCodecs;
-import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.me.common.MEStorageMenu;
 import appeng.menu.slot.AppEngSlot;
@@ -26,10 +24,10 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class ArcaneInscriberMenu extends MEStorageMenu implements ArcaneRecipeTarget {
-    private static final ClientActionKey<Void> ACTION_ENCODE = new ClientActionKey<>("encode");
-    private static final ClientActionKey<Void> ACTION_ERASE = new ClientActionKey<>("erase");
-    private static final ClientActionKey<Void> ACTION_CLEAR = new ClientActionKey<>("clear");
-    private static final ClientActionKey<Boolean> ACTION_SUBSTITUTE = new ClientActionKey<>("substitute");
+    private static final String ACTION_ENCODE = "encode";
+    private static final String ACTION_ERASE = "erase";
+    private static final String ACTION_CLEAR = "clear";
+    private static final String ACTION_SUBSTITUTE = "substitute";
 
     private final ArcaneInscriberPart part;
     private final AppEngInternalInventory preview = new AppEngInternalInventory(1);
@@ -55,7 +53,7 @@ public class ArcaneInscriberMenu extends MEStorageMenu implements ArcaneRecipeTa
         registerClientAction(ACTION_ENCODE, this::encode);
         registerClientAction(ACTION_ERASE, this::erase);
         registerClientAction(ACTION_CLEAR, this::clear);
-        registerClientAction(ACTION_SUBSTITUTE, ByteBufCodecs.BOOL, this::setSubstitute);
+        registerClientAction(ACTION_SUBSTITUTE, Boolean.class, this::setSubstitute);
         refresh();
     }
 

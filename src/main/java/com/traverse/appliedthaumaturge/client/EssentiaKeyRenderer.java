@@ -1,6 +1,6 @@
 package com.traverse.appliedthaumaturge.client;
 
-import appeng.client.api.AEKeyRenderer;
+import appeng.api.client.AEKeyRenderHandler;
 import appeng.util.Platform;
 import com.leclowndu93150.thaumaturge.api.aspect.AspectComponents;
 import com.leclowndu93150.thaumaturge.api.aspect.AspectKnowledge;
@@ -12,14 +12,14 @@ import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public final class EssentiaKeyRenderer implements AEKeyRenderer<EssentiaKey, EssentiaKeyRenderer.State> {
+public final class EssentiaKeyRenderer implements AEKeyRenderHandler<EssentiaKey> {
     public static final EssentiaKeyRenderer INSTANCE = new EssentiaKeyRenderer();
 
     private EssentiaKeyRenderer() {
@@ -35,7 +35,7 @@ public final class EssentiaKeyRenderer implements AEKeyRenderer<EssentiaKey, Ess
     }
 
     @Override
-    public void drawInGui(Minecraft minecraft, GuiGraphicsExtractor graphics, int x, int y, EssentiaKey key) {
+    public void drawInGui(Minecraft minecraft, GuiGraphics graphics, int x, int y, EssentiaKey key) {
         Holder<IAspect> aspect = resolve(key);
         if (aspect == null) {
             AspectRendering.renderMissingGui(graphics, x, y);
@@ -45,35 +45,31 @@ public final class EssentiaKeyRenderer implements AEKeyRenderer<EssentiaKey, Ess
     }
 
     @Override
-    public Class<State> stateClass() {
-        return State.class;
+    public void drawOnBlockFace(PoseStack poseStack, MultiBufferSource buffers, EssentiaKey key, float scale, int combinedLight, Level level) {
+        Holder<IAspect> aspect = level != null ? key.holderOrNull(level.registryAccess()) : resolve(key);
+        drawAspectOnBlockFace(poseStack, buffers, aspect, scale, combinedLight);
     }
 
-    @Override
-    public State createState() {
-        return new State();
-    }
-
-    @Override
-    public void extract(State state, EssentiaKey key, @Nullable Level level, int seed) {
-        state.aspect = level != null ? key.holderOrNull(level.registryAccess()) : resolve(key);
-        state.knowledge = state.aspect != null ? AspectKnowledgeAccess.of(state.aspect) : AspectKnowledge.UNKNOWN;
-    }
-
-    @Override
-    public void submit(PoseStack poseStack, State state, SubmitNodeCollector nodes, int lightCoords) {
-        Holder<IAspect> aspect = state.aspect;
-        AspectKnowledge knowledge = state.knowledge;
+    static void drawAspectOnBlockFace(PoseStack poseStack, MultiBufferSource buffers, @Nullable Holder<IAspect> aspect, float scale, int combinedLight) {
+        AspectKnowledge knowledge = aspect != null ? AspectKnowledgeAccess.of(aspect) : AspectKnowledge.UNKNOWN;
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 0.01F);
+        poseStack.scale(scale, scale, 1.0F);
         if (aspect == null) {
-            nodes.submitCustomGeometry(poseStack, AspectRendering.missingRenderType(AspectRendering.BlendMode.ALPHA),
-                    (pose, buffer) -> AspectRendering.renderMissingQuad(pose, buffer, 1.0F, lightCoords));
+            AspectRendering.renderMissingQuad(poseStack.last(),
+                    buffers.getBuffer(AspectRendering.missingRenderType(AspectRendering.BlendMode.ALPHA)), 1.0F, combinedLight);
         } else {
-            nodes.submitCustomGeometry(poseStack, AspectRendering.renderType(aspect, knowledge, AspectRendering.BlendMode.ALPHA),
-                    (pose, buffer) -> AspectRendering.renderQuad(pose, buffer, aspect, knowledge, 1.0F, false, lightCoords));
+            AspectRendering.renderQuad(poseStack.last(),
+                    buffers.getBuffer(AspectRendering.renderType(aspect, knowledge, AspectRendering.BlendMode.ALPHA)),
+                    aspect, knowledge, 1.0F, false, combinedLight);
         }
         poseStack.popPose();
+    }
+
+    @Override
+    public Component getDisplayName(EssentiaKey key) {
+        Holder<IAspect> aspect = resolve(key);
+        return aspect == null ? key.getDisplayName() : AspectComponents.name(aspect);
     }
 
     @Override
@@ -91,11 +87,5 @@ public final class EssentiaKeyRenderer implements AEKeyRenderer<EssentiaKey, Ess
         }
         tooltip.add(Component.literal(Platform.formatModName(key.getModId())));
         return tooltip;
-    }
-
-    public static final class State {
-        @Nullable
-        Holder<IAspect> aspect;
-        AspectKnowledge knowledge = AspectKnowledge.UNKNOWN;
     }
 }

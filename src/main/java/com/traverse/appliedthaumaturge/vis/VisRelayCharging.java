@@ -1,11 +1,11 @@
 package com.traverse.appliedthaumaturge.vis;
 
 import com.leclowndu93150.thaumaturge.api.aspect.TTAspects;
+import com.leclowndu93150.thaumaturge.api.transaction.Transaction;
 import com.leclowndu93150.thaumaturge.content.wands.ItemWand;
 import com.leclowndu93150.thaumaturge.content.wands.WandVisHelper;
 import com.traverse.appliedthaumaturge.part.VisRelayInterfacePart;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public final class VisRelayCharging {

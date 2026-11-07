@@ -1,6 +1,14 @@
 package com.traverse.appliedthaumaturge.part;
 
 import appeng.api.parts.IPartItem;
+import appeng.api.parts.IPartModel;
+import appeng.items.parts.PartModels;
+import appeng.parts.PartModel;
+import com.traverse.appliedthaumaturge.AppliedThaumaturge;
+import net.minecraft.resources.ResourceLocation;
+import com.traverse.appliedthaumaturge.util.CodecTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import appeng.api.ids.AEComponents;
 import appeng.api.implementations.items.IMemoryCard;
 import appeng.api.implementations.items.MemoryCardMessages;
@@ -30,8 +38,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 public class ArcaneTerminalPart extends AbstractTerminalPart implements IUpgradeableObject, IGridTickable, ArcaneTerminalHost {
     public static final int GRID_SLOTS = 9;
@@ -39,6 +45,14 @@ public class ArcaneTerminalPart extends AbstractTerminalPart implements IUpgrade
     public static final int CRYSTAL_SLOTS = 6;
     public static final int WAND_SLOT = 15;
     public static final int SIZE = 16;
+
+    @PartModels
+    public static final ResourceLocation MODEL_OFF = AppliedThaumaturge.id("part/arcane_terminal_off");
+    @PartModels
+    public static final ResourceLocation MODEL_ON = AppliedThaumaturge.id("part/arcane_terminal_on");
+    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_OFF, MODEL_STATUS_OFF);
+    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
+    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_HAS_CHANNEL);
 
     private final AppEngInternalInventory arcaneInventory = new AppEngInternalInventory(this, SIZE);
     private final IUpgradeInventory upgrades;
@@ -152,28 +166,33 @@ public class ArcaneTerminalPart extends AbstractTerminalPart implements IUpgrade
     }
 
     @Override
-    public void readFromNBT(ValueInput input) {
-        super.readFromNBT(input);
-        arcaneInventory.readFromNBT(input, "arcaneGrid");
-        upgrades.readFromNBT(input, "upgrades");
-        visSource = input.read("visSource", VisRelayLink.CODEC).orElse(null);
-        input.getString("arcaneHostId").ifPresent(id -> {
+    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
+        super.readFromNBT(data, registries);
+        arcaneInventory.readFromNBT(data, "arcaneGrid", registries);
+        upgrades.readFromNBT(data, "upgrades", registries);
+        visSource = CodecTags.read(data, "visSource", VisRelayLink.CODEC, registries).orElse(null);
+        if (data.contains("arcaneHostId")) {
             try {
-                hostId = UUID.fromString(id);
+                hostId = UUID.fromString(data.getString("arcaneHostId"));
             } catch (IllegalArgumentException ignored) {
             }
-        });
+        }
     }
 
     @Override
-    public void writeToNBT(ValueOutput output) {
-        super.writeToNBT(output);
-        arcaneInventory.writeToNBT(output, "arcaneGrid");
-        upgrades.writeToNBT(output, "upgrades");
-        output.putString("arcaneHostId", hostId.toString());
+    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
+        super.writeToNBT(data, registries);
+        arcaneInventory.writeToNBT(data, "arcaneGrid", registries);
+        upgrades.writeToNBT(data, "upgrades", registries);
+        data.putString("arcaneHostId", hostId.toString());
         if (visSource != null) {
-            output.store("visSource", VisRelayLink.CODEC, visSource);
+            CodecTags.write(data, "visSource", VisRelayLink.CODEC, visSource, registries);
         }
+    }
+
+    @Override
+    public IPartModel getStaticModels() {
+        return selectModel(MODELS_OFF, MODELS_ON, MODELS_HAS_CHANNEL);
     }
 
     @Override

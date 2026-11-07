@@ -33,6 +33,7 @@ import com.leclowndu93150.thaumaturge.content.wands.WandEconomy;
 import com.leclowndu93150.thaumaturge.content.wands.WandVisHelper;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import com.leclowndu93150.thaumaturge.api.aura.AuraHelper;
+import com.leclowndu93150.thaumaturge.api.transaction.Transaction;
 import com.leclowndu93150.thaumaturge.content.recipe.workbench.ArcaneCraftingInput;
 import com.leclowndu93150.thaumaturge.content.recipe.workbench.ArcaneCraftingRecipe;
 import com.leclowndu93150.thaumaturge.content.taint.item.ItemEssentiaCrystal;
@@ -47,6 +48,7 @@ import com.traverse.appliedthaumaturge.registry.ATBlocks;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.vis.VisRelayLink;
 import com.traverse.appliedthaumaturge.vis.VisRelayCharging;
+import com.traverse.appliedthaumaturge.util.CodecTags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedHashMap;
@@ -54,6 +56,8 @@ import java.util.Map;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
@@ -61,9 +65,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
@@ -258,7 +259,7 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
 
     @Nullable
     private static ArcaneCraftingRecipe resolve(ServerLevel level, KnowledgeRecipe knowledge) {
-        RecipeHolder<?> holder = level.getServer().getRecipeManager().byKey(knowledge.recipe()).orElse(null);
+        RecipeHolder<?> holder = level.getServer().getRecipeManager().byKey(knowledge.recipe().location()).orElse(null);
         Recipe<?> recipe = holder == null ? null : holder.value();
         return recipe instanceof ArcaneCraftingRecipe arcane ? arcane : null;
     }
@@ -440,22 +441,22 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
         items.add(wand);
         ArcaneCraftingInput input = ArcaneCraftingInput.of(3, 3, items);
         int vis = getAuraCost(job, !payment.crystals().isEmpty());
-        ItemStack output = recipe.assemble(input);
+        ItemStack output = recipe.assemble(input, serverLevel.registryAccess());
         List<ItemStack> remainders = recipe.getRemainingItems(input);
         if (output.isEmpty()) {
             return false;
         }
-        try (Transaction tx = Transaction.openRoot()) {
-            if (vis > 0 && !drainAura(serverLevel, vis, tx)) {
-                return false;
-            }
-            if (!payment.wand().isEmpty() && !WandVisHelper.consumeAllVisRaw(wand, payment.wand(), true)) {
-                return false;
-            }
-            tx.commit();
+        if (vis > 0 && !canDrainAura(serverLevel, vis)) {
+            return false;
+        }
+        if (!payment.wand().isEmpty() && !WandVisHelper.payExact(wand, payment.wand(), true)) {
+            return false;
+        }
+        if (vis > 0) {
+            drainAura(serverLevel, vis);
         }
         if (!payment.wand().isEmpty()) {
-            WandVisHelper.consumeAllVisRaw(wand, payment.wand(), false);
+            WandVisHelper.payExact(wand, payment.wand(), false);
             inventory.setItemDirect(WAND_SLOT, wand);
         }
         for (int i = 0; i < 9; i++) {
@@ -524,14 +525,25 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
         return ArcaneTerminalAuraSource.anchors(worldPosition, upgrades.isInstalled(ATItems.UPGRADE_ARCANE));
     }
 
-    private boolean drainAura(ServerLevel level, int vis, Transaction tx) {
+    private boolean canDrainAura(ServerLevel level, int vis) {
+        float remaining = vis;
+        for (BlockPos anchor : getAuraAnchors()) {
+            remaining -= AuraHelper.drainVis(level, anchor, remaining, true);
+            if (remaining <= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean drainAura(ServerLevel level, int vis) {
         List<BlockPos> anchors = getAuraAnchors();
         float remaining = vis;
         int share = Math.max(1, vis / anchors.size());
         while (remaining > 0) {
             float pass = 0;
             for (BlockPos anchor : anchors) {
-                float drained = AuraHelper.drainVis(level, anchor, Math.min(share, remaining), tx);
+                float drained = AuraHelper.drainVis(level, anchor, Math.min(share, remaining), false);
                 pass += drained;
                 remaining -= drained;
                 if (remaining <= 0) {
@@ -582,33 +594,33 @@ public class ArcaneAssemblerBlockEntity extends EssentiaNetworkBlockEntity
     }
 
     @Override
-    public void loadTag(ValueInput data) {
-        super.loadTag(data);
-        inventory.readFromNBT(data, "inventory");
-        upgrades.readFromNBT(data, "upgrades");
-        progress = data.getIntOr("progress", 0);
-        storedVis = data.read("storedVis", WandVis.CODEC).orElse(WandVis.EMPTY);
+    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
+        super.loadTag(data, registries);
+        inventory.readFromNBT(data, "inventory", registries);
+        upgrades.readFromNBT(data, "upgrades", registries);
+        progress = data.getInt("progress");
+        storedVis = CodecTags.read(data, "storedVis", WandVis.CODEC, registries).orElse(WandVis.EMPTY);
         for (var aspect : MenuArcaneWorkbench.PRIMAL_ORDER) {
             storedVis = storedVis.with(aspect, Math.clamp(storedVis.amount(aspect), 0, ATConfig.arcaneAssemblerMaxBufferCentivis()));
         }
-        visSource = data.read("visSource", VisRelayLink.CODEC).orElse(null);
+        visSource = CodecTags.read(data, "visSource", VisRelayLink.CODEC, registries).orElse(null);
         visChargeTicks = 0;
         crystals.clear();
-        data.read("crystals", ItemStack.OPTIONAL_CODEC.listOf()).ifPresent(list -> list.stream().filter(s -> !s.isEmpty()).forEach(crystals::add));
+        CodecTags.read(data, "crystals", ItemStack.OPTIONAL_CODEC.listOf(), registries).ifPresent(list -> list.stream().filter(s -> !s.isEmpty()).forEach(crystals::add));
         patterns = null;
         job = null;
     }
 
     @Override
-    public void saveAdditional(ValueOutput data) {
-        super.saveAdditional(data);
-        inventory.writeToNBT(data, "inventory");
-        upgrades.writeToNBT(data, "upgrades");
+    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
+        super.saveAdditional(data, registries);
+        inventory.writeToNBT(data, "inventory", registries);
+        upgrades.writeToNBT(data, "upgrades", registries);
         data.putInt("progress", progress);
-        data.store("storedVis", WandVis.CODEC, storedVis);
+        CodecTags.write(data, "storedVis", WandVis.CODEC, storedVis, registries);
         if (visSource != null) {
-            data.store("visSource", VisRelayLink.CODEC, visSource);
+            CodecTags.write(data, "visSource", VisRelayLink.CODEC, visSource, registries);
         }
-        data.store("crystals", ItemStack.OPTIONAL_CODEC.listOf(), List.copyOf(crystals));
+        CodecTags.write(data, "crystals", ItemStack.OPTIONAL_CODEC.listOf(), List.copyOf(crystals), registries);
     }
 }

@@ -12,10 +12,18 @@
     }
   ],
   "key": {
-    "G": "ae2:quartz_vibrant_glass",
-    "L": "#c:dyes/blue",
-    "B": "thaumaturge:brain",
-    "P": "ae2:calculation_processor"
+    "G": {
+      "item": "ae2:quartz_vibrant_glass"
+    },
+    "L": {
+      "tag": "c:dyes/blue"
+    },
+    "B": {
+      "item": "thaumaturge:brain"
+    },
+    "P": {
+      "item": "ae2:calculation_processor"
+    }
   },
   "pattern": [
     "GLG",

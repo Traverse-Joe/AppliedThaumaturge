@@ -5,11 +5,11 @@ import appeng.core.definitions.AEBlockEntities;
 import com.leclowndu93150.thaumaturge.api.aspect.IAspect;
 import com.leclowndu93150.thaumaturge.api.aura.IVisRelaySource;
 import com.leclowndu93150.thaumaturge.api.aura.VisRelayCapabilities;
+import com.leclowndu93150.thaumaturge.api.transaction.TransactionContext;
 import com.traverse.appliedthaumaturge.part.VisRelayInterfacePart;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public record VisRelayHostSource(IPartHost host) implements IVisRelaySource {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {

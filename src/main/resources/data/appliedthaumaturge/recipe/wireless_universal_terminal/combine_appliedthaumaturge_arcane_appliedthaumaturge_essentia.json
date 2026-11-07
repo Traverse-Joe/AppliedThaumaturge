@@ -6,8 +6,12 @@
     }
   ],
   "type": "ae2wtlib:combine",
-  "terminalA": "appliedthaumaturge:wireless_arcane_terminal",
-  "terminalB": "appliedthaumaturge:wireless_essentia_terminal",
+  "terminalA": {
+    "item": "appliedthaumaturge:wireless_arcane_terminal"
+  },
+  "terminalB": {
+    "item": "appliedthaumaturge:wireless_essentia_terminal"
+  },
   "terminalAName": "appliedthaumaturge_arcane",
   "terminalBName": "appliedthaumaturge_essentia"
 }

@@ -26,18 +26,40 @@
       "amount": 8
     }
   ],
-  "catalyst": "ae2:molecular_assembler",
+  "catalyst": {
+    "item": "ae2:molecular_assembler"
+  },
   "components": [
-    "appliedthaumaturge:coalescence_core",
-    "thaumaturge:crystal_aer",
-    "thaumaturge:crystal_aqua",
-    "thaumaturge:salis_mundus",
-    "thaumaturge:crystal_perditio",
-    "appliedthaumaturge:diffusion_core",
-    "thaumaturge:crystal_terra",
-    "thaumaturge:crystal_ignis",
-    "thaumaturge:salis_mundus",
-    "thaumaturge:crystal_ordo"
+    {
+      "item": "appliedthaumaturge:coalescence_core"
+    },
+    {
+      "item": "thaumaturge:crystal_aer"
+    },
+    {
+      "item": "thaumaturge:crystal_aqua"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    },
+    {
+      "item": "thaumaturge:crystal_perditio"
+    },
+    {
+      "item": "appliedthaumaturge:diffusion_core"
+    },
+    {
+      "item": "thaumaturge:crystal_terra"
+    },
+    {
+      "item": "thaumaturge:crystal_ignis"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    },
+    {
+      "item": "thaumaturge:crystal_ordo"
+    }
   ],
   "instability": 6,
   "research": {

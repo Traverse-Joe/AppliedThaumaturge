@@ -8,7 +8,7 @@ import com.traverse.appliedthaumaturge.AppliedThaumaturge;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKeyType;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,7 @@ public class PortableEssentiaCellItem extends PortableCellItem {
     }
 
     @Override
-    public Identifier getRecipeId() {
+    public ResourceLocation getRecipeId() {
         return AppliedThaumaturge.id("cells/" + getRegistryName().getPath());
     }
 

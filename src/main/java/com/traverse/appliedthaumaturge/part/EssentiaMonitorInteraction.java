@@ -8,22 +8,19 @@ import appeng.me.helpers.PlayerSource;
 import com.leclowndu93150.thaumaturge.api.essentia.EssentiaCapabilities;
 import com.leclowndu93150.thaumaturge.api.essentia.IEssentiaItemStorage;
 import com.traverse.appliedthaumaturge.me.key.EssentiaKey;
+import com.traverse.appliedthaumaturge.me.strategy.EssentiaItemAccess;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public final class EssentiaMonitorInteraction {
     private EssentiaMonitorInteraction() {
     }
 
     public static void empty(IGrid grid, IActionHost host, Player player, InteractionHand hand) {
-        ItemAccess access = ItemAccess.forPlayerSlot(player, hand == InteractionHand.MAIN_HAND
-                ? player.getInventory().getSelectedSlot() : Inventory.SLOT_OFFHAND);
-        IEssentiaItemStorage container = access.getResource().toStack(1)
-                .getCapability(EssentiaCapabilities.ITEM_STORAGE);
+        EssentiaItemAccess access = EssentiaItemAccess.forPlayerSlot(player, hand == InteractionHand.MAIN_HAND
+                ? player.getInventory().selected : Inventory.SLOT_OFFHAND);
+        IEssentiaItemStorage container = access.getOne().getCapability(EssentiaCapabilities.ITEM_STORAGE);
         if (container == null) {
             return;
         }
@@ -54,11 +51,9 @@ public final class EssentiaMonitorInteraction {
         if (moved <= 0 || moved > accepted || result.resultingStack().isEmpty()) {
             return;
         }
-        ItemResource emptied = ItemResource.of(result.resultingStack());
-        try (Transaction tx = Transaction.openRoot()) {
-            if (access.exchange(emptied, 1, tx) != 1) {
-                return;
-            }
+        var emptied = result.resultingStack();
+        if (!access.exchange(emptied, true)) {
+            return;
         }
         long inserted = StorageHelper.poweredInsert(energy, inventory, key, moved, source);
         if (inserted != moved) {
@@ -67,14 +62,7 @@ public final class EssentiaMonitorInteraction {
             }
             return;
         }
-        boolean exchanged;
-        try (Transaction tx = Transaction.openRoot()) {
-            exchanged = access.exchange(emptied, 1, tx) == 1;
-            if (exchanged) {
-                tx.commit();
-            }
-        }
-        if (!exchanged) {
+        if (!access.exchange(emptied, false)) {
             inventory.extract(key, inserted, Actionable.MODULATE, source);
             return;
         }
@@ -83,9 +71,8 @@ public final class EssentiaMonitorInteraction {
     }
 
     public static void fill(IGrid grid, IActionHost host, Player player, InteractionHand hand, EssentiaKey key) {
-        ItemAccess access = ItemAccess.forPlayerInteraction(player, hand);
-        IEssentiaItemStorage container = access.getResource().toStack(1)
-                .getCapability(EssentiaCapabilities.ITEM_STORAGE);
+        EssentiaItemAccess access = EssentiaItemAccess.forPlayerInteraction(player, hand);
+        IEssentiaItemStorage container = access.getOne().getCapability(EssentiaCapabilities.ITEM_STORAGE);
         var aspect = key.holderOrNull(player.level().registryAccess());
         if (container == null || aspect == null || !container.canInsert(aspect)) {
             return;
@@ -108,11 +95,9 @@ public final class EssentiaMonitorInteraction {
             return;
         }
 
-        ItemResource filled = ItemResource.of(result.resultingStack());
-        try (Transaction tx = Transaction.openRoot()) {
-            if (access.exchange(filled, 1, tx) != 1) {
-                return;
-            }
+        var filled = result.resultingStack();
+        if (!access.exchange(filled, true)) {
+            return;
         }
         long extracted = StorageHelper.poweredExtraction(energy, inventory, key, moved, source);
         if (extracted != moved) {
@@ -121,14 +106,7 @@ public final class EssentiaMonitorInteraction {
             }
             return;
         }
-        boolean exchanged;
-        try (Transaction tx = Transaction.openRoot()) {
-            exchanged = access.exchange(filled, 1, tx) == 1;
-            if (exchanged) {
-                tx.commit();
-            }
-        }
-        if (!exchanged) {
+        if (!access.exchange(filled, false)) {
             inventory.insert(key, extracted, Actionable.MODULATE, source);
             return;
         }

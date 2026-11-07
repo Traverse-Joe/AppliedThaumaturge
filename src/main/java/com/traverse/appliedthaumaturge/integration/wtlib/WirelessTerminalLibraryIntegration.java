@@ -49,11 +49,11 @@ public final class WirelessTerminalLibraryIntegration {
     }
 
     public static WirelessTerminalItem essentiaItem(Item.Properties properties) {
-        return new LibraryTerminalItem(properties, false);
+        return new LibraryTerminalItem(false);
     }
 
     public static WirelessTerminalItem arcaneItem(Item.Properties properties) {
-        return new LibraryTerminalItem.Arcane(properties);
+        return new LibraryTerminalItem.Arcane();
     }
 
     public static WirelessTerminalMenuHost<?> essentiaHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator) {

@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "appliedthaumaturge:arcane_terminal",
-    "ae2:wireless_crafting_terminal",
-    "thaumaturge:salis_mundus"
+    {
+      "item": "appliedthaumaturge:arcane_terminal"
+    },
+    {
+      "item": "ae2:wireless_crafting_terminal"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:wireless_arcane_terminal"

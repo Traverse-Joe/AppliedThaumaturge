@@ -6,6 +6,7 @@ import com.traverse.appliedthaumaturge.block.EssentiaNetworkBlock;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
@@ -19,11 +20,11 @@ public class ArcaneAssemblerBlock extends EssentiaNetworkBlock<ArcaneAssemblerBl
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hitResult) {
         ArcaneAssemblerBlockEntity be = getBlockEntity(level, pos);
         if (be != null && be.useVisMemoryCard(stack, player)) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
@@ -37,6 +38,6 @@ public class ArcaneAssemblerBlock extends EssentiaNetworkBlock<ArcaneAssemblerBl
         if (!level.isClientSide()) {
             MenuOpener.open(ATMenus.ARCANE_ASSEMBLER, player, MenuLocators.forBlockEntity(be));
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

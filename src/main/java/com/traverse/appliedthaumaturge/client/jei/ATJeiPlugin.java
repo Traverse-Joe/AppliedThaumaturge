@@ -11,12 +11,12 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 @JeiPlugin
 public class ATJeiPlugin implements IModPlugin {
     @Override
-    public Identifier getPluginUid() {
+    public ResourceLocation getPluginUid() {
         return AppliedThaumaturge.id("jei");
     }
 
@@ -32,7 +32,7 @@ public class ATJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addCraftingStation(ArcaneWorkbenchCategory.RECIPE_TYPE, ATItems.ARCANE_TERMINAL.get(), ATItems.ARCANE_INSCRIBER.get(), ATItems.WIRELESS_ARCANE_TERMINAL.get());
-        registration.addCraftingStation(RecipeTypes.CRAFTING, ATItems.ARCANE_TERMINAL.get(), ATItems.WIRELESS_ARCANE_TERMINAL.get());
+        registration.addRecipeCatalysts(ArcaneWorkbenchCategory.RECIPE_TYPE, ATItems.ARCANE_TERMINAL.get(), ATItems.ARCANE_INSCRIBER.get(), ATItems.WIRELESS_ARCANE_TERMINAL.get());
+        registration.addRecipeCatalysts(RecipeTypes.CRAFTING, ATItems.ARCANE_TERMINAL.get(), ATItems.WIRELESS_ARCANE_TERMINAL.get());
     }
 }

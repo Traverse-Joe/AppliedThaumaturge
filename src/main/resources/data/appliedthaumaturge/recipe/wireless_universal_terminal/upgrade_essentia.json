@@ -6,6 +6,8 @@
     }
   ],
   "type": "ae2wtlib:upgrade",
-  "terminal": "appliedthaumaturge:wireless_essentia_terminal",
+  "terminal": {
+    "item": "appliedthaumaturge:wireless_essentia_terminal"
+  },
   "terminalName": "appliedthaumaturge_essentia"
 }

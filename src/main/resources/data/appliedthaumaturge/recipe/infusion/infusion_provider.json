@@ -14,12 +14,22 @@
       "amount": 20
     }
   ],
-  "catalyst": "ae2:interface",
+  "catalyst": {
+    "item": "ae2:interface"
+  },
   "components": [
-    "appliedthaumaturge:coalescence_core",
-    "thaumaturge:salis_mundus",
-    "appliedthaumaturge:coalescence_core",
-    "thaumaturge:salis_mundus"
+    {
+      "item": "appliedthaumaturge:coalescence_core"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    },
+    {
+      "item": "appliedthaumaturge:coalescence_core"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    }
   ],
   "instability": 2,
   "research": {

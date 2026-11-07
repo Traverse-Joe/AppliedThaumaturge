@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shaped",
   "crystals": [],
   "key": {
-    "G": "ae2:quartz_glass",
-    "S": "thaumaturge:salis_mundus",
-    "T": "#c:ingots/thaumium"
+    "G": {
+      "item": "ae2:quartz_glass"
+    },
+    "S": {
+      "item": "thaumaturge:salis_mundus"
+    },
+    "T": {
+      "tag": "c:ingots/thaumium"
+    }
   },
   "pattern": [
     "GSG",

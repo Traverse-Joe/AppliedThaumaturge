@@ -11,7 +11,7 @@ public class EssentiaNetworkBlock<T extends EssentiaNetworkBlockEntity> extends 
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public EssentiaNetworkBlock(Properties props) {
-        super(metalProps(props));
+        super(props);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
     }
 

@@ -16,6 +16,7 @@ import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.DoubleSupplier;
 import java.util.function.Consumer;
@@ -28,15 +29,15 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -79,10 +80,11 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        InteractionResult result = useMode(this, player, hand, player.getItemInHand(hand));
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        InteractionResult result = useMode(this, player, hand, stack);
         if (result != InteractionResult.PASS) {
-            return result;
+            return new InteractionResultHolder<>(result, stack);
         }
         return super.use(level, player, hand);
     }
@@ -129,8 +131,8 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
     }
 
     @Override
-    public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return ItemUseAnimation.BOW;
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.BOW;
     }
 
     @Override
@@ -168,10 +170,9 @@ public class WirelessArcaneTerminalItem extends WirelessTerminalItem implements 
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-                                Consumer<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, tooltip, flag);
-        appendModeTooltip(this, stack, tooltip);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        appendModeTooltip(this, stack, tooltip::add);
     }
 
     public static void appendModeTooltip(WirelessTerminalItem item, ItemStack stack, Consumer<Component> tooltip) {

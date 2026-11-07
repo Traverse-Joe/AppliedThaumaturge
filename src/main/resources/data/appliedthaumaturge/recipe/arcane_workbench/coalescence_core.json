@@ -2,10 +2,18 @@
   "type": "thaumaturge:arcane_workbench_shaped",
   "crystals": [],
   "key": {
-    "S": "thaumaturge:nugget_quicksilver",
-    "Q": "#c:gems/certus_quartz",
-    "F": "ae2:fluix_dust",
-    "L": "ae2:logic_processor"
+    "S": {
+      "item": "thaumaturge:nugget_quicksilver"
+    },
+    "Q": {
+      "tag": "c:gems/certus_quartz"
+    },
+    "F": {
+      "item": "ae2:fluix_dust"
+    },
+    "L": {
+      "item": "ae2:logic_processor"
+    }
   },
   "pattern": [
     "SSS",

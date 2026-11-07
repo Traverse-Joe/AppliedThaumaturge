@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "ae2:advanced_card",
-    "minecraft:ender_pearl",
-    "thaumaturge:salis_mundus"
+    {
+      "item": "ae2:advanced_card"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:wireless_arcane_terminal"

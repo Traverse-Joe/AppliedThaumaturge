@@ -1,9 +1,17 @@
 {
   "ingredients": [
-    "ae2:me_chest",
-    "appliedthaumaturge:essentia_component_64k",
-    "ae2:energy_cell",
-    "appliedthaumaturge:essentia_cell_housing"
+    {
+      "item": "ae2:chest"
+    },
+    {
+      "item": "appliedthaumaturge:essentia_component_64k"
+    },
+    {
+      "item": "ae2:energy_cell"
+    },
+    {
+      "item": "appliedthaumaturge:essentia_cell_housing"
+    }
   ],
   "result": {
     "id": "appliedthaumaturge:portable_essentia_cell_64k"

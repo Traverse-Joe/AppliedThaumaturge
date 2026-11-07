@@ -9,7 +9,6 @@ import appeng.api.storage.StorageHelper;
 import appeng.helpers.ICraftingGridMenu;
 import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
-import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.me.common.MEStorageMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.PlayerInternalInventory;
@@ -22,7 +21,6 @@ import com.leclowndu93150.thaumaturge.content.workbench.MenuArcaneWorkbench;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotCrystalEssentia;
 import com.leclowndu93150.thaumaturge.content.workbench.SlotWorkbenchWand;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.network.codec.ByteBufCodecs;
 import com.leclowndu93150.thaumaturge.api.aura.AuraHelper;
 import com.traverse.appliedthaumaturge.arcane.ArcaneCrafter;
 import com.traverse.appliedthaumaturge.arcane.ArcaneTerminalHost;
@@ -44,9 +42,9 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, ArcaneRecipeTarget {
-    private static final ClientActionKey<Void> ACTION_STORE_GRID = new ClientActionKey<>("storeCraftingGrid");
-    private static final ClientActionKey<Void> ACTION_TAKE_GRID = new ClientActionKey<>("clearToPlayer");
-    private static final ClientActionKey<Long> ACTION_SCAN_ITEM = new ClientActionKey<>("scanStoredItem");
+    private static final String ACTION_STORE_GRID = "storeCraftingGrid";
+    private static final String ACTION_TAKE_GRID = "clearToPlayer";
+    private static final String ACTION_SCAN_ITEM = "scanStoredItem";
     private final ArcaneTerminalHost arcaneHost;
     private final AppEngInternalInventory arcaneInventory;
     private final ArcaneResultSlot outputSlot;
@@ -90,7 +88,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
 
         registerClientAction(ACTION_STORE_GRID, this::clearCraftingGrid);
         registerClientAction(ACTION_TAKE_GRID, this::clearToPlayerInventory);
-        registerClientAction(ACTION_SCAN_ITEM, ByteBufCodecs.VAR_LONG, this::scanStoredItem);
+        registerClientAction(ACTION_SCAN_ITEM, Long.class, this::scanStoredItem);
 
         updateOutput();
     }
@@ -190,7 +188,7 @@ public class ArcaneTermMenu extends MEStorageMenu implements ICraftingGridMenu, 
             CraftingInput input = ArcaneCrafter.prepareVanilla(arcaneInventory).input();
             vanillaRecipe = ArcaneCrafter.findVanillaRecipe(player, input);
             if (vanillaRecipe != null) {
-                ItemStack output = vanillaRecipe.value().assemble(input);
+                ItemStack output = vanillaRecipe.value().assemble(input, player.registryAccess());
                 outputSlot.set(output);
                 baseVis = 0;
                 visCost = 0;

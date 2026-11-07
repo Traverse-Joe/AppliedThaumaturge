@@ -1,7 +1,7 @@
 package com.traverse.appliedthaumaturge.client;
 
 import appeng.api.config.ActionItems;
-import appeng.util.Icon;
+import appeng.client.gui.Icon;
 import appeng.client.gui.me.common.MEStorageScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.ActionButton;

@@ -7,7 +7,6 @@ import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
 import de.mari_023.ae2wtlib.api.terminal.IUniversalTerminalCapable;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -17,7 +16,7 @@ public final class EssentiaWTScreen extends MEStorageScreen<WirelessEssentiaTerm
     public EssentiaWTScreen(WirelessEssentiaTerminalMenu menu, Inventory inventory, Component title, ScreenStyle style) {
         super(menu, inventory, title, style);
         if (AE2wtlibAPI.isUniversalTerminal(getHost().getItemStack())) {
-            addTerminalSelectionPanel(widgets);
+            addToLeftToolbar(cycleTerminalButton());
         }
         upgradesPanel = addUpgradePanel(widgets, menu);
     }
@@ -34,7 +33,7 @@ public final class EssentiaWTScreen extends MEStorageScreen<WirelessEssentiaTerm
     }
 
     @Override
-    public boolean keyPressed(KeyEvent event) {
-        return super.keyPressed(event) || checkForTerminalKeys(event);
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers) || checkForTerminalKeys(keyCode, scanCode);
     }
 }

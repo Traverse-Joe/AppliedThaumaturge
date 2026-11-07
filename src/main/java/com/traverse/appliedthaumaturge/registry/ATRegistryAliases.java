@@ -2,7 +2,7 @@ package com.traverse.appliedthaumaturge.registry;
 
 import com.traverse.appliedthaumaturge.AppliedThaumaturge;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 public final class ATRegistryAliases {
@@ -13,9 +13,9 @@ public final class ATRegistryAliases {
 
     public static void register(RegisterEvent event) {
         Registry<?> registry = event.getRegistry();
-        for (Identifier id : registry.keySet()) {
+        for (ResourceLocation id : registry.keySet()) {
             if (id.getNamespace().equals(AppliedThaumaturge.MODID)) {
-                registry.addAlias(Identifier.fromNamespaceAndPath(LEGACY_NAMESPACE, id.getPath()), id);
+                registry.addAlias(ResourceLocation.fromNamespaceAndPath(LEGACY_NAMESPACE, id.getPath()), id);
             }
         }
     }

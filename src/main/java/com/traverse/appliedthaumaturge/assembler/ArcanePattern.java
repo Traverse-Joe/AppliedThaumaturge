@@ -14,6 +14,7 @@ import com.traverse.appliedthaumaturge.knowledge.KnowledgeRecipe;
 import com.traverse.appliedthaumaturge.registry.ATDataComponents;
 import com.traverse.appliedthaumaturge.registry.ATItems;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,9 +82,9 @@ public final class ArcanePattern implements IPatternDetails {
         Set<AEItemKey> keys = new LinkedHashSet<>();
         keys.add(AEItemKey.of(stored));
         if (substitute) {
-            for (Ingredient ingredient : recipe.placementInfo().ingredients()) {
-                if (ingredient.test(stored)) {
-                    ingredient.items().map(Holder::value).map(Item::getDefaultInstance).map(AEItemKey::of).forEach(keys::add);
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                if (!ingredient.isEmpty() && ingredient.test(stored)) {
+                    Arrays.stream(ingredient.getItems()).map(ItemStack::getItem).map(Item::getDefaultInstance).map(AEItemKey::of).forEach(keys::add);
                     break;
                 }
             }

@@ -6,25 +6,25 @@ import com.traverse.appliedthaumaturge.item.WirelessArcaneTerminalItem;
 import com.traverse.appliedthaumaturge.item.WirelessEssentiaTerminalItem;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
-import java.util.function.Consumer;
+import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 public class LibraryTerminalItem extends ItemWT {
     private final boolean arcane;
 
-    public LibraryTerminalItem(Properties properties, boolean arcane) {
-        super(properties);
+    public LibraryTerminalItem(boolean arcane) {
+        super();
         this.arcane = arcane;
     }
 
@@ -50,9 +50,10 @@ public class LibraryTerminalItem extends ItemWT {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        InteractionResult result = useMode(player, hand, player.getItemInHand(hand));
-        return result != InteractionResult.PASS ? result : super.use(level, player, hand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        InteractionResult result = useMode(player, hand, stack);
+        return result != InteractionResult.PASS ? new InteractionResultHolder<>(result, stack) : super.use(level, player, hand);
     }
 
     @Override
@@ -72,8 +73,8 @@ public class LibraryTerminalItem extends ItemWT {
     }
 
     @Override
-    public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return arcane ? ItemUseAnimation.BOW : super.getUseAnimation(stack);
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return arcane ? UseAnim.BOW : super.getUseAnimation(stack);
     }
 
     @Override
@@ -84,19 +85,18 @@ public class LibraryTerminalItem extends ItemWT {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-                                Consumer<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, tooltip, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
         if (arcane) {
-            WirelessArcaneTerminalItem.appendModeTooltip(this, stack, tooltip);
+            WirelessArcaneTerminalItem.appendModeTooltip(this, stack, tooltip::add);
         } else {
-            WirelessEssentiaTerminalItem.appendModeTooltip(this, stack, tooltip);
+            WirelessEssentiaTerminalItem.appendModeTooltip(this, stack, tooltip::add);
         }
     }
 
     public static final class Arcane extends LibraryTerminalItem implements IChanneledItem {
-        public Arcane(Properties properties) {
-            super(properties, true);
+        public Arcane() {
+            super(true);
         }
     }
 }

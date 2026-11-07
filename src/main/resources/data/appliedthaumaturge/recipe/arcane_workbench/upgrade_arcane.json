@@ -2,8 +2,12 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "ae2:advanced_card",
-    "thaumaturge:arcane_workbench_charger"
+    {
+      "item": "ae2:advanced_card"
+    },
+    {
+      "item": "thaumaturge:arcane_workbench_charger"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:arcane_terminal"

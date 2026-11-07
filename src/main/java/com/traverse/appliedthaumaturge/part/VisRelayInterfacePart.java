@@ -9,6 +9,12 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.energy.IEnergyService;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartItem;
+import appeng.api.parts.IPartModel;
+import appeng.items.parts.PartModels;
+import appeng.parts.PartModel;
+import appeng.parts.p2p.P2PModels;
+import com.traverse.appliedthaumaturge.AppliedThaumaturge;
+import net.minecraft.resources.ResourceLocation;
 import appeng.api.util.AECableType;
 import appeng.items.tools.MemoryCardItem;
 import appeng.parts.AEBasePart;
@@ -19,23 +25,30 @@ import com.leclowndu93150.thaumaturge.api.aura.IVisRelaySource;
 import com.leclowndu93150.thaumaturge.content.aura.relay.BlockEntityVisRelay;
 import com.traverse.appliedthaumaturge.vis.VisRelayLink;
 import com.traverse.appliedthaumaturge.ATConfig;
-import java.util.UUID;
-import java.util.Map;
-import java.util.WeakHashMap;
+import com.traverse.appliedthaumaturge.util.CodecTags;
+import com.leclowndu93150.thaumaturge.api.transaction.SnapshotJournal;
+import com.leclowndu93150.thaumaturge.api.transaction.TransactionContext;
 import java.lang.ref.WeakReference;
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
 public class VisRelayInterfacePart extends AEBasePart implements IVisRelaySource {
+    @PartModels
+    public static final ResourceLocation MODEL_BASE = AppliedThaumaturge.id("part/vis_relay_interface");
+    private static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, P2PModels.MODEL_STATUS_OFF);
+    private static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, P2PModels.MODEL_STATUS_ON);
+    private static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, P2PModels.MODEL_STATUS_HAS_CHANNEL);
+
     private String sourceId = UUID.randomUUID().toString();
     @Nullable
     private VisRelayLink link;
@@ -175,18 +188,20 @@ public class VisRelayInterfacePart extends AEBasePart implements IVisRelaySource
     }
 
     @Override
-    public void readFromNBT(ValueInput input) {
-        super.readFromNBT(input);
-        sourceId = input.getStringOr("visSourceId", sourceId);
-        link = input.read("visSource", VisRelayLink.CODEC).orElse(null);
+    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
+        super.readFromNBT(data, registries);
+        if (data.contains("visSourceId")) {
+            sourceId = data.getString("visSourceId");
+        }
+        link = CodecTags.read(data, "visSource", VisRelayLink.CODEC, registries).orElse(null);
     }
 
     @Override
-    public void writeToNBT(ValueOutput output) {
-        super.writeToNBT(output);
-        output.putString("visSourceId", sourceId);
+    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
+        super.writeToNBT(data, registries);
+        data.putString("visSourceId", sourceId);
         if (link != null) {
-            output.store("visSource", VisRelayLink.CODEC, link);
+            CodecTags.write(data, "visSource", VisRelayLink.CODEC, link, registries);
         }
     }
 
@@ -195,6 +210,16 @@ public class VisRelayInterfacePart extends AEBasePart implements IVisRelaySource
         helper.addBox(5, 5, 12, 11, 11, 13);
         helper.addBox(3, 3, 13, 13, 13, 14);
         helper.addBox(2, 2, 14, 14, 14, 16);
+    }
+
+    @Override
+    public IPartModel getStaticModels() {
+        if (isActive() && isPowered()) {
+            return MODELS_HAS_CHANNEL;
+        } else if (isPowered()) {
+            return MODELS_ON;
+        }
+        return MODELS_OFF;
     }
 
     @Override

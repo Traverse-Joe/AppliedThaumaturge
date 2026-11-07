@@ -2,9 +2,15 @@
   "type": "thaumaturge:arcane_workbench_shapeless",
   "crystals": [],
   "ingredients": [
-    "ae2:terminal",
-    "thaumaturge:arcane_workbench",
-    "ae2:calculation_processor"
+    {
+      "item": "ae2:terminal"
+    },
+    {
+      "item": "thaumaturge:arcane_workbench"
+    },
+    {
+      "item": "ae2:calculation_processor"
+    }
   ],
   "research": {
     "entry": "appliedthaumaturge:arcane_terminal"

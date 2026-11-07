@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 
 public class ArcaneTermScreen extends MEStorageScreen<ArcaneTermMenu> {
     public ArcaneTermScreen(ArcaneTermMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -30,7 +30,7 @@ public class ArcaneTermScreen extends MEStorageScreen<ArcaneTermMenu> {
     }
 
     @Override
-    protected void handleGridInventoryEntryMouseClick(GridInventoryEntry entry, int mouseButton, ContainerInput input) {
+    protected void handleGridInventoryEntryMouseClick(GridInventoryEntry entry, int mouseButton, ClickType input) {
         if (getMenu().getCarried().getItem() instanceof ThaumometerItem) {
             return;
         }

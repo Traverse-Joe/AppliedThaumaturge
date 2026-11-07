@@ -6,6 +6,8 @@
     }
   ],
   "type": "ae2wtlib:upgrade",
-  "terminal": "appliedthaumaturge:wireless_arcane_terminal",
+  "terminal": {
+    "item": "appliedthaumaturge:wireless_arcane_terminal"
+  },
   "terminalName": "appliedthaumaturge_arcane"
 }

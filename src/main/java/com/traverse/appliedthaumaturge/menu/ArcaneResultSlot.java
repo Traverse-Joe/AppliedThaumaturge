@@ -83,7 +83,7 @@ public class ArcaneResultSlot extends CraftingTermSlot {
                 ? ArcaneCrafter.craft(player, menu.getArcaneHost(), menu.getArcaneInventory(), storage, energy, source)
                 : ArcaneCrafter.craftVanilla(player, vanillaRecipe, menu.getArcaneInventory(), storage, energy, source);
         if (!crafted.isEmpty()) {
-            crafted.onCraftedBy(player, crafted.getCount());
+            crafted.onCraftedBy(player.level(), player, crafted.getCount());
         }
         menu.updateOutput();
         return crafted;

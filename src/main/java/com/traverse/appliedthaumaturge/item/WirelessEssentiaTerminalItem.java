@@ -15,6 +15,7 @@ import com.traverse.appliedthaumaturge.registry.ATItems;
 import com.traverse.appliedthaumaturge.registry.ATMenus;
 import net.minecraft.world.inventory.MenuType;
 import com.traverse.appliedthaumaturge.registry.ATTerminalHotkeys;
+import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -24,14 +25,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.ItemMenuHostLocator;
@@ -73,9 +73,10 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        InteractionResult result = useMode(this, player, hand, player.getItemInHand(hand));
-        return result != InteractionResult.PASS ? result : super.use(level, player, hand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        InteractionResult result = useMode(this, player, hand, stack);
+        return result != InteractionResult.PASS ? new InteractionResultHolder<>(result, stack) : super.use(level, player, hand);
     }
 
     @Override
@@ -156,10 +157,7 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
             return;
         }
         var storage = jar.storage(Direction.UP);
-        int possible;
-        try (Transaction tx = Transaction.openRoot()) {
-            possible = fill ? storage.insert(aspect, amount, tx) : storage.extract(aspect, amount, tx);
-        }
+        int possible = fill ? storage.insert(aspect, amount, true) : storage.extract(aspect, amount, true);
         if (possible <= 0 || !host.consumeIdlePower(Actionable.MODULATE)) {
             return;
         }
@@ -172,12 +170,10 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
             return;
         }
         boolean committed = false;
-        try (Transaction tx = Transaction.openRoot()) {
-            int transferred = fill ? storage.insert(aspect, (int) moved, tx) : storage.extract(aspect, (int) moved, tx);
-            if (transferred == moved) {
-                tx.commit();
-                committed = true;
-            }
+        int transferable = fill ? storage.insert(aspect, (int) moved, true) : storage.extract(aspect, (int) moved, true);
+        if (transferable == moved) {
+            int transferred = fill ? storage.insert(aspect, (int) moved, false) : storage.extract(aspect, (int) moved, false);
+            committed = transferred == moved;
         }
         if (!committed) {
             if (fill) {
@@ -193,10 +189,9 @@ public class WirelessEssentiaTerminalItem extends WirelessTerminalItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-                                Consumer<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, display, tooltip, flag);
-        appendModeTooltip(this, stack, tooltip);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        appendModeTooltip(this, stack, tooltip::add);
     }
 
     public static void appendModeTooltip(WirelessTerminalItem item, ItemStack stack, Consumer<Component> tooltip) {

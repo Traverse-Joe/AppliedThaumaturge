@@ -1,5 +1,6 @@
 package com.traverse.appliedthaumaturge.registry;
 
+import appeng.block.AEBaseBlock;
 import com.traverse.appliedthaumaturge.AppliedThaumaturge;
 import com.traverse.appliedthaumaturge.assembler.ArcaneAssemblerBlock;
 import com.traverse.appliedthaumaturge.block.EssentiaNetworkBlock;
@@ -14,12 +15,12 @@ public final class ATBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(AppliedThaumaturge.MODID);
 
     public static final DeferredBlock<EssentiaNetworkBlock<EssentiaInterfaceBlockEntity>> ESSENTIA_INTERFACE =
-            BLOCKS.registerBlock("essentia_interface", EssentiaNetworkBlock::new);
+            BLOCKS.registerBlock("essentia_interface", EssentiaNetworkBlock::new, AEBaseBlock.metalProps());
     public static final DeferredBlock<EssentiaNetworkBlock<InfusionProviderBlockEntity>> INFUSION_PROVIDER =
-            BLOCKS.registerBlock("infusion_provider", EssentiaNetworkBlock::new);
+            BLOCKS.registerBlock("infusion_provider", EssentiaNetworkBlock::new, AEBaseBlock.metalProps());
 
     public static final DeferredBlock<ArcaneAssemblerBlock> ARCANE_ASSEMBLER =
-            BLOCKS.registerBlock("arcane_assembler", ArcaneAssemblerBlock::new);
+            BLOCKS.registerBlock("arcane_assembler", ArcaneAssemblerBlock::new, AEBaseBlock.metalProps());
 
     public static final DeferredItem<BlockItem> ESSENTIA_INTERFACE_ITEM = ATItems.ITEMS.registerSimpleBlockItem(ESSENTIA_INTERFACE);
     public static final DeferredItem<BlockItem> INFUSION_PROVIDER_ITEM = ATItems.ITEMS.registerSimpleBlockItem(INFUSION_PROVIDER);

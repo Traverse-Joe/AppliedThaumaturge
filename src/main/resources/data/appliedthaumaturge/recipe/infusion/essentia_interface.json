@@ -18,14 +18,28 @@
       "amount": 15
     }
   ],
-  "catalyst": "ae2:interface",
+  "catalyst": {
+    "item": "ae2:interface"
+  },
   "components": [
-    "appliedthaumaturge:coalescence_core",
-    "thaumaturge:salis_mundus",
-    "appliedthaumaturge:diffusion_core",
-    "thaumaturge:salis_mundus",
-    "thaumaturge:tube",
-    "appliedthaumaturge:essentia_storage_bus"
+    {
+      "item": "appliedthaumaturge:coalescence_core"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    },
+    {
+      "item": "appliedthaumaturge:diffusion_core"
+    },
+    {
+      "item": "thaumaturge:salis_mundus"
+    },
+    {
+      "item": "thaumaturge:tube"
+    },
+    {
+      "item": "appliedthaumaturge:essentia_storage_bus"
+    }
   ],
   "instability": 8,
   "research": {

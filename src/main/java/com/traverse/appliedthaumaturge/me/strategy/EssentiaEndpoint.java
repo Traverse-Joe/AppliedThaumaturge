@@ -10,7 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public interface EssentiaEndpoint {
@@ -70,24 +69,12 @@ public interface EssentiaEndpoint {
 
         @Override
         public int insert(Holder<IAspect> aspect, int amount, boolean simulate) {
-            try (Transaction tx = Transaction.openRoot()) {
-                int inserted = storage.insert(aspect, amount, tx);
-                if (!simulate && inserted > 0) {
-                    tx.commit();
-                }
-                return inserted;
-            }
+            return storage.insert(aspect, amount, simulate);
         }
 
         @Override
         public int extract(Holder<IAspect> aspect, int amount, boolean simulate) {
-            try (Transaction tx = Transaction.openRoot()) {
-                int extracted = storage.extract(aspect, amount, tx);
-                if (!simulate && extracted > 0) {
-                    tx.commit();
-                }
-                return extracted;
-            }
+            return storage.extract(aspect, amount, simulate);
         }
     }
 

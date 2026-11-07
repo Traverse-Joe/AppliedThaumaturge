@@ -78,7 +78,7 @@ public final class ArcanePlanCheck {
                 var costs = ArcaneAssemblerBlockEntity.getWandCost(pattern);
                 List<AuraPool> pools = new ArrayList<>();
                 for (var anchor : assembler.getAuraAnchors()) {
-                    var pool = new AuraPool(assembler.getLevel(), ChunkPos.containing(anchor));
+                    var pool = new AuraPool(assembler.getLevel(), new ChunkPos(anchor));
                     aura.computeIfAbsent(pool, ignored -> (long) Math.floor(AuraHelper.getVis(assembler.getLevel(), anchor) * 100.0));
                     pools.add(pool);
                 }
